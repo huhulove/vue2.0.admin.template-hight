@@ -25,7 +25,6 @@ const nodeAddField = (data, field, value) => {
 	}
 };
 export const mergeRoutes = data => {
-	console.log(data);
 	const menuRoutes = routes.filter(item => {
 		return item.name === 'Layout';
 	})[0].children;

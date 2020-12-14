@@ -4,5 +4,5 @@
     "roleUrl": "http://192.168.1.220:9003/api/",
     "authorizeUrl": "http://192.168.1.220:9003/api/",
     "menuUrl": "http://192.168.1.220:9003/api/",
-    "fileUrl": "htto://192.168.1.220"
+    "fileUrl": "htto://192.168.1.211"
 }

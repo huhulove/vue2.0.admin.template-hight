@@ -1,10 +1,10 @@
 <template>
 	<el-aside class="sidebar-container">
-		<el-menu class="el-menu-vertical-demo" :default-openeds="['1']" router :collapse="isCollapse_p">
+		<el-menu class="el-menu-vertical-demo" router :default-openeds="['1']" :collapse="isCollapse_p">
 			<template>
 				<span v-for="(menu, index) in menuData" :key="index">
 					<Submenu :menu_p="menu" v-if="menu.children && menu.children.length !== 0"></Submenu>
-					<el-menu-item v-if="!menu.children || menu.children.length === 0" index="1-1" :route="{ path: '/system/userManager' }">
+					<el-menu-item v-if="!menu.children || menu.children.length === 0" :route="{ path: `/${menu.frontendRoute.path}` }" :index="`${menu.id}`">
 						{{ menu.menuName }}
 					</el-menu-item>
 				</span>
@@ -45,11 +45,24 @@ export default {
 	created() {
 		this.menuAuthorizeList();
 	},
+	watch: {
+		$route: {
+			handler() {}
+		},
+		'$store.state.userStore.isRefreshAside': {
+			handler(newValue) {
+				newValue && this.menuAuthorizeList();
+				this.$store.commit('setRefreshAside', false);
+			}
+		}
+	},
 	methods: {
+		clickMenu(menu) {
+			hsetStorage('btnPowers', menu.powers);
+		},
 		async menuAuthorizeList() {
 			const res = await userMenuAuthorizeService({});
 			this.menuData = mergeRoutes(res);
-			console.log(this.menuData);
 		}
 	}
 };

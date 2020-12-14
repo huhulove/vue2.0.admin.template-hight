@@ -10,6 +10,7 @@
 					@showDelete="showDeleteHandler"
 					:selectData_p="selectData"
 					:delTips_p="delTips"
+					:authorize_p="'power'"
 				></Button>
 			</div>
 		</div>
@@ -22,9 +23,14 @@
 			row-key="id"
 			:tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
 		>
-			<el-table-column label="是否删除">
+			<el-table-column label="创建时间">
 				<template slot-scope="scope">
-					{{ scope.row.isDel === 0 ? '正常' : '删除' }}
+					{{ scope.row.createDate | formatDate }}
+				</template>
+			</el-table-column>
+			<el-table-column label="更新时间">
+				<template slot-scope="scope">
+					{{ scope.row.updateDate | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column label="状态">
@@ -34,8 +40,20 @@
 			</el-table-column>
 			<el-table-column label="操作" align="center" fixed="right">
 				<template slot-scope="scope">
-					<el-button type="primary" icon="el-icon-edit" size="mini" @click="editSingleHandler(scope.row)"></el-button>
-					<el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteSingleHandler(scope.row)"></el-button>
+					<el-button
+						id="btn-update-row"
+						type="primary"
+						icon="el-icon-edit"
+						v-authorize="{ name: 'update', type: 'power', id: 'btn-update-row' }"
+						@click="editSingleHandler(scope.row)"
+					></el-button>
+					<el-button
+						id="btn-remove-row"
+						type="danger"
+						icon="el-icon-delete"
+						v-authorize="{ name: 'remove', type: 'power', id: 'btn-remove-row' }"
+						@click="deleteSingleHandler(scope.row)"
+					></el-button>
 				</template>
 			</el-table-column>
 		</Table>
@@ -52,14 +70,16 @@
 
 <script>
 // eslint-disable-next-line import/no-cycle
-import { authorizeListService, authorizeDeleteService } from '@s/system/AuthorizeService';
+import { authorizeListService, authorizeDeleteService, authorizeDetailService } from '@s/system/AuthorizeService';
 import Button from '@c/ui/Button';
 import Table from '@c/ui/Table';
 import Dialog from '@c/ui/Dialog';
-import AuthorizeAddForm from '@f/system/AuthorizeAdd.form';
+import AuthorizeAddForm from '@f/system//authorize/AuthorizeAdd.form';
 /* import AuthorizeSearchForm from '@f/system/AuthorizeSearch.form'; */
+import ListMixin from '@m/List.mixin';
 
 export default {
+	mixins: [ListMixin],
 	components: {
 		Table,
 		Button,
@@ -69,10 +89,6 @@ export default {
 	},
 	data() {
 		return {
-			// 分页
-			/* total: 1,
-			pageIndex: 1,
-			pageSize: 10, */
 			// 表格
 			tableColumn: [
 				{
@@ -84,26 +100,11 @@ export default {
 					field: 'powerCode'
 				},
 				{
-					label: '创建时间',
-					field: 'createDate'
-				},
-				{
-					label: '更新时间',
-					field: 'updateDate'
-				},
-				{
 					label: '备注',
 					field: 'remark'
 				}
 			],
-			tableData: [],
-			selectData: [],
-			// 搜索
-			/* searchForm: {}, */
-			delTips: '',
-			editId: -1,
-			isShowAEDialog: false,
-			isRefreshList: false
+			delTips: ''
 		};
 	},
 	computed: {
@@ -130,52 +131,39 @@ export default {
 			};
 			const res = await authorizeListService(dataJson);
 			console.log(res);
-			this.tableData = res;
-			this.isRefreshList = false;
+			this.listMixin(res);
 		},
 		showDialogAddHandler() {
-			this.isShowAEDialog = true;
-			this.selectData = [];
+			this.dialogAddHandlerMixin();
 			this.$refs.tableDom.clearSelection();
-			this.editId = -1;
 		},
-		showDialogEditHandler() {
-			this.isShowAEDialog = true;
-			this.editId = this.selectData[0].id;
-		},
-		filterSelectIds() {
-			return this.selectData.map(item => {
-				return item.id;
-			});
+		async showDialogEditHandler() {
+			const editId = this.dialogEditHandlerMixin();
+			const dataJson = {
+				powerCode: editId
+			};
+			const res = await authorizeDetailService(dataJson);
+			this.selectData = [res];
 		},
 		async showDeleteHandler() {
-			const ids = this.filterSelectIds();
+			const ids = this.filterSelectIdsMixin();
 			const dataJson = {
 				menuJurisdictions: ids
 			};
+			console.log(dataJson);
 			await authorizeDeleteService(dataJson);
 			this.isRefreshList = true;
 		},
-		editSingleHandler(row) {
-			this.editId = row.id;
-			this.selectData = [row];
-			this.isShowAEDialog = true;
-			this.$refs.tableDom.clearSelection();
+		async editSingleHandler(row) {
+			const dataJson = {
+				powerCode: row.powerCode
+			};
+			const res = await authorizeDetailService(dataJson);
+			console.log(res);
+			this.editSingleHandlerMixin(res);
 		},
 		deleteSingleHandler(row) {
-			this.$confirm(this.delTips || '确认此操作吗？', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			})
-				.then(async () => {
-					this.selectData = [row];
-					this.$refs.tableDom.clearSelection();
-					this.showDeleteHandler();
-				})
-				.catch(error => {
-					console.log(error);
-				});
+			this.deleteSingleHandlerMixin(row);
 		}
 		/* searchFormHandler(searchForm) {
 			this.pageIndex = 1;

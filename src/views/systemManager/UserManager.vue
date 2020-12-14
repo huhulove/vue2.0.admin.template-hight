@@ -8,17 +8,18 @@
 				<Button
 					@showDialogAdd="showDialogAddHandler"
 					@showDialogEdit="showDialogEditHandler"
-					@showDelete="showisDeleteHandler"
+					@showDelete="showDeleteHandler"
 					:selectData_p="selectData"
 					:delTips_p="delTips"
+					:authorize_p="'user'"
 				></Button>
 			</div>
 		</div>
 		<!--表格渲染-->
 		<Table ref="tableDom" :data.sync="tableData" :tableColumn_p="tableColumn" :selectData_p.sync="selectData">
-			<el-table-column label="是否删除">
+			<el-table-column label="创建时间">
 				<template slot-scope="scope">
-					{{ scope.row.isDel === 0 ? '正常' : '删除' }}
+					{{ scope.row.createDate | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column label="状态">
@@ -28,8 +29,28 @@
 			</el-table-column>
 			<el-table-column label="操作" align="center" fixed="right">
 				<template slot-scope="scope">
-					<el-button type="primary" icon="el-icon-edit" size="mini" @click="editSingleHandler(scope.row)"></el-button>
-					<el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteSingleHandler(scope.row)"></el-button>
+					<el-button
+						id="btn-update-row"
+						type="primary"
+						icon="el-icon-edit"
+						v-authorize="{ name: 'update', type: 'user', id: 'btn-update-row' }"
+						@click="editSingleHandler(scope.row)"
+					></el-button>
+					<el-button
+						id="btn-remove-row"
+						type="danger"
+						icon="el-icon-delete"
+						v-authorize="{ name: 'remove', type: 'user', id: 'btn-remove-row' }"
+						@click="deleteSingleHandler(scope.row)"
+					></el-button>
+					<el-button
+						id="btn-secret-row"
+						type="danger"
+						v-authorize="{ name: 'secret', type: 'user', id: 'btn-secret-row' }"
+						@click="editPasswordHandler(scope.row)"
+					>
+						修改密码
+					</el-button>
 				</template>
 			</el-table-column>
 		</Table>
@@ -42,34 +63,42 @@
 				:selectData_p="selectData"
 			></UserAddForm>
 		</Dialog>
+		<Dialog title="修改密码" :visible.sync="isShowPasswordDialog">
+			<UserPasswordForm
+				v-if="isShowPasswordDialog"
+				:isShowPasswordDialog_p.sync="isShowPasswordDialog"
+				:isRefreshList_p.sync="isRefreshList"
+				:editId_p="editId"
+			></UserPasswordForm>
+		</Dialog>
 	</div>
 </template>
 
 <script>
 // eslint-disable-next-line import/no-cycle
-import { userDeleteService, userListService } from '@s/system/UserService';
+import { userDeleteService, userListService, userDetailService } from '@s/system/UserService';
 import Button from '@c/ui/Button';
-import UserSearchform from '@f/system/UserSearch.form';
+import UserSearchform from '@f/system/user/UserSearch.form';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 import Dialog from '@c/ui/Dialog';
-import UserAddForm from '@f/system/UserAdd.form';
+import UserAddForm from '@f/system/user/UserAdd.form';
+import UserPasswordForm from '@f/system/user/UserPassword.form';
+import ListMixin from '@m/List.mixin';
 
 export default {
+	mixins: [ListMixin],
 	components: {
 		UserSearchform,
 		Button,
 		Table,
 		Pagination,
 		Dialog,
-		UserAddForm
+		UserAddForm,
+		UserPasswordForm
 	},
 	data() {
 		return {
-			// 分页
-			total: 0,
-			pageIndex: 1,
-			pageSize: 10,
 			// 表格
 			tableColumn: [
 				{
@@ -87,20 +116,10 @@ export default {
 				{
 					label: '备注',
 					field: 'remark'
-				},
-				{
-					label: '创建时间',
-					field: 'createDate'
 				}
 			],
-			tableData: [],
-			// 搜索
-			searchForm: {},
-			selectData: [],
 			delTips: '',
-			editId: -1,
-			isShowAEDialog: false,
-			isRefreshList: false
+			isShowPasswordDialog: false
 		};
 	},
 	computed: {
@@ -118,7 +137,6 @@ export default {
 			this.userList();
 		},
 		isRefreshList(newValue) {
-			console.log(newValue);
 			if (newValue) {
 				this.userList();
 				this.pageIndex = 1;
@@ -132,67 +150,50 @@ export default {
 		async userList() {
 			const dataJson = {
 				pageNum: this.pageIndex,
-				pageSize: 10,
+				pageSize: this.pageSize,
 				userName: '',
 				...this.searchForm
 			};
 			const res = await userListService(dataJson);
 			console.log(res);
-			this.total = res.total;
-			this.tableData = res.records;
+			this.listMixin(res);
 		},
-		// 按钮组件广播显示添加框
-
 		showDialogAddHandler() {
-			this.isShowAEDialog = true;
-			this.editId = -1;
+			this.dialogAddHandlerMixin();
 		},
-		showDialogEditHandler() {
-			this.isShowAEDialog = true;
-			this.editId = this.selectData[0].id;
+		async showDialogEditHandler() {
+			const editId = this.dialogEditHandlerMixin();
+			const dataJson = {
+				userId: editId
+			};
+			const res = await userDetailService(dataJson);
+			this.selectData = [res];
 		},
-		filterSelectIds() {
-			return this.selectData.map(item => {
-				return item.id;
-			});
-		},
-		async showisDeleteHandler() {
-			const ids = this.filterSelectIds();
+		async showDeleteHandler() {
+			const ids = this.filterSelectIdsMixin();
 			const dataJson = {
 				ids: ids
 			};
 			await userDeleteService(dataJson);
 			this.isRefreshList = true;
 		},
-		editSingleHandler(row) {
-			this.editId = row.id;
-			this.selectData = [row];
-			this.isShowAEDialog = true;
-			this.$refs.tableDom.clearSelection();
+		async editSingleHandler(row) {
+			const dataJson = {
+				userId: row.id
+			};
+			const res = await userDetailService(dataJson);
+			this.editSingleHandlerMixin(res);
 		},
 		deleteSingleHandler(row) {
-			this.$confirm(this.delTips || '确认此操作吗？', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			})
-				.then(() => {
-					console.log(row);
-				})
-				.catch(error => {
-					console.log(error);
-				});
-		},
-		showDialogAdd() {
-			this.dialogVisible = true;
-		},
-		showDialogEdit() {
-			this.dialogVisible = true;
+			this.deleteSingleHandlerMixin(row);
 		},
 		searchFormHandler(searchForm) {
-			this.pageIndex = 1;
-			this.searchForm = searchForm;
+			this.searchFormHandlerMixin(searchForm);
 			this.userList();
+		},
+		editPasswordHandler(row) {
+			this.isShowPasswordDialog = true;
+			this.editId = row.id;
 		}
 	}
 };

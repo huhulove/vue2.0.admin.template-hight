@@ -1,5 +1,6 @@
 import { hgetRequest, hpostRequest } from '../../util/htools.axios';
 import { changeTreeDataToChildren } from '../../util/htools.tree';
+import { hgetStorage } from '../../util/htools.web';
 
 /*
  *@Description: 权限列表
@@ -80,6 +81,25 @@ export const authorizeDeleteService = data => {
 				...data
 			};
 			const res = await hpostRequest('hauthorize/jurisdiction/jurisdictionDel', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
+/*
+ *@Description: 权限详情
+ *@MethodAuthor:  myw
+ *@Date: 2020-12-11 10:36:01
+ */
+export const authorizeDetailService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				powerCode: '',
+				...data
+			};
+			const res = await hgetStorage('hauthorize/jurisdiction/jurisdictionByIdQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

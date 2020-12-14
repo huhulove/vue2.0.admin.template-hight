@@ -1,13 +1,46 @@
 <template>
 	<div class="head-container">
-		<el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="showDialogAdd">新增</el-button>
-		<el-button class="filter-item" size="mini" type="success" icon="el-icon-edit" :disabled="selectData_p.length !== 1" @click="showDialogEdit">
+		<el-button
+			id="btn-add"
+			class="filter-item"
+			v-authorize="{ name: 'add', type: authorize_p, id: 'btn-add' }"
+			type="primary"
+			icon="el-icon-plus"
+			@click="showDialogAdd"
+		>
+			新增
+		</el-button>
+		<el-button
+			id="btn-update"
+			class="filter-item"
+			v-authorize="{ name: 'update', type: authorize_p, id: 'btn-update' }"
+			type="success"
+			icon="el-icon-edit"
+			:disabled="selectData_p.length !== 1"
+			@click="showDialogEdit"
+		>
 			修改
 		</el-button>
-		<el-button class="filter-item" type="danger" icon="el-icon-delete" size="mini" :disabled="selectData_p.length < 1" @click="showDeleteHandler">
+		<el-button
+			id="btn-remove"
+			class="filter-item"
+			v-authorize="{ name: 'remove', type: authorize_p, id: 'btn-remove' }"
+			type="danger"
+			icon="el-icon-delete"
+			:disabled="selectData_p.length < 1"
+			@click="showDeleteHandler"
+		>
 			删除
 		</el-button>
-		<el-button class="filter-item" size="mini" type="warning" icon="el-icon-download">导出</el-button>
+		<el-button
+			id="btn-download"
+			class="filter-item"
+			v-authorize="{ name: 'download', type: authorize_p, id: 'btn-download' }"
+			type="warning"
+			icon="el-icon-download"
+		>
+			导出
+		</el-button>
 		<slot></slot>
 	</div>
 </template>
@@ -19,6 +52,9 @@ export default {
 			type: Array
 		},
 		delTips_p: {
+			type: String
+		},
+		authorize_p: {
 			type: String
 		}
 	},

@@ -2,11 +2,15 @@ import { loginOutService, loginService } from '@s/loginService';
 
 const userStore = {
 	state: {
-		token: null
+		token: null,
+		isRefreshAside: false
 	},
 	mutations: {
 		setToken(state, token) {
 			state.token = token;
+		},
+		setRefreshAside(state, status) {
+			state.isRefreshAside = status;
 		}
 	},
 	getters: {

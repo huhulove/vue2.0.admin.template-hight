@@ -1,6 +1,6 @@
 import { Message } from 'element-ui';
 import axios from 'axios';
-import { hgetStorage, huploadConfigJson } from './htools.web';
+import { hgetStorage, hremoveStorage, huploadConfigJson } from './htools.web';
 import router from '../router/index';
 
 const request = axios.create();
@@ -53,6 +53,7 @@ request.interceptors.response.use(
 				path: '/login',
 				querry: { redirect: router.currentRoute.fullPath } // 从哪个页面跳转
 			});
+			hremoveStorage('token');
 			return Promise.reject();
 		}
 		if (code === 500) {
@@ -65,6 +66,7 @@ request.interceptors.response.use(
 			return Promise.reject();
 		}
 		const { msg } = response.data;
+		Message.closeAll();
 		Message.success(msg);
 		return response.data.result;
 	},

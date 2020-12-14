@@ -76,7 +76,6 @@ export const userDeleteService = data => {
  *@Description: 用户详情
  *@MethodAuthor:  myw
  *@Date: 2020-12-08 10:36:27
-	框架使用
  */
 export const userDetailService = data => {
 	return new Promise(async resolve => {
@@ -103,6 +102,47 @@ export const userMenuAuthorizeService = data => {
 				...data
 			};
 			const res = await hgetRequest('huser/systemUser/systemUserByIdJurisdictionQuery', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
+/*
+ *@Description: 用户绑定角色
+ *@MethodAuthor:  myw
+ *@Date: 2020-12-10 17:11:00
+ */
+export const userRoleService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				roleIds: [],
+				userId: 0,
+				...data
+			};
+			const res = await hpostRequest('huser/systemUser/systemUserRoleBind', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
+/*
+ *@Description: 修改用户密码
+ *@MethodAuthor:  myw
+ *@Date: 2020-12-11 13:48:35
+ */
+export const userPasswordEditService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				userId: 0,
+				userPwdNew: '',
+				userPwdOld: '',
+				...data
+			};
+			const res = await hpostRequest('huser/systemUser/systemUserPassUpdate', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

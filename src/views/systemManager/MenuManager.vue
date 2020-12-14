@@ -7,6 +7,7 @@
 				@showDelete="showDeleteHandler"
 				:selectData_p="selectData"
 				:delTips_p="delTips"
+				:authorize_p="'menu'"
 			></Button>
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="17" style="margin-bottom: 10px">
 				<el-card class="box-card" shadow="never">
@@ -33,8 +34,20 @@
 						</el-table-column>
 						<el-table-column label="操作" align="center" fixed="right">
 							<template slot-scope="scope">
-								<el-button type="primary" icon="el-icon-edit" size="mini" @click="editSingleHandler(scope.row)"></el-button>
-								<el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteSingleHandler(scope.row)"></el-button>
+								<el-button
+									id="btn-update-row"
+									type="primary"
+									icon="el-icon-edit"
+									v-authorize="{ name: 'update', type: 'menu', id: 'btn-update-row' }"
+									@click="editSingleHandler(scope.row)"
+								></el-button>
+								<el-button
+									id="btn-remove-row"
+									type="danger"
+									icon="el-icon-delete"
+									v-authorize="{ name: 'remove', type: 'menu', id: 'btn-remove-row' }"
+									@click="deleteSingleHandler(scope.row)"
+								></el-button>
 							</template>
 						</el-table-column>
 					</Table>
@@ -50,7 +63,7 @@
 						</el-tooltip>
 						<el-button icon="el-icon-check" size="mini" style="float: right; padding: 6px 9px" type="primary" @click="saveMenu">保存</el-button>
 					</div>
-					<el-tree ref="tree" :props="defaultProps" :data="authorizeData" node-key="id" show-checkbox></el-tree>
+					<el-tree ref="tree" :props="defaultProps" :data="authorizeData" node-key="powerCode" show-checkbox></el-tree>
 				</el-card>
 			</el-col>
 		</el-row>
@@ -67,15 +80,17 @@
 
 <script>
 // eslint-disable-next-line import/no-cycle
-import { menuListService, menuDeleteService, menuAuthorizeService } from '@s/system/MenuService';
+import { menuListService, menuDeleteService, menuAuthorizeService, menuDetailService } from '@s/system/MenuService';
 // eslint-disable-next-line import/no-cycle
 import { authorizeListService } from '@s/system/AuthorizeService';
 import Table from '@c/ui/Table.vue';
 import Button from '@c/ui/Button.vue';
 import Dialog from '@c/ui/Dialog.vue';
-import MenuAddForm from '@f/system/MenuAdd.form';
+import MenuAddForm from '@f/system/menu/MenuAdd.form';
+import ListMixin from '@m/List.mixin';
 
 export default {
+	mixins: [ListMixin],
 	components: {
 		Table,
 		Button,
@@ -107,13 +122,7 @@ export default {
 					field: 'menuIcon'
 				}
 			],
-			tableData: [],
-			selectData: [],
-
 			delTips: '',
-			editId: -1,
-			isShowAEDialog: false,
-			isRefreshList: false,
 			authorizeData: [],
 			defaultProps: { children: 'children', label: 'powerName' }
 		};
@@ -145,72 +154,52 @@ export default {
 			const dataJson = {};
 			const res = await menuListService(dataJson);
 			console.log(res);
-			this.tableData = res;
-			this.isRefreshList = false;
+			this.listMixin(res);
 		},
 		showDialogAddHandler() {
-			this.isShowAEDialog = true;
-			this.selectData = [];
+			this.dialogAddHandlerMixin();
 			this.$refs.tableDom.clearSelection();
-			this.editId = -1;
 		},
-		showDialogEditHandler() {
-			this.isShowAEDialog = true;
+		async showDialogEditHandler() {
+			const editId = this.dialogEditHandlerMixin();
+			const dataJson = {
+				menuId: editId
+			};
+			const res = await menuDetailService(dataJson);
+			this.selectData = [res];
 			this.$refs.tree.setCheckedKeys(this.selectData[0].powers);
-			this.editId = this.selectData[0].id;
-		},
-		filterSelectIds() {
-			return this.selectData.map(item => {
-				return item.id;
-			});
 		},
 		async showDeleteHandler() {
-			const ids = this.filterSelectIds();
+			const ids = this.filterSelectIdsMixin();
 			const dataJson = {
 				menuList: ids
 			};
 			await menuDeleteService(dataJson);
 			this.isRefreshList = true;
 		},
-		editSingleHandler(row) {
-			this.editId = row.id;
-			this.selectData = [row];
+		async editSingleHandler(row) {
+			const dataJson = {
+				menuId: row.id
+			};
+			const res = await menuDetailService(dataJson);
+			this.editSingleHandlerMixin(res);
 			this.$refs.tree.setCheckedKeys(this.selectData[0].powers);
-			this.isShowAEDialog = true;
-			this.$refs.tableDom.clearSelection();
 		},
 		deleteSingleHandler(row) {
-			this.$confirm(this.delTips || '确认此操作吗？', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			})
-				.then(async () => {
-					this.selectData = [row];
-					this.$refs.tableDom.clearSelection();
-					this.showDeleteHandler();
-				})
-				.catch(error => {
-					console.log(error);
-				});
-		},
-		lastNodes(nodeArr) {
-			return nodeArr.filter(item => {
-				return !item.children;
-			});
+			this.deleteSingleHandlerMixin(row);
 		},
 		async saveMenu() {
 			const checkedNodes = this.$refs.tree.getCheckedNodes();
-			const lastNodesArr = this.lastNodes(checkedNodes);
+			const lastNodesArr = this.lastNodesMixin(checkedNodes);
 			const ids = lastNodesArr.map(item => {
-				return item.id;
+				return item.powerCode;
 			});
 			const dataJson = {
 				id: this.editId,
 				menuJurisdictions: ids
 			};
-			const res = await menuAuthorizeService(dataJson);
-			console.log(res);
+			await menuAuthorizeService(dataJson);
+			this.$store.commit('setRefreshAside', true);
 		}
 	}
 };

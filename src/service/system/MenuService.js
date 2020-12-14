@@ -108,5 +108,24 @@ export const menuAuthorizeService = data => {
 		}
 	});
 };
+/*
+ *@Description: 菜单详情
+ *@MethodAuthor:  myw
+ *@Date: 2020-12-11 09:43:20
+ */
+export const menuDetailService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				menuId: '',
+				...data
+			};
+			const res = await hgetRequest('hmenu/menu/menuByIdQuery', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
 
 export default menuListService;

@@ -1,4 +1,4 @@
-import { hpostRequest } from '../../util/htools.axios';
+import { hgetRequest, hpostRequest } from '../../util/htools.axios';
 
 /*
  *@Description: 角色列表
@@ -100,6 +100,25 @@ export const roleAuthorizeService = data => {
 				...data
 			};
 			const res = await hpostRequest('hrole/role/roleConfigure', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
+/*
+ *@Description: 角色详情
+ *@MethodAuthor:  myw
+ *@Date: 2020-12-11 09:17:20
+ */
+export const roleDetailService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				roleId: '',
+				...data
+			};
+			const res = await hgetRequest('hrole/role/roleByIdQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

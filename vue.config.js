@@ -10,7 +10,12 @@ module.exports = {
 			.set('@', resolve('src'))
 			.set('@f', resolve('src/factory'))
 			.set('@c', resolve('src/components'))
-			.set('@s', resolve('src/service'));
+			.set('@s', resolve('src/service'))
+			.set('@m', resolve('src/mixins'))
+			.set('@u', resolve('src/util'));
+	},
+	css: {
+		extract: false
 	},
 	devServer: {
 		proxy: {

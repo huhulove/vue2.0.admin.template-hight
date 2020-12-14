@@ -5,18 +5,27 @@
 			{{ menu_p.menuName }}
 		</template>
 		<span v-for="($menu, $index) in menu_p.children" :key="$index">
-			<el-menu-item index="1-1" :route="{ path: '/system/userManager' }">{{ $menu.menuName }}</el-menu-item>
+			<el-menu-item :index="`${$menu.id}`" :route="{ path: `/${$menu.frontendRoute.path}` }" @click.native="clickMenu($menu)">
+				{{ $menu.menuName }}
+			</el-menu-item>
 			<Submenu v-if="$menu.children && $menu.children.length !== 0" :menu_p="$menu"></Submenu>
 		</span>
 	</el-submenu>
 </template>
 
 <script>
+import { hsetStorage } from '@/util/htools.web';
+
 export default {
 	name: 'Submenu',
 	props: ['menu_p'],
 	data() {
 		return {};
+	},
+	methods: {
+		clickMenu(menu) {
+			hsetStorage('btnPowers', menu.powers);
+		}
 	}
 };
 </script>

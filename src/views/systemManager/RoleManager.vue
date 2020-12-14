@@ -9,6 +9,7 @@
 					@showDelete="showDeleteHandler"
 					:selectData_p="selectData"
 					:delTips_p="delTips"
+					:authorize_p="'role'"
 				></Button>
 			</div>
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="17" style="margin-bottom: 10px">
@@ -19,9 +20,14 @@
 					<RoleSearchForm @searchForm="searchFormHandler"></RoleSearchForm>
 					<!--表格渲染-->
 					<Table ref="tableDom" :data.sync="tableData" :tableColumn_p="tableColumn" :selectData_p.sync="selectData">
-						<el-table-column label="是否删除">
+						<el-table-column label="创建时间">
 							<template slot-scope="scope">
-								{{ scope.row.isDel === 0 ? '正常' : '删除' }}
+								{{ scope.row.createDate | formatDate }}
+							</template>
+						</el-table-column>
+						<el-table-column label="更新时间">
+							<template slot-scope="scope">
+								{{ scope.row.updateDate | formatDate }}
 							</template>
 						</el-table-column>
 						<el-table-column label="状态">
@@ -31,8 +37,20 @@
 						</el-table-column>
 						<el-table-column label="操作" align="center" fixed="right">
 							<template slot-scope="scope">
-								<el-button type="primary" icon="el-icon-edit" size="mini" @click="editSingleHandler(scope.row)"></el-button>
-								<el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteSingleHandler(scope.row)"></el-button>
+								<el-button
+									id="btn-update-row"
+									type="primary"
+									icon="el-icon-edit"
+									v-authorize="{ name: 'update', type: 'role', id: 'btn-update-row' }"
+									@click="editSingleHandler(scope.row)"
+								></el-button>
+								<el-button
+									id="btn-remove-row"
+									type="danger"
+									icon="el-icon-delete"
+									v-authorize="{ name: 'remove', type: 'role', id: 'btn-remove-row' }"
+									@click="deleteSingleHandler(scope.row)"
+								></el-button>
 							</template>
 						</el-table-column>
 					</Table>
@@ -48,7 +66,7 @@
 						</el-tooltip>
 						<el-button icon="el-icon-check" size="mini" style="float: right; padding: 6px 9px" type="primary" @click="saveMenu">保存</el-button>
 					</div>
-					<el-tree ref="tree" :props="defaultProps" :data="authorizeData" node-key="id" show-checkbox></el-tree>
+					<el-tree ref="tree" :props="defaultProps" :data="authorizeData" node-key="powerCode" show-checkbox></el-tree>
 				</el-card>
 			</el-col>
 		</el-row>
@@ -65,17 +83,19 @@
 
 <script>
 // eslint-disable-next-line import/no-cycle
-import { roleDeleteService, roleListService, roleAuthorizeService } from '@s/system/RoleService';
+import { roleDeleteService, roleListService, roleAuthorizeService, roleDetailService } from '@s/system/RoleService';
 // eslint-disable-next-line import/no-cycle
 import { authorizeListService } from '@s/system/AuthorizeService';
 import Button from '@c/ui/Button';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 import Dialog from '@c/ui/Dialog';
-import RoleAddForm from '@f/system/RoleAdd.form';
-import RoleSearchForm from '@f/system/RoleSearch.form';
+import RoleAddForm from '@f/system/role/RoleAdd.form';
+import RoleSearchForm from '@f/system/role/RoleSearch.form';
+import ListMixin from '@m/List.mixin';
 
 export default {
+	mixins: [ListMixin],
 	components: {
 		Table,
 		Pagination,
@@ -86,10 +106,6 @@ export default {
 	},
 	data() {
 		return {
-			// 分页
-			total: 1,
-			pageIndex: 1,
-			pageSize: 10,
 			// 表格
 			tableColumn: [
 				{
@@ -99,24 +115,9 @@ export default {
 				{
 					label: '描述',
 					field: 'des'
-				},
-				{
-					label: '创建时间',
-					field: 'createDate'
-				},
-				{
-					label: '更新时间',
-					field: 'updateDate'
 				}
 			],
-			tableData: [],
-			selectData: [],
-			// 搜索
-			searchForm: {},
 			delTips: '',
-			editId: -1,
-			isShowAEDialog: false,
-			isRefreshList: false,
 			authorizeData: [],
 			defaultProps: { children: 'children', label: 'powerName' }
 		};
@@ -136,7 +137,6 @@ export default {
 			this.roleList();
 		},
 		isRefreshList(newValue) {
-			console.log(newValue);
 			if (newValue) {
 				this.roleList();
 				this.pageIndex = 1;
@@ -151,85 +151,67 @@ export default {
 		async authorizeList() {
 			const dataJson = {};
 			const res = await authorizeListService(dataJson);
-			console.log(res);
 			this.authorizeData = res;
 		},
 		async roleList() {
 			const dataJson = {
 				pageNum: this.pageIndex,
-				pageSize: 10,
+				pageSize: this.pageSize,
 				roleName: '',
 				...this.searchForm
 			};
 			const res = await roleListService(dataJson);
 			console.log(res);
-			this.total = res.total;
-			this.tableData = res.records;
-			this.isRefreshList = false;
+			this.listMixin(res);
 		},
 		showDialogAddHandler() {
-			this.isShowAEDialog = true;
-			this.selectData = [];
+			this.dialogAddHandlerMixin();
 			this.$refs.tableDom.clearSelection();
-			this.editId = -1;
 		},
-		showDialogEditHandler() {
-			this.isShowAEDialog = true;
-			this.$refs.tree.setCheckedKeys(this.selectData[0].powers);
-			this.editId = this.selectData[0].id;
-		},
-		filterSelectIds() {
-			return this.selectData.map(item => {
-				return item.id;
-			});
+		async showDialogEditHandler() {
+			const editId = this.dialogEditHandlerMixin();
+			const dataJson = {
+				roleId: editId
+			};
+			const res = await roleDetailService(dataJson);
+			this.selectData = [res];
+			this.$refs.tree.setCheckedKeys(this.selectData[0].powerCodes);
 		},
 		async showDeleteHandler() {
-			const ids = this.filterSelectIds();
+			const ids = this.filterSelectIdsMixin();
 			const dataJson = {
 				ids: ids
 			};
-			const res = await roleDeleteService(dataJson);
-			console.log(res);
+			await roleDeleteService(dataJson);
 			this.isRefreshList = true;
 		},
-		editSingleHandler(row) {
-			this.editId = row.id;
-			this.selectData = [row];
-			this.isShowAEDialog = true;
-			this.$refs.tableDom.clearSelection();
+		async editSingleHandler(row) {
+			const dataJson = {
+				roleId: row.id
+			};
+			const res = await roleDetailService(dataJson);
+			this.editSingleHandlerMixin(res);
+			this.$refs.tree.setCheckedKeys(res.powerCodes);
 		},
 		deleteSingleHandler(row) {
-			this.$confirm(this.delTips || '确认此操作吗？', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			})
-				.then(async () => {
-					this.selectData = [row];
-					this.$refs.tableDom.clearSelection();
-					this.showDeleteHandler();
-				})
-				.catch(error => {
-					console.log(error);
-				});
+			this.deleteSingleHandlerMixin(row);
 		},
 		searchFormHandler(searchForm) {
-			this.pageIndex = 1;
-			this.searchForm = searchForm;
+			this.searchFormHandlerMixin(searchForm);
 			this.roleList();
 		},
 		async saveMenu() {
 			const checkedNodes = this.$refs.tree.getCheckedNodes();
-			const lastNodesArr = this.lastNodes(checkedNodes);
+			const lastNodesArr = this.lastNodesMixin(checkedNodes);
 			const ids = lastNodesArr.map(item => {
-				return item.id;
+				return item.powerCode;
 			});
 			const dataJson = {
 				roleId: this.editId,
 				powers: ids
 			};
-			const res = await roleAuthorizeService(dataJson);
-			console.log(res);
+			await roleAuthorizeService(dataJson);
+			this.$store.commit('setRefreshAside', true);
 		}
 	}
 };
