@@ -28,14 +28,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.head-serch {
-	display: flex;
-	align-items: center;
-	.form {
-		margin-right: 10px;
-	}
-	.el-form-item {
-		margin-bottom: 3px;
-	}
-}
 </style>

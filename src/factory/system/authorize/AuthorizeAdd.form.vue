@@ -19,7 +19,7 @@
 						<el-option :value="authorizeForm.parentId" style="height: auto">
 							<el-tree
 								:data="authorizeData"
-								node-key="id"
+								node-key="powerCode"
 								ref="tree"
 								highlight-current
 								:props="defaultProps"
@@ -145,7 +145,7 @@ export default {
 			this.$emit('update:isShowAEDialog_p', false);
 		},
 		nodeClickHandler(data) {
-			this.authorizeForm.parentId = data.id;
+			this.authorizeForm.parentId = data.powerCode;
 			this.parentName = data.powerName;
 		}
 	}

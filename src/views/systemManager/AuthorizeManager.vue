@@ -20,7 +20,7 @@
 			:data.sync="tableData"
 			:tableColumn_p="tableColumn"
 			:selectData_p.sync="selectData"
-			row-key="id"
+			row-key="powerCode"
 			:tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
 		>
 			<el-table-column label="创建时间">
@@ -160,7 +160,7 @@ export default {
 			};
 			const res = await authorizeDetailService(dataJson);
 			console.log(res);
-			this.editSingleHandlerMixin(res);
+			/* this.editSingleHandlerMixin(res); */
 		},
 		deleteSingleHandler(row) {
 			this.deleteSingleHandlerMixin(row);

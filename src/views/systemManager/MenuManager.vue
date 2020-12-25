@@ -147,13 +147,11 @@ export default {
 		async authorizeList() {
 			const dataJson = {};
 			const res = await authorizeListService(dataJson);
-			console.log(res);
 			this.authorizeData = res;
 		},
 		async menuList() {
 			const dataJson = {};
 			const res = await menuListService(dataJson);
-			console.log(res);
 			this.listMixin(res);
 		},
 		showDialogAddHandler() {
