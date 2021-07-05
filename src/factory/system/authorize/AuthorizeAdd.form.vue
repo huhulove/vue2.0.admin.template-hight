@@ -1,64 +1,60 @@
 <template>
-	<el-row>
-		<el-col :span="24">
-			<el-form ref="authorizeForm" :model="authorizeForm" :rules="authorizeRules" label-width="66px">
-				<el-form-item label="名称" prop="powerName">
-					<el-input v-model="authorizeForm.powerName" placeholder="请输入权限名称" />
-				</el-form-item>
-				<el-form-item label="标识" prop="powerCode">
-					<el-input v-model.number="authorizeForm.powerCode" placeholder="请输入权限标识" />
-				</el-form-item>
-				<el-form-item label="状态" prop="state">
-					<el-radio-group style="width: 200px" v-model="authorizeForm.state">
-						<el-radio :label="0">正常</el-radio>
-						<el-radio :label="1">禁用</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="父级">
-					<el-select v-model="parentName" class="select-item" placeholder="请选择" collapse-tags>
-						<el-option :value="authorizeForm.parentId" style="height: auto">
-							<el-tree
-								:data="authorizeData"
-								node-key="powerCode"
-								ref="tree"
-								highlight-current
-								:props="defaultProps"
-								@node-click="nodeClickHandler"
-							></el-tree>
-						</el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="备注">
-					<el-input type="textarea" :rows="4" v-model.number="authorizeForm.remark" placeholder="请输入备注" />
-				</el-form-item>
-			</el-form>
-		</el-col>
-		<el-col :span="24" style="text-align: right">
-			<span class="dialog-footer">
-				<el-button @click="authorizeFormCancel">取 消</el-button>
-				<el-button type="primary" @click="authorizeFormSubmit">确 定</el-button>
-			</span>
-		</el-col>
-	</el-row>
+	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
+		<el-form-item label="名称" prop="powerName">
+			<Input v-model="formData.powerName" placeholder="请输入权限名称" />
+		</el-form-item>
+		<el-form-item label="标识" prop="powerCode">
+			<Input v-model="formData.powerCode" :disabled="editId !== -1" placeholder="请输入权限标识" />
+		</el-form-item>
+		<el-form-item label="排序" prop="powerSort">
+			<Input v-model="formData.powerSort" type="number" placeholder="请输入排序" />
+		</el-form-item>
+		<el-form-item label="状态" prop="status">
+			<Radio v-model="formData.status" :data_p="statusData"></Radio>
+		</el-form-item>
+		<el-form-item label="父级">
+			<SelectTree v-model="formData.parentId" node-key="powerCode" :data="authorizeData" placeholder="请选择父级"></SelectTree>
+		</el-form-item>
+		<el-form-item label="备注">
+			<Input type="textarea" :rows="4" v-model="formData.remark" placeholder="请输入备注" />
+		</el-form-item>
+	</DataForm>
 </template>
 
 <script>
+import { deleteTreeNodeById } from '@u/htools.tree';
+
+import SelectTree from '@c/ui/SelectTree';
+import Radio from '@c/ui/Radio';
+import Input from '@c/ui/Input';
+import DataForm from '@c/ui/DataForm';
+
 import { authorizeAddService, authorizeEditService, authorizeListService } from '@s/system/AuthorizeService';
-import { getTreeNodeById } from '@u/htools.tree';
 
 export default {
 	props: ['selectData_p'],
+	components: {
+		SelectTree,
+		Radio,
+		DataForm,
+		Input
+	},
 	data() {
 		return {
 			editId: -1,
-			authorizeForm: {
+			statusData: [
+				{ label: '正常', value: 0 },
+				{ label: '禁用', value: 1 }
+			],
+			formData: {
 				powerName: '',
-				state: 0,
-				remark: '',
 				powerCode: '',
-				parentId: 0
+				powerSort: '',
+				status: 0,
+				parentId: 0,
+				remark: ''
 			},
-			authorizeRules: {
+			formRules: {
 				powerName: [
 					{
 						required: true,
@@ -73,7 +69,14 @@ export default {
 						trigger: 'blur'
 					}
 				],
-				state: [
+				powerSort: [
+					{
+						required: true,
+						message: '请输入权限标识',
+						trigger: 'blur'
+					}
+				],
+				status: [
 					{
 						required: true,
 						message: '请选择权限状态',
@@ -88,33 +91,28 @@ export default {
 					}
 				]
 			},
-			parentName: '',
 			defaultProps: {
 				children: 'children',
 				label: 'powerName'
 			},
-			authorizeData: []
+			parentName: '',
+			authorizeData: null
 		};
 	},
 	watch: {
 		selectData_p: {
 			async handler(newValue) {
+				this.authorizeData === null && (await this.authorizeList());
 				if (newValue.length > 0) {
 					this.editId = newValue[0].powerCode;
-                    /* this.parentName = newValue[0].powerName; */
-                    await this.authorizeList();
-					getTreeNodeById(this.authorizeData, newValue[0].parentId, node => {
-                        this.parentName = node.powerName;
-					});
-					this.authorizeForm = { ...newValue[0] };
+					const optionsTemp = deleteTreeNodeById(this.authorizeData, this.editId, 'powerCode');
+					this.authorizeData = [...optionsTemp];
+					this.formData = { ...newValue[0] };
 				}
 			},
 			deep: true,
 			immediate: true
 		}
-	},
-	created() {
-		this.editId === -1 && this.authorizeList();
 	},
 	methods: {
 		async authorizeList() {
@@ -122,30 +120,27 @@ export default {
 			const res = await authorizeListService(dataJson);
 			this.authorizeData = res;
 		},
-		authorizeFormSubmit() {
-			this.$refs.authorizeForm.validate(async valid => {
-				if (valid) {
-					if (this.editId === -1) {
-						await authorizeAddService(this.authorizeForm);
-					} else {
-						const dataJson = {
-							id: this.editId,
-							...this.authorizeForm
-						};
-						await authorizeEditService(dataJson);
-					}
-					this.$emit('update:isRefreshList_p', true);
-					this.authorizeFormCancel();
+		async formSubmit(valid) {
+			if (valid) {
+				if (this.editId === -1) {
+					await authorizeAddService(this.formData);
 				} else {
-					this.$emit('update:isRefreshList_p', false);
+					const dataJson = {
+						...this.formData
+					};
+					await authorizeEditService(dataJson);
 				}
-			});
+				this.$emit('update:isRefreshList_p', true);
+				this.formCancel();
+			} else {
+				this.$emit('update:isRefreshList_p', false);
+			}
 		},
-		authorizeFormCancel() {
+		formCancel() {
 			this.$emit('update:isShowAEDialog_p', false);
 		},
 		nodeClickHandler(data) {
-			this.authorizeForm.parentId = data.powerCode;
+			this.formData.parentId = data.powerCode;
 			this.parentName = data.powerName;
 		}
 	}

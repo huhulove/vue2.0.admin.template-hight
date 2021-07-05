@@ -7,10 +7,14 @@
 					:key="index"
 					class="tags-view-item router-link-exact-active router-link-active"
 					:class="{ active: currentTab === index }"
-					@click="clickTabHandler(index)"
-					@contextmenu.prevent="contextMenuHandler($event, index)"
 				>
-					{{ item.title }}
+					<span @click="clickTabHandler(index)" @contextmenu.prevent="contextMenuHandler($event, index)">{{ item.title }}</span>
+
+					<span
+						v-if="tabList.length > 1 || $route.path !== '/home'"
+						class="el-icon-close"
+						@click="closeCurrentSingleTabHandler($event, index)"
+					></span>
 				</span>
 			</el-scrollbar>
 		</div>
@@ -23,6 +27,8 @@
 </template>
 
 <script>
+import { hgetStorage, hsetStorage } from '@/util/htools.web';
+
 export default {
 	data() {
 		return {
@@ -33,7 +39,7 @@ export default {
 				left: 0,
 				top: 0
 			},
-			contextMenuTabIndex: -1
+			contextMenuTabIndex: -1 // 索引
 		};
 	},
 	watch: {
@@ -42,19 +48,37 @@ export default {
 				const { title } = this.$route.meta;
 				const { cloneTabIndex } = this.filterSameTabHandler(title);
 				if (cloneTabIndex === -1) {
-					this.tabList.push({
-						title: this.$route.meta.title,
-						path: this.$route.path
-					});
-					this.currentTab = this.tabList.length - 1;
+					setTimeout(() => {
+						this.tabList.push({
+							title: this.$route.meta.title,
+							path: this.$route.path,
+							btnAuthorize: hgetStorage('btnPowers')
+						});
+						this.currentTab = this.tabList.length - 1;
+					}, 300);
 				} else {
 					this.currentTab = cloneTabIndex;
+				}
+				if (hgetStorage('hasSaveEnterprise') === 1) {
+					this.tabList.forEach((item, index) => {
+						if (item.path === '/baseData/addEnterprise') {
+							this.tabList.splice(index, 1);
+						}
+					});
 				}
 			},
 			immediate: true
 		}
 	},
-	mounted() {},
+	mounted() {
+		document.addEventListener(
+			'click',
+			() => {
+				this.isShowContextMenu = false;
+			},
+			false
+		);
+	},
 	methods: {
 		filterSameTabHandler(title) {
 			let cloneTab = null;
@@ -72,6 +96,7 @@ export default {
 		},
 		clickTabHandler(tabIndex) {
 			this.$router.push(this.tabList[tabIndex].path);
+			hsetStorage('btnPowers', this.tabList[tabIndex].btnAuthorize);
 		},
 		contextMenuHandler(event, tabIndex) {
 			this.contextMenuTabIndex = tabIndex;
@@ -80,8 +105,21 @@ export default {
 			this.style.left = `${clientX}px`;
 			this.style.top = `${clientY}px`;
 		},
+		// 关闭按钮关闭当前tab
+		closeCurrentSingleTabHandler(event, tabIndex) {
+			this.contextMenuTabIndex = tabIndex;
+			this.isShowContextMenu = true;
+			const { clientX, clientY } = event;
+			this.style.left = `${clientX}px`;
+			this.style.top = `${clientY}px`;
+			this.closeCurrentTabHandler();
+		},
+		// 关闭
 		closeCurrentTabHandler() {
 			if (this.contextMenuTabIndex === 0 && this.tabList.length === 1) {
+				this.tabList = [];
+				this.$router.replace('/home');
+				this.isShowContextMenu = false;
 				return false;
 			}
 			if (this.contextMenuTabIndex === 0 && this.tabList.length !== 1) {
@@ -93,16 +131,20 @@ export default {
 			this.$router.replace(this.tabList[this.currentTab].path);
 			this.isShowContextMenu = false;
 		},
+		// 关闭全部
 		closeAllTabHandler() {
 			this.tabList = [];
 			this.$router.replace('/home');
 			this.isShowContextMenu = false;
 		},
+		// 关闭其他
 		closeOtherTabHandler() {
 			const contextMenuTab = this.tabList[this.contextMenuTabIndex];
 			this.tabList = [contextMenuTab];
 			this.currentTab = 0;
 			this.isShowContextMenu = false;
+			this.$router.push(contextMenuTab.path);
+			hsetStorage('btnPowers', contextMenuTab.btnAuthorize);
 		}
 	}
 };

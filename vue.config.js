@@ -14,9 +14,6 @@ module.exports = {
 			.set('@m', resolve('src/mixins'))
 			.set('@u', resolve('src/util'));
 	},
-	css: {
-		extract: false
-	},
 	devServer: {
 		proxy: {
 			'/api': {

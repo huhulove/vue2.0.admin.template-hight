@@ -17,6 +17,7 @@ export default {
 		initWebSocket() {
 			// 初始化weosocket
 			const wsuri = 'ws://192.168.1.210:6700/WebServer';
+			// const wsuri = 'ws://192.168.1.64:7681/?version=0.1&cipherSuites=0&sessionID=82c9b43db52c2b775390a57a77d09d36b9ba0eae0a1cd74effc8936fa9a94474';
 			this.websock = new WebSocket(wsuri);
 			this.websock.onmessage = this.websocketonmessage;
 			this.websock.onopen = this.websocketonopen;
@@ -38,6 +39,7 @@ export default {
 			const redata = JSON.parse(e.data);
 			console.log('接收到的数据');
 			console.log(redata);
+			console.log('接收到的数据');
 		},
 		websocketsend(Data) {
 			// 数据发送

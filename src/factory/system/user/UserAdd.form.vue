@@ -1,69 +1,91 @@
 <template>
-	<el-row>
-		<el-col :span="24">
-			<el-form ref="userForm" :model="userForm" :rules="userRules" size="small" label-width="66px">
-				<el-form-item label="用户名" prop="userName">
-					<el-input v-model="userForm.userName" placeholder="请输入用户名" />
-				</el-form-item>
-				<el-form-item label="密码" prop="userPwd">
-					<el-input v-model.number="userForm.userPwd" placeholder="请输入密码" />
-				</el-form-item>
-				<el-form-item label="昵称" prop="nickName">
-					<el-input v-model="userForm.nickName" placeholder="请输入昵称" />
-				</el-form-item>
-				<el-form-item label="角色" prop="roleIds">
-					<el-select v-model="userForm.roleIds" multiple filterable placeholder="请选择角色" class="select-item">
-						<el-option v-for="(role, index) in roleData" :key="index" :label="role.roleName" :value="role.id"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="状态" prop="state">
-					<el-radio-group style="width: 200px" v-model="userForm.state">
-						<el-radio :label="0">启用</el-radio>
-						<el-radio :label="1">不启用</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="备注">
-					<el-input type="textarea" :rows="4" v-model="userForm.remark"></el-input>
-				</el-form-item>
-			</el-form>
-		</el-col>
-		<el-col :span="24" style="text-align: right">
-			<span class="dialog-footer">
-				<el-button @click="userFormCancel">取 消</el-button>
-				<el-button type="primary" @click="userFormSubmit">确 定</el-button>
-			</span>
-		</el-col>
-	</el-row>
+	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
+		<el-form-item label="用户名" prop="userName">
+			<Input v-model="formData.userName" placeholder="请输入用户名" />
+		</el-form-item>
+		<el-form-item label="密码" prop="userPwd" v-if="editId === -1">
+			<Input type="password" v-model="formData.userPwd" placeholder="请输入密码" />
+		</el-form-item>
+		<el-form-item label="昵称" prop="nickName">
+			<Input v-model="formData.nickName" placeholder="请输入昵称" />
+		</el-form-item>
+		<el-form-item label="角色" prop="roleIds">
+			<Select
+				v-model="formData.roleIds"
+				:optionsData_p="roleData"
+				:optionJson_p="{ label: 'name', value: 'id' }"
+				placeholder="请选择角色"
+				multiple
+			></Select>
+		</el-form-item>
+		<el-form-item label="状态" prop="status">
+			<Radio v-model="formData.status" :data_p="statusData"></Radio>
+		</el-form-item>
+		<el-form-item label="备注">
+			<Input type="textarea" :rows="4" v-model="formData.remark" />
+		</el-form-item>
+	</DataForm>
 </template>
 
 <script>
+import Select from '@c/ui/Select';
+import Radio from '@c/ui/Radio';
+import Input from '@c/ui/Input';
+import DataForm from '@c/ui/DataForm';
+
 // eslint-disable-next-line import/named
-import { userAddService, userEditService, userRoleService } from '@s/system/UserService';
+import { userAddService, userEditService } from '@s/system/UserService';
 // eslint-disable-next-line import/no-cycle
 import { roleListService } from '@s/system/RoleService';
 
 export default {
 	props: ['selectData_p'],
+	components: {
+		Select,
+		Radio,
+		DataForm,
+		Input
+	},
 	data() {
 		return {
 			editId: -1,
-			// 弹窗
-			userForm: {
+			formData: {
 				userName: '',
 				userPwd: '',
 				nickName: '',
-				state: 0,
+				status: 0,
+				companyId: 0,
 				remark: '',
-				roleIds: null
+				roleIds: []
 			},
-			userRules: {
+			formRules: {
 				userName: [
-					{ required: true, message: '请输入用户名', trigger: 'blur' },
-					{ min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+					{
+						required: true,
+						message: '请输入用户名',
+						trigger: 'blur'
+					},
+					{
+						min: 2,
+						max: 20,
+						message: '长度在 2 到 20 个字符',
+						trigger: 'blur'
+					}
 				],
-				userPwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-				nickName: [{ required: true, message: '请输入用户昵称', trigger: 'blur' }],
-				state: [{ required: true, message: '请选择状态', trigger: 'change' }],
+				userPwd: [
+					{
+						required: true,
+						message: '请输入密码',
+						trigger: 'blur'
+					}
+				],
+				nickName: [
+					{
+						required: true,
+						message: '请输入用户昵称',
+						trigger: 'blur'
+					}
+				],
 				roleIds: [
 					{
 						required: true,
@@ -72,61 +94,55 @@ export default {
 					}
 				]
 			},
-			roleData: []
+			roleData: [],
+			statusData: [
+				{ label: '正常', value: 0 },
+				{ label: '禁用', value: 1 }
+			]
 		};
 	},
 	watch: {
 		selectData_p: {
-			handler(newValue) {
+			async handler(newValue) {
+				this.roleData.length === 0 && (await this.roleList());
 				if (newValue.length > 0) {
 					this.editId = newValue[0].id;
-					this.userForm = { ...newValue[0] };
-					this.userForm.roleIds = newValue[0].userRoles;
+					this.formData = { ...newValue[0] };
+					this.$set(this.formData, 'roleIds', newValue[0].roleIds);
 				}
 			},
 			deep: true,
 			immediate: true
 		}
 	},
-	created() {
-		this.roleList();
-	},
 	methods: {
 		async roleList() {
 			const dataJson = {
-				pageNum: 1,
+				pageIndex: 1,
 				pageSize: 10000,
-				roleName: ''
+				name: ''
 			};
 			const res = await roleListService(dataJson);
-			console.log(res);
 			this.roleData = res.records;
 		},
-		userFormSubmit() {
-			this.$refs.userForm.validate(async valid => {
-				if (valid) {
-					if (this.editId === -1) {
-						await userAddService(this.userForm);
-					} else {
-						const dataJson = {
-							id: this.editId,
-							...this.userForm
-						};
-						await userEditService(dataJson);
-						const dataJson_c = {
-							roleIds: this.userForm.roleIds,
-							userId: this.editId
-						};
-						await userRoleService(dataJson_c);
-					}
-					this.$emit('update:isRefreshList_p', true);
-					this.userFormCancel();
+		async formSubmit(valid) {
+			if (valid) {
+				if (this.editId === -1) {
+					await userAddService(this.formData);
 				} else {
-					this.$emit('update:isRefreshList_p', false);
+					const dataJson = {
+						id: this.editId,
+						...this.formData
+					};
+					await userEditService(dataJson);
 				}
-			});
+				this.$emit('update:isRefreshList_p', true);
+				this.formCancel();
+			} else {
+				this.$emit('update:isRefreshList_p', false);
+			}
 		},
-		userFormCancel() {
+		formCancel() {
 			this.$emit('update:isShowAEDialog_p', false);
 		}
 	}

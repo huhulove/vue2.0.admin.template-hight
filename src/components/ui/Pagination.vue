@@ -6,7 +6,6 @@
 				@size-change="sizeChangeHandler"
 				@current-change="currentChangeHandler"
 				:current-page="pageIndex_p"
-				:page-sizes="[10, 100, 200, 300, 400]"
 				:page-size="pageSize_p"
 				layout="total, sizes, prev, pager, next, jumper"
 				v-bind="$attrs"
@@ -25,11 +24,11 @@ export default {
 	},
 	methods: {
 		sizeChangeHandler(val) {
-			console.log(`每页 ${val} 条`);
+			// console.log(`每页 ${val} 条`);
 			this.$emit('update:pageSize_p', val);
 		},
 		currentChangeHandler(val) {
-			console.log(`当前页: ${val}`);
+			// console.log(`当前页: ${val}`);
 			this.$emit('update:pageIndex_p', val);
 		}
 	}

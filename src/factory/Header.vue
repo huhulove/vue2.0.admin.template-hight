@@ -1,28 +1,33 @@
 <template>
 	<el-row>
 		<el-col :span="12">
-			<i class="el-icon-s-fold collapse-btn" @click="collapseHandler"></i>
+			<i class="el-icon-s-fold collapse-btn" @click="collapseHandler" style="font-size: 20px"></i>
 		</el-col>
-		<el-col :span="12" style="text-align: right; font-size: 12px">
+		<el-col :span="12" style="text-align: right">
 			<el-dropdown>
-				<i class="el-icon-setting" style="margin-right: 15px"></i>
+				<i class="el-icon-setting" style="margin-right: 15px; font-size: 20px; color: #bfcbd9"></i>
 				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item>
+						<router-link to="/system/profile">个人信息</router-link>
+					</el-dropdown-item>
 					<el-dropdown-item @click.native="loginOut">退出</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<span>{{ userName }}</span>
+			<span style="font-size: 16px">{{ nickName }}</span>
 		</el-col>
 	</el-row>
 </template>
 
 <script>
-import { userDetailService } from '@s/system/UserService.js';
+// eslint-disable-next-line import/named
+import { userLoginDetailService } from '@s/system/UserService.js';
+import { hsetStorage } from '@u/htools.web.js';
 
 export default {
 	props: ['isCollapse_p'],
 	data() {
 		return {
-			userName: ''
+			nickName: ''
 		};
 	},
 	created() {
@@ -34,8 +39,10 @@ export default {
 		},
 		async userDetail() {
 			const dataJson = {};
-			const res = await userDetailService(dataJson);
-			this.userName = res.userName;
+			const res = await userLoginDetailService(dataJson);
+			this.nickName = res.nickName;
+			hsetStorage('powers', res.powers);
+			hsetStorage('roleIds', res.userRoles);
 		},
 		loginOut() {
 			this.$store.dispatch('loginOutStore');
@@ -46,7 +53,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-.collapse-btn{
+.collapse-btn {
 	cursor: pointer;
+}
+.el-dropdown {
+	height: 34px;
 }
 </style>

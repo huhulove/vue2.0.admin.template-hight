@@ -1,97 +1,79 @@
-import { hgetRequest, hpostRequest } from '../../util/htools.axios';
-import { changeTreeDataToChildren } from '../../util/htools.tree';
-import { hgetStorage } from '../../util/htools.web';
+import { hgetRequest, hpostRequest } from '@u/htools.axios';
+import { changeTreeDataToChildren, addTreeKey } from '@u/htools.tree';
 
-/*
- *@Description: 权限列表
- *@MethodAuthor:  myw
- *@Date: 2020-12-07 10:37:06
- */
+/* 权限列表 */
 export const authorizeListService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
+				name: '',
 				...data
 			};
-			const res = await hgetRequest('hauthorize/jurisdiction/jurisdictionAllQuery', dataJson);
-			resolve(changeTreeDataToChildren(res));
+			const res = await hgetRequest('jurisdiction/jurisdictionAllQuery', dataJson);
+			const resTreeTemp = changeTreeDataToChildren(res);
+			const resTree = addTreeKey(resTreeTemp, 0, { value: 'powerCode', label: 'powerName' });
+			resolve(resTree);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 权限添加
- *@MethodAuthor:  myw
- *@Date: 2020-12-07 10:37:19
- */
+/* 权限添加 */
 export const authorizeAddService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				powerCode: '',
-				powerName: '',
+				powerCode: '', // 权限标识
+				powerName: '', // 权限名称
 				remark: '',
 				state: '',
-				parentId: '',
+				parentId: '', // 权限父级
+				powerSort: '', // 权限排序
 				...data
 			};
-			const res = await hpostRequest('hauthorize/jurisdiction/jurisdictionAdd', dataJson);
-			console.log(res);
+			const res = await hpostRequest('jurisdiction/jurisdictionAdd', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 权限编辑
- *@MethodAuthor:  myw
- *@Date: 2020-12-07 10:39:49
- */
+/* 权限编辑 */
 export const authorizeEditService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				id: '',
-				powerCode: '',
-				powerName: '',
+				powerCode: '', // 权限标识
+				powerName: '', // 权限名称
 				remark: '',
 				state: '',
-				parentId: '',
+				parentId: '', // 权限父级
+				powerSort: '', // 权限排序
 				...data
 			};
-			const res = await hpostRequest('hauthorize/jurisdiction/jurisdictionUpdate', dataJson);
+			const res = await hpostRequest('jurisdiction/jurisdictionUpdate', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 权限删除
- *@MethodAuthor:  myw
- *@Date: 2020-12-07 13:22:39
- */
+/* 权限删除 */
 export const authorizeDeleteService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				menuJurisdictions: [],
+				powerCode: [],
 				...data
 			};
-			const res = await hpostRequest('hauthorize/jurisdiction/jurisdictionDel', dataJson);
+			const res = await hpostRequest('jurisdiction/jurisdictionDel', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 权限详情
- *@MethodAuthor:  myw
- *@Date: 2020-12-11 10:36:01
- */
+/* 权限详情 */
 export const authorizeDetailService = data => {
 	return new Promise(async resolve => {
 		try {
@@ -99,7 +81,7 @@ export const authorizeDetailService = data => {
 				powerCode: '',
 				...data
 			};
-			const res = await hgetStorage('hauthorize/jurisdiction/jurisdictionByIdQuery', dataJson);
+			const res = await hgetRequest('jurisdiction/jurisdictionByIdQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

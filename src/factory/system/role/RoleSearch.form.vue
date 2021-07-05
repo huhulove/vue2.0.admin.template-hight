@@ -1,26 +1,30 @@
 <template>
-	<div class="head-serch">
-		<el-form class="form" ref="roleSearchForm" :model="roleSearchForm" label-width="100px">
-			<el-form-item label="角色名称">
-				<el-input v-model="roleSearchForm.roleName" size="mini" placeholder="请输入用户名称"></el-input>
-			</el-form-item>
-		</el-form>
-		<el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="searchHandler">搜索</el-button>
-	</div>
+	<SearchForm :model="formData" @search="searchHandler">
+		<el-form-item label="角色名称">
+			<Input v-model="formData.name" placeholder="请输入角色名称" />
+		</el-form-item>
+	</SearchForm>
 </template>
 
 <script>
+import SearchForm from '@c/ui/SearchForm';
+import Input from '@c/ui/Input';
+
 export default {
+	components: {
+		SearchForm,
+		Input
+	},
 	data() {
 		return {
-			roleSearchForm: {
-				roleName: null
+			formData: {
+				name: null
 			}
 		};
 	},
 	methods: {
 		searchHandler() {
-			this.$emit('searchForm', this.roleSearchForm);
+			this.$emit('searchForm', this.formData);
 		}
 	}
 };

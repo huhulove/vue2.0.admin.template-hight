@@ -1,11 +1,26 @@
 <template>
 	<div class="login-container">
-		<el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+		<el-form
+			ref="loginForm"
+			:model="loginForm"
+			:rules="loginRules"
+			class="login-form"
+			auto-complete="on"
+			label-position="left"
+		>
 			<div class="title-container">
-				<h3 class="title">通用后台框架</h3>
+				<h3 class="title">医工/第三方智能化平台</h3>
 			</div>
 			<el-form-item prop="userName">
-				<el-input ref="userName" v-model="loginForm.userName" placeholder="userName" name="username" type="text" tabindex="1" auto-complete="on" />
+				<el-input
+					ref="userName"
+					v-model="loginForm.userName"
+					placeholder="请输入用户名"
+					name="username"
+					type="text"
+					tabindex="1"
+					auto-complete="on"
+				/>
 			</el-form-item>
 			<el-form-item prop="userPwd">
 				<el-input
@@ -13,14 +28,18 @@
 					ref="userPwd"
 					v-model="loginForm.userPwd"
 					type="password"
-					placeholder="Password"
+					placeholder="请输入密码"
 					name="userPwd"
 					tabindex="2"
 					auto-complete="on"
-					@keyup.enter.native="handleLogin"
 				/>
 			</el-form-item>
-			<el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">Login</el-button>
+			<el-button
+				:loading="loading"
+				type="primary"
+				style="width: 100%; margin-bottom: 30px"
+				@click.native.prevent="handleLogin"
+			>登录</el-button>
 		</el-form>
 	</div>
 </template>
@@ -31,8 +50,8 @@ export default {
 	data() {
 		return {
 			loginForm: {
-				userName: 'admin',
-				userPwd: '123456'
+				userName: '',
+				userPwd: ''
 			},
 			loginRules: {
 				userName: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
@@ -49,6 +68,14 @@ export default {
 			},
 			immediate: true
 		}
+	},
+	mounted() {
+		document.onkeydown = () => {
+			const key = window.event.keyCode;
+			if (key === 13) {
+				this.handleLogin();
+			}
+		};
 	},
 	methods: {
 		handleLogin() {
@@ -78,6 +105,7 @@ export default {
 	width: 100%;
 	background-color: #2d3a4b;
 	overflow: hidden;
+	background: url(../assets/login_bg.jpg) no-repeat;
 	.login-form {
 		position: relative;
 		width: 520px;

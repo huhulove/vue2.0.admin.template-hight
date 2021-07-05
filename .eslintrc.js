@@ -19,7 +19,7 @@ module.exports = {
 		'import/no-dynamic-require': 0, // 禁用 动态require
 		'import/no-unresolved': 0,
 		'no-param-reassign': 0, // 声明为函数参数的变量可能会引起误解
-		'max-len': ['error', 160], // 单行代码最大长度
+		'max-len': ['error', 180], // 单行代码最大长度
 		'guard-for-in': 0, // 禁用 禁用for in 循环
 		'no-shadow': 0, // 禁用  禁止页面内相容参数名
 		'object-shorthand': 0, // 禁用 禁止对象内使用带引号字符串

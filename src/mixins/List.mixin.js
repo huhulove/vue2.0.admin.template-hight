@@ -12,7 +12,8 @@ export default {
 			searchForm: {},
 			editId: -1,
 			isShowAEDialog: false,
-			isRefreshList: false
+			isRefreshList: false,
+			isRefreshListAll: false
 		};
 	},
 	methods: {
@@ -26,6 +27,7 @@ export default {
 				this.tableData = res;
 			}
 			this.isRefreshList = false;
+			this.isRefreshListAll = false;
 		},
 		dialogAddHandlerMixin() {
 			this.isShowAEDialog = true;
@@ -34,19 +36,21 @@ export default {
 		},
 		dialogEditHandlerMixin() {
 			this.isShowAEDialog = true;
-			this.editId = this.selectData[0].id || this.selectData[0].powerCode;
+			this.editId = this.selectData[0].id || this.selectData[0].powerCode || this.selectData[0].apparatusId || this.selectData[0].camerId;
 			return this.editId;
 		},
 		filterSelectIdsMixin() {
 			return this.selectData.map(item => {
-				return item.id || item.powerCode;
+				return item.id || item.powerCode || item.apparatusId || item.camerId;
 			});
 		},
 		editSingleHandlerMixin(row) {
-			this.editId = row.id || row.powerCode;
+			this.editId = row.id || row.powerCode || row.apparatusId || row.camerId;
 			this.selectData = [row];
 			this.isShowAEDialog = true;
-			this.$refs.tableDom.clearSelection();
+			setTimeout(() => {
+				this.$refs.tableDom.clearSelection();
+			});
 		},
 		deleteSingleHandlerMixin(row) {
 			this.$confirm(this.delTips || '确认此操作吗？', '提示', {
@@ -56,8 +60,8 @@ export default {
 			})
 				.then(async () => {
 					this.selectData = [row];
+					await this.showDeleteHandler();
 					this.$refs.tableDom.clearSelection();
-					this.showDeleteHandler();
 				})
 				.catch(error => {
 					console.log(error);

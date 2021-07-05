@@ -13,12 +13,13 @@ const nodeAddField = (data, field, value) => {
 	if (data.length > 0) {
 		for (let i = 0; i < data.length; i++) {
 			const item = data[i];
+			let flag = true;
 			// 判断条件
 			if (item.routeName && item.routeName === value.name) {
 				item[field] = value;
-				return false;
+				flag = false;
 			}
-			if (item.children) {
+			if (flag && item.children) {
 				nodeAddField(item.children, 'frontendRoute', value);
 			}
 		}

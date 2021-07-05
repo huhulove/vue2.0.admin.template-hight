@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import routes from './routes';
 
 /* 路由守卫 */
+// eslint-disable-next-line import/no-cycle
 import beforeRouter from './before.router';
 import afterRouter from './after.router';
 

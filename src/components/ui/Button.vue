@@ -3,9 +3,8 @@
 		<el-button
 			id="btn-add"
 			class="filter-item"
-			v-authorize="{ name: 'add', type: authorize_p, id: 'btn-add' }"
 			type="primary"
-			icon="el-icon-plus"
+			v-authorize="{ name: 'add', type: authorize_p, id: 'btn-add' }"
 			@click="showDialogAdd"
 		>
 			新增
@@ -13,9 +12,8 @@
 		<el-button
 			id="btn-update"
 			class="filter-item"
-			v-authorize="{ name: 'update', type: authorize_p, id: 'btn-update' }"
 			type="success"
-			icon="el-icon-edit"
+			v-authorize="{ name: 'update', type: authorize_p, id: 'btn-update' }"
 			:disabled="selectData_p.length !== 1"
 			@click="showDialogEdit"
 		>
@@ -24,23 +22,21 @@
 		<el-button
 			id="btn-remove"
 			class="filter-item"
-			v-authorize="{ name: 'remove', type: authorize_p, id: 'btn-remove' }"
 			type="danger"
-			icon="el-icon-delete"
+			v-authorize="{ name: 'remove', type: authorize_p, id: 'btn-remove' }"
 			:disabled="selectData_p.length < 1"
 			@click="showDeleteHandler"
 		>
 			删除
 		</el-button>
-		<el-button
+		<!-- <el-button
 			id="btn-download"
 			class="filter-item"
-			v-authorize="{ name: 'download', type: authorize_p, id: 'btn-download' }"
 			type="warning"
-			icon="el-icon-download"
+			v-authorize="{ name: 'download', type: authorize_p, id: 'btn-download' }"
 		>
 			导出
-		</el-button>
+		</el-button> -->
 		<slot></slot>
 	</div>
 </template>
@@ -56,6 +52,9 @@ export default {
 		},
 		authorize_p: {
 			type: String
+		},
+		editDisabled_p: {
+			type: Boolean
 		}
 	},
 	data() {
@@ -87,14 +86,14 @@ export default {
 
 <style lang="less" scoped>
 .head-container {
-	margin-top: 12px;
+	margin: 12px 0;
 	.el-form-item {
 		margin-bottom: 12px;
 	}
 	.filter-item {
 		display: inline-block;
 		vertical-align: middle;
-		margin: 0 3px 10px 0;
+		margin: 0 3px 0 0;
 	}
 }
 </style>

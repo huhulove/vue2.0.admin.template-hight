@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { hpostRequest } from '../util/htools.axios';
 import { hremoveStorage, hsetStorage } from '../util/htools.web';
 
@@ -9,7 +10,7 @@ export const loginService = data => {
 			...data
 		};
 		try {
-			const res = await hpostRequest('systemUser/login', dataJson);
+			const res = await hpostRequest('user/login', dataJson);
 			hsetStorage('token', res);
 			resolve(res);
 		} catch (error) {
@@ -20,6 +21,7 @@ export const loginService = data => {
 
 export const loginOutService = () => {
 	hremoveStorage('token');
+	hremoveStorage('organization');
 };
 
 export default loginService;

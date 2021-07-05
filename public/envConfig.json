@@ -1,8 +1,22 @@
 {
-    "baseUrl": "http://192.168.1.220:9003/api/",
-    "userUrl": "http://192.168.1.220:9003/api/",
-    "roleUrl": "http://192.168.1.220:9003/api/",
-    "authorizeUrl": "http://192.168.1.220:9003/api/",
-    "menuUrl": "http://192.168.1.220:9003/api/",
-    "fileUrl": "htto://192.168.1.211"
+    "baseUrl": "http://www.huhulove.com/api/",
+    "btyongUrl": "http://192.168.1.210:9005/api/",
+
+    "userUrl": "http://192.168.1.220:9005/api/",
+    "roleUrl": "http://192.168.1.220:9005/api/",
+    "authorizeUrl": "http://192.168.1.220:9005/api/",
+    "menuUrl": "http://192.168.1.220:9005/api/",
+    "orderUrl": "http://192.168.1.220:9005/api/",
+    "baseDataUrl": "http://192.168.1.220:9005/api/",
+    "taxUrl": "http://192.168.1.220:9005/api/",
+    "staUrl": "http://192.168.1.220:9005/api/",
+    "deviveUrl": "http://127.0.0.1:",
+    "fileUrl": "http://192.168.1.220:9005/api/",
+    "deliveryUrl": "http://192.168.1.220:9005/api/",
+    "mainTitle": "医工/第三方智能化平台",
+    "uploadImgUrl": "http://192.168.1.220:9005/api/",
+    "hdeli": "http://192.168.1.220:9005/api/",
+    "hexport": "http://192.168.1.220:9005/api/",
+    "factoryAdminRoleId": 30,
+    "superAdminRoleId": 1
 }

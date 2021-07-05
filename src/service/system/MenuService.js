@@ -1,5 +1,5 @@
 import { hgetRequest, hpostRequest } from '../../util/htools.axios';
-import { changeTreeDataToChildren } from '../../util/htools.tree';
+import { changeTreeDataToChildren, addTreeKey } from '../../util/htools.tree';
 
 /*
  *@Description: 菜单列表
@@ -12,8 +12,10 @@ export const menuListService = data => {
 			const dataJson = {
 				...data
 			};
-			const res = await hgetRequest('hmenu/menu/menuAllQuery', dataJson);
-			resolve(changeTreeDataToChildren(res));
+			const res = await hgetRequest('menu/menuAllQuery', dataJson);
+			const resTreeTemp = changeTreeDataToChildren(res);
+			const resTree = addTreeKey(resTreeTemp, 0, { value: 'id', label: 'menuName' });
+			resolve(resTree);
 		} catch (error) {
 			console.log(error);
 		}
@@ -37,7 +39,7 @@ export const menuAddService = data => {
 				url: '',
 				...data
 			};
-			const res = await hpostRequest('hmenu/menu/menuAdd', dataJson);
+			const res = await hpostRequest('menu/menuAdd', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -63,7 +65,7 @@ export const menuEditService = data => {
 				url: '',
 				...data
 			};
-			const res = await hpostRequest('hmenu/menu/menuInfoUpdate', dataJson);
+			const res = await hpostRequest('menu/menuInfoUpdate', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -79,10 +81,10 @@ export const menuDeleteService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				menuList: [],
+				ids: [],
 				...data
 			};
-			const res = await hpostRequest('hmenu/menu/menuDel', dataJson);
+			const res = await hpostRequest('menu/menuDel', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -101,7 +103,7 @@ export const menuAuthorizeService = data => {
 				menuJurisdictions: [],
 				...data
 			};
-			const res = await hpostRequest('hmenu/menu/menuJurisdictionsConfigure', dataJson);
+			const res = await hpostRequest('menu/menuJurisdictionsConfigure', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -117,10 +119,10 @@ export const menuDetailService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				menuId: '',
+				id: '',
 				...data
 			};
-			const res = await hgetRequest('hmenu/menu/menuByIdQuery', dataJson);
+			const res = await hgetRequest('menu/menuByIdQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

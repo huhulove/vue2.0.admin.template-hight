@@ -1,6 +1,7 @@
-import { Message } from 'element-ui';
+import { Message, Loading } from 'element-ui';
 import axios from 'axios';
 import { hgetStorage, hremoveStorage, huploadConfigJson } from './htools.web';
+// eslint-disable-next-line import/no-cycle
 import router from '../router/index';
 
 const request = axios.create();
@@ -12,6 +13,7 @@ const request = axios.create();
  *@Description: axios - 请求拦截器
  */
 let envConfig = null;
+let loading = null;
 request.interceptors.request.use(
 	async config => {
 		if (!envConfig) {
@@ -22,18 +24,38 @@ request.interceptors.request.use(
 		};
 		if (config.url.indexOf('huser/') > -1) {
 			config.url = config.url.replace('huser/', envConfig.userUrl);
+		} else if (config.url.indexOf('hbtyong/') > -1) {
+			config.url = config.url.replace('hbtyong/', envConfig.btyongUrl);
 		} else if (config.url.indexOf('hrole/') > -1) {
 			config.url = config.url.replace('hrole/', envConfig.roleUrl);
 		} else if (config.url.indexOf('hauthorize/') > -1) {
 			config.url = config.url.replace('hauthorize/', envConfig.authorizeUrl);
 		} else if (config.url.indexOf('hmenu/') > -1) {
 			config.url = config.url.replace('hmenu/', envConfig.menuUrl);
+		} else if (config.url.indexOf('horder/') > -1) {
+			config.url = config.url.replace('horder/', envConfig.orderUrl);
+		} else if (config.url.indexOf('hbase/') > -1) {
+			config.url = config.url.replace('hbase/', envConfig.baseDataUrl);
+		} else if (config.url.indexOf('hdevice:') > -1) {
+			config.url = config.url.replace('hdevice:', envConfig.deviveUrl);
+		} else if (config.url.indexOf('htax/') > -1) { 
+			config.url = config.url.replace('htax/', envConfig.taxUrl);
+		} else if (config.url.indexOf('hsta/') > -1) { 
+			config.url = config.url.replace('hsta/', envConfig.staUrl);
+		} else if (config.url.indexOf('hlog/') > -1) { 
+			config.url = config.url.replace('hlog/', envConfig.logUrl);
+		} else if (config.url.indexOf('hdeli/') > -1) { 
+			config.url = config.url.replace('hdeli/', envConfig.hdeli);
+		} else if (config.url.indexOf('hexport/') > -1) { 
+			config.url = config.url.replace('hexport/', envConfig.hexport);
 		} else {
 			config.url = `${envConfig.baseUrl}${config.url}`;
 		}
+		loading = Loading.service({ lock: true, text: '正在加载...', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)', fullscreen: true });
 		return config;
 	},
 	error => {
+		loading.close();
 		return Promise.reject(error);
 	}
 );
@@ -46,6 +68,7 @@ request.interceptors.request.use(
  */
 request.interceptors.response.use(
 	response => {
+		loading.close();
 		const { code } = response.data;
 		if (code === 401) {
 			// 未授权
@@ -71,6 +94,7 @@ request.interceptors.response.use(
 		return response.data.result;
 	},
 	error => {
+		loading.close();
 		Message.error('接口请求报错');
 		return Promise.reject(error);
 	}

@@ -1,38 +1,59 @@
 <template>
-	<el-form ref="secretForm" label-position="right" label-width="80px" :model="secretForm" :rules="secretRules">
+	<DataForm :model="formData" :rules="formRules" label-position="right" @submit="formSubmit" v-bind="$attrs" v-on="$listeners">
 		<el-form-item label="旧密码" prop="userPwdOld">
-			<el-input type="password" v-model="secretForm.userPwdOld"></el-input>
+			<Input type="password" v-model="formData.userPwdOld" />
 		</el-form-item>
 		<el-form-item label="新密码" prop="userPwdNew">
-			<el-input type="password" v-model="secretForm.userPwdNew"></el-input>
+			<Input type="password" v-model="formData.userPwdNew" />
 		</el-form-item>
-		<el-form-item>
-			<div style="text-align: right">
-				<span class="dialog-footer">
-					<el-button @click="secretFormCancel">取 消</el-button>
-					<el-button type="primary" @click="secretFormSubmit">确 定</el-button>
-				</span>
-			</div>
+		<el-form-item label="确认密码" prop="checkPass">
+			<Input type="password" v-model="formData.checkPass" />
 		</el-form-item>
-	</el-form>
+		<template slot="footer">
+			<slot name="footer"></slot>
+		</template>
+	</DataForm>
 </template>
 
 <script>
+import DataForm from '@c/ui/DataForm';
+import Input from '@c/ui/Input';
+
 import { userPasswordEditService } from '@s/system/UserService';
 
 export default {
-	props: ['editId_p'],
+	inheritAttrs: false,
+	components: {
+		DataForm,
+		Input
+	},
 	data() {
+		const passwordValid = (rule, value, callback) => {
+			if (value === '') {
+				callback(new Error('请再次输入密码'));
+			} else if (value !== this.formData.userPwdNew) {
+				callback(new Error('两次输入密码不一致!'));
+			} else {
+				callback();
+			}
+		};
 		return {
-			secretForm: {
+			formData: {
 				userPwdOld: '',
-				userPwdNew: ''
+				userPwdNew: '',
+				checkPass: ''
 			},
-			secretRules: {
+			formRules: {
 				userPwdOld: [
 					{
 						required: true,
 						message: '请输入旧密码',
+						trigger: 'blur'
+					},
+					{
+						min: 6,
+						max: 16,
+						message: '长度在6到16个字符',
 						trigger: 'blur'
 					}
 				],
@@ -41,34 +62,35 @@ export default {
 						required: true,
 						message: '请输入新密码',
 						trigger: 'blur'
+					},
+					{
+						min: 6,
+						max: 16,
+						message: '长度在6到16个字符',
+						trigger: 'blur'
+					}
+				],
+				checkPass: [
+					{
+						required: true,
+						validator: passwordValid,
+						trigger: 'blur'
 					}
 				]
 			}
 		};
 	},
 	methods: {
-		async editPassword() {
-			const dataJson = {
-				userId: this.editId_p,
-				userPwdNew: '',
-				userPwdOld: '',
-				...this.secretForm
-			};
-			await userPasswordEditService(dataJson);
-		},
-		secretFormSubmit() {
-			this.$refs.secretForm.validate(async valid => {
-				if (valid) {
-					await this.editPassword();
-					this.secretFormCancel();
-					this.$emit('update:isRefreshList_p', true);
-				} else {
-					this.$emit('update:isRefreshList_p', false);
-				}
-			});
-		},
-		secretFormCancel() {
-			this.$emit('update:isShowPasswordDialog_p', false);
+		async formSubmit(valid) {
+			if (valid) {
+				const dataJson = {
+					userPwdNew: '',
+					userPwdOld: '',
+					...this.formData
+				};
+				await userPasswordEditService(dataJson);
+				this.$emit('submitCallback');
+			}
 		}
 	}
 };

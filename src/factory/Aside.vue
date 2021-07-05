@@ -1,28 +1,21 @@
 <template>
 	<el-aside class="sidebar-container">
-		<el-menu class="el-menu-vertical-demo" router :default-openeds="['1']" :collapse="isCollapse_p">
-			<template>
-				<span v-for="(menu, index) in menuData" :key="index">
+		<el-menu
+			class="el-menu-vertical-demo"
+			router
+			:default-openeds="defaultOpeneds"
+			:default-active="defaultActive"
+			:collapse="isCollapse_p"
+			:unique-opened="true"
+		>
+			<template v-for="(menu, index) in menuData">
+				<span :key="index">
 					<Submenu :menu_p="menu" v-if="menu.children && menu.children.length !== 0"></Submenu>
 					<el-menu-item v-if="!menu.children || menu.children.length === 0" :route="{ path: `/${menu.frontendRoute.path}` }" :index="`${menu.id}`">
 						{{ menu.menuName }}
 					</el-menu-item>
 				</span>
 			</template>
-			<!-- <el-submenu index="2">
-				<template slot="title">
-					<i class="el-icon-message"></i>
-					日志管理
-				</template>
-				<el-menu-item index="2-1" :route="{ path: '/log/system' }">系统日志</el-menu-item>
-			</el-submenu>
-			<el-submenu index="3">
-				<template slot="title">
-					<i class="el-icon-message"></i>
-					基础数据管理
-				</template>
-				<el-menu-item index="3-1">省市区管理</el-menu-item>
-			</el-submenu> -->
 		</el-menu>
 	</el-aside>
 </template>
@@ -30,7 +23,9 @@
 <script>
 import Submenu from '@c/ui/Submenu.vue';
 import { userMenuAuthorizeService } from '@s/system/UserService';
-import { mergeRoutes } from '../util/index';
+import { mergeRoutes } from '@u/index';
+import { hsetStorage } from '@u/htools.web';
+import { getTreePNodeByNodeId } from '@u/htools.tree';
 
 export default {
 	props: ['isCollapse_p'],
@@ -39,20 +34,49 @@ export default {
 	},
 	data() {
 		return {
-			menuData: null
+			menuData: null,
+			defaultOpeneds: [],
+			defaultActive: ''
 		};
 	},
-	created() {
-		this.menuAuthorizeList();
+	async created() {
+		await this.menuAuthorizeList();
+		let routeName = null;
+		if (this.$route.name === 'AddEnterprise') {
+			routeName = 'Enterprise';
+		} else if (this.$route.name === 'EventProcessing' || this.$route.name === 'EventProcessingCondition') {
+			routeName = 'ParameterSetting';
+		} else {
+			routeName = this.$route.name;
+		}
+		getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
+			hsetStorage('btnPowers', node.powers);
+			this.defaultActive = `${node.id}`;
+			this.defaultOpeneds.push(`${pNode.id}`);
+		});
 	},
 	watch: {
-		$route: {
-			handler() {}
-		},
 		'$store.state.userStore.isRefreshAside': {
 			handler(newValue) {
 				newValue && this.menuAuthorizeList();
 				this.$store.commit('setRefreshAside', false);
+			}
+		},
+		$route: {
+			handler() {
+				let routeName = null;
+				if (this.$route.name === 'AddEnterprise') {
+					routeName = 'Enterprise';
+				} else if (this.$route.name === 'EventProcessing' || this.$route.name === 'EventProcessingCondition') {
+					routeName = 'ParameterSetting';
+				} else {
+					routeName = this.$route.name;
+				}
+				getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
+					this.defaultActive = `${node.id}`;
+					this.defaultOpeneds = [];
+					this.defaultOpeneds.push(`${pNode.id}`);
+				});
 			}
 		}
 	},
@@ -77,6 +101,7 @@ export default {
 	color: #333;
 	background: #304156;
 	white-space: nowrap;
+	/* width: 219px !important; */
 	width: auto !important;
 	.el-menu {
 		background: transparent;

@@ -1,5 +1,8 @@
 import { hgetStorage } from '../util/htools.web';
 
+// eslint-disable-next-line import/no-cycle
+import store from '../store/index';
+
 const beforeRouter = router => {
 	const whitePageList = ['/login'];
 	router.beforeEach((to, from, next) => {
@@ -8,6 +11,8 @@ const beforeRouter = router => {
 		} else if (!hgetStorage('token')) {
 			router.push(`/login?redirect=${to.fullPath}`);
 		} else {
+			const token = hgetStorage('token');
+			store.commit('setToken', token);
 			next();
 		}
 	});

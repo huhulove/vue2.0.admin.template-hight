@@ -1,20 +1,16 @@
 import { hgetRequest, hpostRequest } from '../../util/htools.axios';
 
-/*
- *@Description: 角色列表
- *@MethodAuthor:  myw
- *@Date: 2020-12-04 11:36:01
- */
+/* 角色列表 */
 export const roleListService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				pageNum: 0,
+				pageIndex: 0,
 				pageSize: 0,
-				roleName: '',
+				name: '',
 				...data
 			};
-			const res = await hpostRequest('hrole/role/roleAllQuery', dataJson);
+			const res = await hpostRequest('role/roleAllQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -23,20 +19,33 @@ export const roleListService = data => {
 	});
 };
 /*
- *@Description: 角色添加
- *@MethodAuthor:  myw
- *@Date: 2020-12-04 11:36:10
+ *@Description: 查询所有不属于任何企业的角色
+ *@ClassAuthor: Happy ZXM
+ *@Date: 2021-01-22 11:12:17
  */
+export const roleAdminListService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				...data
+			};
+			const res = await hpostRequest('hbtyong/role/roleByAllQuery', dataJson);
+			
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+			/* reject(error); */
+		}
+	});
+};
+/* 角色添加 */
 export const roleAddService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				roleName: '',
-				state: 0,
-				des: '',
 				...data
 			};
-			const res = await hpostRequest('hrole/role/roleAdd', dataJson);
+			const res = await hpostRequest('role/roleAdd', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -44,11 +53,7 @@ export const roleAddService = data => {
 		}
 	});
 };
-/*
- *@Description: 角色编辑
- *@MethodAuthor:  myw
- *@Date: 2020-12-04 14:01:46
- */
+/* 角色编辑 */
 export const roleEditService = data => {
 	return new Promise(async resolve => {
 		try {
@@ -58,7 +63,12 @@ export const roleEditService = data => {
 				des: '',
 				...data
 			};
-			const res = await hpostRequest('hrole/role/roleUpdate', dataJson);
+			if (dataJson.organizationId === 0) {
+				dataJson.organizationId = null;
+			} else {
+				dataJson.organizationId = data.organizationId;
+			}
+			const res = await hpostRequest('role/roleUpdate', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -66,11 +76,7 @@ export const roleEditService = data => {
 		}
 	});
 };
-/*
- *@Description: 角色删除
- *@MethodAuthor:  myw
- *@Date: 2020-12-04 14:40:48
- */
+/* 角色删除 */
 export const roleDeleteService = data => {
 	return new Promise(async resolve => {
 		try {
@@ -78,7 +84,7 @@ export const roleDeleteService = data => {
 				ids: [],
 				...data
 			};
-			const res = await hpostRequest('hrole/role/roleDel', dataJson);
+			const res = await hpostRequest('role/roleDel', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -86,39 +92,31 @@ export const roleDeleteService = data => {
 		}
 	});
 };
-/*
- *@Description: 角色赋权限
- *@MethodAuthor:  myw
- *@Date: 2020-12-09 14:49:46
- */
+/* 角色赋权限 */
 export const roleAuthorizeService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				roleId: '',
-				powers: [],
+				id: '',
+				powerCodes: [],
 				...data
 			};
-			const res = await hpostRequest('hrole/role/roleConfigure', dataJson);
+			const res = await hpostRequest('role/roleConfigure', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 角色详情
- *@MethodAuthor:  myw
- *@Date: 2020-12-11 09:17:20
- */
+/* 角色详情 */
 export const roleDetailService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				roleId: '',
+				id: '',
 				...data
 			};
-			const res = await hgetRequest('hrole/role/roleByIdQuery', dataJson);
+			const res = await hgetRequest('role/roleByIdQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

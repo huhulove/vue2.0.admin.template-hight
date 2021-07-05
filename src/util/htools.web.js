@@ -42,7 +42,7 @@ export const hgetAllParams = (url = window.location.href) => {
 	const pa = url.substring(url.indexOf('?') + 1);
 	const arrS = pa.split('&');
 	const rs = {};
-	for (let i = 0, len = _arrS.length; i < len; i++) {
+	for (let i = 0, len = arrS.length; i < len; i++) {
 		const pos = arrS[i].indexOf('=');
 		if (pos !== -1) {
 			const name = arrS[i].substring(0, pos);
@@ -50,7 +50,7 @@ export const hgetAllParams = (url = window.location.href) => {
 			rs[name] = value;
 		}
 	}
-	return _rs;
+	return rs;
 };
 /*
  *@ClassAuthor: huhulove

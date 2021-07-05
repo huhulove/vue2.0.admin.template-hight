@@ -1,148 +1,156 @@
 import { hgetRequest, hpostRequest } from '../../util/htools.axios';
 
-/*
- *@Description: 用户列表
- *@MethodAuthor:  zxh
- *@Date: 2020-12-04 11:36:01
- */
+/* 用户列表 */
 export const userListService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
+				nickName: '',
+				pageIndex: '',
+				pageSize: '',
 				...data
 			};
-			const res = await hpostRequest('huser/systemUser/systemUserAllQuery', dataJson);
+			const res = await hpostRequest('user/systemUserAllQuery', dataJson);
+			res.records.forEach(item => {
+				item.roleIds = item.role.map(item => {
+					return item.id;
+				});
+				item.roleNames = item.role.map(item => {
+					return item.name;
+				});
+			});
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 用户添加
- *@MethodAuthor:  zxh
- *@Date: 2020-12-04 11:36:10
- */
+/* 用户添加 */
 export const userAddService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
+				userName: '',
+				userPwd: '',
+				nickName: '',
+				status: 0,
+				companyId: 0,
+				remark: '',
+				roleIds: [],
 				...data
 			};
-			const res = await hpostRequest('huser/systemUser/systemUserAdd', dataJson);
+			const res = await hpostRequest('user/systemUserAdd', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 用户编辑
- *@MethodAuthor:  zxh
- *@Date: 2020-12-04 14:01:46
- */
+/* 用户编辑 */
 export const userEditService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
+				id: '',
+				userName: '',
+				userPwd: '',
+				nickName: '',
+				status: 0,
+				companyId: 0,
+				remark: '',
+				roleIds: [],
 				...data
 			};
-			const res = await hpostRequest('huser/systemUser/systemUserInfoUpdate', dataJson);
+			const res = await hpostRequest('user/systemUserInfoUpdate', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 用户删除
- *@MethodAuthor:  zxh
- *@Date: 2020-12-04 14:40:48
- */
+/* 用户删除 */
 export const userDeleteService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
+				ids: [],
 				...data
 			};
-			const res = await hpostRequest('huser/systemUser/systemUserDel', dataJson);
+			const res = await hpostRequest('user/systemUserDel', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 用户详情
- *@MethodAuthor:  myw
- *@Date: 2020-12-08 10:36:27
- */
-export const userDetailService = data => {
+/* 根据登录用户查询当前登录人 */
+export const userLoginDetailService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
 				...data
 			};
-			const res = await hgetRequest('huser/systemUser/systemUserByIdQuery', dataJson);
+			const res = await hpostRequest('user/listUserAll', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 用户菜单权限
- *@MethodAuthor:  myw
- *@Date: 2020-12-08 11:42:03
- */
+/* 修改登录用户基本信息 */
+export const userEditLoginInfoService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				...data
+			};
+			const res = await hpostRequest('user/loginInfo', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
+/* 用户详情 */
+export const userDetailService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				id: '',
+				...data
+			};
+			const res = await hgetRequest('user/systemUserByIdQuery', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
+/* 用户菜单权限 */
 export const userMenuAuthorizeService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
 				...data
 			};
-			const res = await hgetRequest('huser/systemUser/systemUserByIdJurisdictionQuery', dataJson);
+			const res = await hgetRequest('user/systemUserByIdJurisdictionQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 };
-/*
- *@Description: 用户绑定角色
- *@MethodAuthor:  myw
- *@Date: 2020-12-10 17:11:00
- */
-export const userRoleService = data => {
-	return new Promise(async resolve => {
-		try {
-			const dataJson = {
-				roleIds: [],
-				userId: 0,
-				...data
-			};
-			const res = await hpostRequest('huser/systemUser/systemUserRoleBind', dataJson);
-			resolve(res);
-		} catch (error) {
-			console.log(error);
-		}
-	});
-};
-/*
- *@Description: 修改用户密码
- *@MethodAuthor:  myw
- *@Date: 2020-12-11 13:48:35
- */
+/* 修改用户密码 */
 export const userPasswordEditService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				userId: 0,
+				id: '',
 				userPwdNew: '',
 				userPwdOld: '',
 				...data
 			};
-			const res = await hpostRequest('huser/systemUser/systemUserPassUpdate', dataJson);
+			const res = await hpostRequest('user/systemUserPassUpdate', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

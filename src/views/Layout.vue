@@ -1,12 +1,12 @@
 <template>
 	<el-container class="layout-container">
 		<Aside :isCollapse_p="isCollapse"></Aside>
-		<el-container>
+		<el-container style="margin-left: -17px; z-index: 1111">
 			<el-header>
 				<MHeader :isCollapse_p.sync="isCollapse"></MHeader>
 			</el-header>
 			<Tab></Tab>
-			<el-main>
+			<el-main style="position:relative; background:#fff">
 				<router-view></router-view>
 			</el-main>
 		</el-container>
@@ -38,8 +38,8 @@ export default {
 	height: calc(100%);
 }
 .el-header {
-	background-color: #b3c0d1;
-	color: #333;
+	background-color: #304156;
+	color: #bfcbd9;
 	line-height: 60px;
 }
 </style>
