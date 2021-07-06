@@ -1,5 +1,5 @@
 <template>
-	<DataForm :model="formData" :rules="formRules" label-position="right" @submit="formSubmit" v-bind="$attrs" v-on="$listeners">
+	<DataForm :model="formData" :rules="formRules" @submit="formSubmit" v-bind="$attrs" v-on="$listeners">
 		<el-form-item label="旧密码" prop="userPwdOld">
 			<Input type="password" v-model="formData.userPwdOld" />
 		</el-form-item>

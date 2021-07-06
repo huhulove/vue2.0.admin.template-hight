@@ -10,22 +10,15 @@ import {
 	userEditService,
 	userDeleteService,
 	userPasswordEditService,
-	userEditLoginInfoService
+	userEditLoginInfoService,
+	userEditAvatarService
 } from './data/user.data';
 /* 权限 */
 import { authorizeListService, authorizeAddService, authorizeEditService, authorizeDeleteService, authorizeDetailService } from './data/authorize.data';
 /* 角色 */
 import { roleListService, roleAddService, roleEditService, roleDeleteService, roleAuthorizeService, roleDetailService } from './data/role.data';
 /* 菜单 */
-import {
-	menuListService,
-	userMenuAuthorizeService,
-	menuAddService,
-	menuEditService,
-	menuDeleteService,
-	menuAuthorizeService,
-	menuDetailService
-} from './data/menu.data';
+import { menuListService, userMenuAuthorizeService, menuAddService, menuEditService, menuDeleteService, menuAuthorizeService, menuDetailService } from './data/menu.data';
 /* 企业 */
 import { companyListService, companyAddService, companyEditService, companyDetailService, companyRemoveService } from './data/company.data';
 /* 部门 */
@@ -45,6 +38,7 @@ Mock.mock(`${baseUrl}user/systemUserInfoUpdate`, 'post', userEditService);
 Mock.mock(`${baseUrl}user/systemUserDel`, 'post', userDeleteService);
 Mock.mock(`${baseUrl}user/systemUserPassUpdate`, 'post', userPasswordEditService);
 Mock.mock(`${baseUrl}user/loginInfo`, 'post', userEditLoginInfoService);
+Mock.mock(`${baseUrl}user/avatar`, 'post', userEditAvatarService);
 /* 权限 */
 Mock.mock(RegExp(`${baseUrl}jurisdiction/jurisdictionAllQuery.*`), 'get', authorizeListService);
 Mock.mock(`${baseUrl}jurisdiction/jurisdictionAdd`, 'post', authorizeAddService);

@@ -1,65 +1,85 @@
 <template>
 	<el-row :gutter="30">
 		<el-col :span="5">
-			<el-card class="box-card left_container" shadow="never">
+			<Card class="box-card left_container">
 				<div class="avatar">
 					<el-avatar shape="circle" :size="120" :src="profileData.avatar"></el-avatar>
-					<el-upload class="avatar-uploader" :action="uploadImgAction" :show-file-list="false" :on-success="handleSuccess">
-						<i class="el-icon-edit"></i>
-					</el-upload>
+					<Upload class="avatar-uploader" :action="uploadImgAction" :show-file-list="false" :on-success="handleSuccess">
+						<i slot="uploadButton" class="el-icon-edit"></i>
+					</Upload>
 				</div>
 				<div class="name">{{ profileData.nickName }}</div>
 				<div class="progress">
 					<el-row>
 						<el-col :span="12" class="label">个人信息完整度</el-col>
-						<el-col :span="12" class="value">75%</el-col>
+						<el-col :span="12" class="value">{{ percentage }}%</el-col>
 					</el-row>
-					<el-progress :percentage="70" :show-text="false"></el-progress>
+					<el-progress :percentage="percentage" :show-text="false"></el-progress>
 				</div>
 				<div class="menu">
 					<ul>
-						<li :class="[activeIndex === 0 ? 'active' : '']" @click="menuChangeHandler(0)">
-							<i class="el-icon-user"></i>
-							<span>基本信息</span>
-						</li>
-						<li :class="[activeIndex === 1 ? 'active' : '']" @click="menuChangeHandler(1)">
-							<i class="el-icon-setting"></i>
-							<span>修改密码</span>
+						<li v-for="(item, index) in menuData" :key="item.id" :class="[activeIndex === index ? 'active' : '']" @click="menuChangeHandler(index)">
+							<i :class="item.icon"></i>
+							<span>{{ item.name }}</span>
 						</li>
 					</ul>
 				</div>
-			</el-card>
+			</Card>
 		</el-col>
 		<el-col :span="19">
-			<el-card class="box-card" shadow="never">
+			<Card class="box-card">
 				<div slot="header" class="clearfix">
-					<span>{{ activeIndex === 0 ? '基本信息' : activeIndex === 1 ? '修改密码' : '' }}</span>
+					<span>{{ menuData[activeIndex].label }}</span>
 				</div>
 				<UserProfile v-if="activeIndex === 0"></UserProfile>
 				<UserPassword v-if="activeIndex === 1" :isHideCancel_p="true" @submitCallback="loginOut"></UserPassword>
-			</el-card>
+			</Card>
 		</el-col>
 	</el-row>
 </template>
 
 <script>
+import Card from '@c/ui/Card';
+import Upload from '@c/ui/Upload';
+
 import UserPassword from '@f/system/user/UserPassword.form';
 import UserProfile from '@f/system/user/UserProfile.form';
 
 // eslint-disable-next-line import/no-cycle
-import { userLoginDetailService } from '@s/system/UserService.js';
+import { userLoginDetailService, userEditAvatarService } from '@s/system/UserService.js';
 
 export default {
 	components: {
 		UserPassword,
-		UserProfile
+		UserProfile,
+		Card,
+		Upload
 	},
 	data() {
 		return {
 			profileData: {},
+			menuData: [
+				{
+					id: 1,
+					icon: 'el-icon-user',
+					name: '基本信息',
+					label: '基本信息'
+				},
+				{
+					id: 2,
+					icon: 'el-icon-setting',
+					name: '修改密码',
+					label: '修改密码'
+				}
+			],
 			activeIndex: 0,
+			percentage: 0,
+			stage: 14,
 			uploadImgAction: 'http://www.huhulove.com/api/upload/img'
 		};
+	},
+	created() {
+		this.percentage = this.stage;
 	},
 	mounted() {
 		this.userDetail();
@@ -69,8 +89,36 @@ export default {
 			const dataJson = {};
 			const res = await userLoginDetailService(dataJson);
 			this.profileData = { ...res };
+			if (res.nickName) {
+				this.percentage += this.stage;
+			}
+			if (res.sex) {
+				this.percentage += this.stage;
+			}
+			if (res.birthday) {
+				this.percentage += this.stage;
+			}
+			if (res.email) {
+				this.percentage += this.stage;
+			}
+			if (res.phone) {
+				this.percentage += this.stage;
+			}
+			if (res.avatar) {
+				this.percentage += this.stage;
+			}
+			if (this.percentage > 100 - this.stage - 1) {
+				this.percentage = 100;
+			}
 		},
-		handleSuccess() {},
+		async handleSuccess(res) {
+			const { result } = res;
+			const dataJson = {
+				avatar: result
+			};
+			await userEditAvatarService(dataJson);
+			this.profileData.avatar = result;
+		},
 		menuChangeHandler(index) {
 			this.activeIndex = index;
 		},

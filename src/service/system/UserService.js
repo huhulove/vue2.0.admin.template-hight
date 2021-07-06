@@ -111,6 +111,22 @@ export const userEditLoginInfoService = data => {
 		}
 	});
 };
+/* 修改登录用户头像 */
+export const userEditAvatarService = data => {
+	return new Promise(async resolve => {
+		try {
+			const dataJson = {
+				uid: '',
+				avatar: '',
+				...data
+			};
+			const res = await hpostRequest('user/avatar', dataJson);
+			resolve(res);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
 /* 用户详情 */
 export const userDetailService = data => {
 	return new Promise(async resolve => {

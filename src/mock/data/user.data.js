@@ -42,7 +42,7 @@ const userData = Mock.mock({
 			remark: Mock.Random.title(),
 			roleIds: roleDataIds,
 			companyId: companyDataRef[0].id,
-			birthday: Mock.Random.datetime(),
+			birthday: null,
 			email: null,
 			phone: null,
 			avatar: null,
@@ -93,6 +93,20 @@ export const userEditLoginInfoService = options => {
 		code: 200,
 		msg: '操作成功',
 		result: null
+	});
+};
+/* 修改登录用户头像 */
+export const userEditAvatarService = options => {
+	const { uid, avatar } = JSON.parse(options.body);
+	userData.records.forEach((item, index) => {
+		if (item.id === (uid || hgetStorage('token'))) {
+			userData.records[index].avatar = avatar;
+		}
+	});
+	return Mock.mock({
+		code: 200,
+		msg: '修改成功',
+		result: uid
 	});
 };
 /* 用户列表 */

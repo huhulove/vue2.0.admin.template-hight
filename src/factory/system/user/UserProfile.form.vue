@@ -1,5 +1,5 @@
 <template>
-	<DataForm ref="profileFormEle" :model="formData" :rules="formRules" label-position="right">
+	<DataForm ref="profileFormEle" :model="formData" :rules="formRules">
 		<el-form-item label="用户名" prop="userName">
 			<Input v-model="formData.userName" disabled placeholder="请输入姓名" />
 		</el-form-item>
@@ -24,7 +24,7 @@
 		<el-form-item label="角色" prop="role">
 			<Input v-model="formData.role" disabled placeholder="请输入角色" />
 		</el-form-item>
-		<el-form-item slot="footer" style="text-align:right">
+		<el-form-item slot="footer" style="text-align: right">
 			<el-button type="primary" @click="formSubmit">确 定</el-button>
 		</el-form-item>
 	</DataForm>

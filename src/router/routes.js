@@ -47,7 +47,11 @@ const routes = [
 				path: 'home',
 				name: 'Home',
 				meta: {
-					title: '首页'
+					title: '首页',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: Home
 			},
@@ -55,7 +59,11 @@ const routes = [
 				path: 'system/userManager',
 				name: 'UserManager',
 				meta: {
-					title: '用户管理'
+					title: '用户管理',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: UserManager
 			},
@@ -63,7 +71,11 @@ const routes = [
 				path: 'system/roleManager',
 				name: 'RoleManager',
 				meta: {
-					title: '角色管理'
+					title: '角色管理',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: RoleManager
 			},
@@ -71,7 +83,11 @@ const routes = [
 				path: 'system/authorizeManager',
 				name: 'AuthorizeManager',
 				meta: {
-					title: '权限管理'
+					title: '权限管理',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: AuthorizeManager
 			},
@@ -79,7 +95,11 @@ const routes = [
 				path: 'system/menuManager',
 				name: 'MenuManager',
 				meta: {
-					title: '菜单管理'
+					title: '菜单管理',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: MenuManager
 			},
@@ -87,7 +107,11 @@ const routes = [
 				path: 'system/department', // 部门管理
 				name: 'Department',
 				meta: {
-					title: '部门管理'
+					title: '部门管理',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: Department
 			},
@@ -95,7 +119,11 @@ const routes = [
 				path: 'company/companyManager',
 				name: 'CompanyManager',
 				meta: {
-					title: '公司管理'
+					title: '公司管理',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: CompanyManager
 			},
@@ -103,7 +131,11 @@ const routes = [
 				path: 'log/login', // 登录日志
 				name: 'LoginLog',
 				meta: {
-					title: '登录日志'
+					title: '登录日志',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: LoginLog
 			},
@@ -111,7 +143,11 @@ const routes = [
 				path: 'log/operation', // 操作日志
 				name: 'OperationLog',
 				meta: {
-					title: '操作日志'
+					title: '操作日志',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: OperationLog
 			},
@@ -119,7 +155,11 @@ const routes = [
 				path: 'log/service', // 错误日志
 				name: 'ServiceLog',
 				meta: {
-					title: '错误日志'
+					title: '错误日志',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
 				},
 				component: ServiceLog
 			},
@@ -127,9 +167,25 @@ const routes = [
 				path: 'system/profile',
 				name: 'Profile',
 				meta: {
-					title: '个人信息'
+					title: '个人信息',
+					tab: {
+						isAdd: true,
+						parentRouteName: 'UserManager'
+					}
 				},
 				component: ProfileInformation
+			},
+			{
+				path: '404',
+				name: '404',
+				meta: {
+					title: '404',
+					tab: {
+						isAdd: true,
+						parentRouteName: ''
+					}
+				},
+				component: v404
 			}
 		]
 	},

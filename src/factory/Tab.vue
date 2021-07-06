@@ -2,19 +2,9 @@
 	<div id="tags-view-container" class="tags-view-container">
 		<div class="scroll-container tags-view-wrapper el-scrollbar">
 			<el-scrollbar>
-				<span
-					v-for="(item, index) in tabList"
-					:key="index"
-					class="tags-view-item router-link-exact-active router-link-active"
-					:class="{ active: currentTab === index }"
-				>
+				<span v-for="(item, index) in tabList" :key="index" class="tags-view-item router-link-exact-active router-link-active" :class="{ active: currentTab === index }">
 					<span @click="clickTabHandler(index)" @contextmenu.prevent="contextMenuHandler($event, index)">{{ item.title }}</span>
-
-					<span
-						v-if="tabList.length > 1 || $route.path !== '/home'"
-						class="el-icon-close"
-						@click="closeCurrentSingleTabHandler($event, index)"
-					></span>
+					<span v-if="tabList.length > 1 || $route.path !== '/home'" class="el-icon-close" @click="closeCurrentSingleTabHandler($event, index)"></span>
 				</span>
 			</el-scrollbar>
 		</div>
@@ -49,22 +39,27 @@ export default {
 				const { cloneTabIndex } = this.filterSameTabHandler(title);
 				if (cloneTabIndex === -1) {
 					setTimeout(() => {
-						this.tabList.push({
-							title: this.$route.meta.title,
-							path: this.$route.path,
-							btnAuthorize: hgetStorage('btnPowers')
-						});
-						this.currentTab = this.tabList.length - 1;
+						const { isAdd, parentRouteName } = this.$route.meta.tab;
+						if (isAdd) {
+							this.tabList.push({
+								title: this.$route.meta.title,
+								path: this.$route.fullPath,
+								btnAuthorize: hgetStorage('btnPowers'),
+								routeName: this.$route.name
+							});
+							this.currentTab = this.tabList.length - 1;
+						} else if (!parentRouteName) {
+							this.currentTab = -1;
+						} else {
+							this.tabList.forEach((item, index) => {
+								if (item.routeName === parentRouteName) {
+									this.currentTab = index;
+								}
+							});
+						}
 					}, 300);
 				} else {
 					this.currentTab = cloneTabIndex;
-				}
-				if (hgetStorage('hasSaveEnterprise') === 1) {
-					this.tabList.forEach((item, index) => {
-						if (item.path === '/baseData/addEnterprise') {
-							this.tabList.splice(index, 1);
-						}
-					});
 				}
 			},
 			immediate: true

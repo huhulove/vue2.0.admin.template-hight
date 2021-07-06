@@ -1,17 +1,14 @@
 <template>
 	<el-aside class="sidebar-container">
-		<el-menu
-			class="el-menu-vertical-demo"
-			router
-			:default-openeds="defaultOpeneds"
-			:default-active="defaultActive"
-			:collapse="isCollapse_p"
-			:unique-opened="true"
-		>
+		<el-menu class="el-menu-vertical-demo" router :default-openeds="defaultOpeneds" :default-active="defaultActive" :collapse="isCollapse_p" :unique-opened="true">
 			<template v-for="(menu, index) in menuData">
 				<span :key="index">
 					<Submenu :menu_p="menu" v-if="menu.children && menu.children.length !== 0"></Submenu>
-					<el-menu-item v-if="!menu.children || menu.children.length === 0" :route="{ path: `/${menu.frontendRoute.path}` }" :index="`${menu.id}`">
+					<el-menu-item
+						v-if="!menu.children || menu.children.length === 0"
+						:route="{ path: `/${menu.frontendRoute ? menu.frontendRoute.path : '404'}` }"
+						:index="`${menu.id}`"
+					>
 						{{ menu.menuName }}
 					</el-menu-item>
 				</span>

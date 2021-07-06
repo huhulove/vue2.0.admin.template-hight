@@ -13,7 +13,7 @@
 					<el-dropdown-item @click.native="loginOut">退出</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<span style="font-size: 16px">{{ nickName }}</span>
+			<span style="font-size: 16px">{{ nickName || userName }}</span>
 		</el-col>
 	</el-row>
 </template>
@@ -27,7 +27,8 @@ export default {
 	props: ['isCollapse_p'],
 	data() {
 		return {
-			nickName: ''
+			nickName: '',
+			userName: ''
 		};
 	},
 	created() {
@@ -41,6 +42,7 @@ export default {
 			const dataJson = {};
 			const res = await userLoginDetailService(dataJson);
 			this.nickName = res.nickName;
+			this.userName = res.userName;
 			hsetStorage('powers', res.powers);
 			hsetStorage('roleIds', res.userRoles);
 		},

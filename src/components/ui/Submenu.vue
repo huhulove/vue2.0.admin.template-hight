@@ -6,7 +6,7 @@
 		</template>
 		<template v-for="($menu, $index) in menu_p.children">
 			<span :key="$index">
-				<el-menu-item :index="`${$menu.id}`" :route="{ path: `/${$menu.frontendRoute.path}` }" @click.native="clickMenu($menu)">
+				<el-menu-item :index="`${$menu.id}`" :route="{ path: `/${$menu.frontendRoute ? $menu.frontendRoute.path : '404'}` }" @click.native="clickMenu($menu)">
 					{{ $menu.menuName }}
 				</el-menu-item>
 				<Submenu v-if="$menu.children && $menu.children.length !== 0" :menu_p="$menu"></Submenu>
