@@ -15,7 +15,7 @@ let menuData = [
 		powers: ['role:add', 'role:list', 'user:add', 'user:download', 'user:remove', 'user:select', 'user:update', 'user:UserRoleBind']
 	},
 	{
-		menuName: '菜单管理',
+		menuName: '菜单管理123',
 		id: 2,
 		pid: 1,
 		url: '/system/menuManager',

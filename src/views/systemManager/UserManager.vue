@@ -23,7 +23,7 @@
 					{{ scope.row.status === 0 ? '正常' : '禁用' }}
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" align="left" fixed="right" width="250">
+			<el-table-column label="操作" align="left" fixed="right" width="300">
 				<template slot-scope="scope">
 					<el-button id="btn-update-row" type="primary" v-authorize="{ name: 'update', type: 'user', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)">
 						编辑

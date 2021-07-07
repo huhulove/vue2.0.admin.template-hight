@@ -15,19 +15,6 @@
 		<el-form-item label="路由名称">
 			<Input v-model="formData.routeName" placeholder="请输入路由名称" />
 		</el-form-item>
-		<!-- <el-form-item label="是否显示" prop="isShow">
-					<el-select v-model="formData.isShow" class="select-item" placeholder="请选择">
-						<el-option label="显示" :value="0"></el-option>
-						<el-option label="不显示" :value="1"></el-option>
-					</el-select>
-				</el-form-item> -->
-		<!-- <el-form-item label="按钮类型">
-					<el-select v-model="formData.btnType" class="select-item" placeholder="请选择">
-						<el-option label="请选择" :value="2"></el-option>
-						<el-option label="弹框" :value="0"></el-option>
-						<el-option label="页签" :value="1"></el-option>
-					</el-select>
-				</el-form-item> -->
 		<el-form-item label="状态">
 			<Radio v-model="formData.status" :data_p="statusData"></Radio>
 		</el-form-item>

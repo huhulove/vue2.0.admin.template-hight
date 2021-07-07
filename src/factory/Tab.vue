@@ -39,8 +39,20 @@ export default {
 				const { cloneTabIndex } = this.filterSameTabHandler(title);
 				if (cloneTabIndex === -1) {
 					setTimeout(() => {
-						const { isAdd, parentRouteName } = this.$route.meta.tab;
-						if (isAdd) {
+						let isAddFlag = null;
+						if (!this.$route.meta.tab) {
+							isAddFlag = 1;
+						} else {
+							const { isAdd, parentRouteName } = this.$route.meta.tab;
+							if (isAdd || isAdd === undefined) {
+								isAddFlag = 1;
+							} else if (!parentRouteName) {
+								isAddFlag = 0;
+							} else {
+								isAddFlag = 2;
+							}
+						}
+						if (isAddFlag === 1) {
 							this.tabList.push({
 								title: this.$route.meta.title,
 								path: this.$route.fullPath,
@@ -48,9 +60,10 @@ export default {
 								routeName: this.$route.name
 							});
 							this.currentTab = this.tabList.length - 1;
-						} else if (!parentRouteName) {
+						} else if (isAddFlag === 0) {
 							this.currentTab = -1;
-						} else {
+						} else if (isAddFlag === 2) {
+							const { parentRouteName } = this.$route.meta.tab;
 							this.tabList.forEach((item, index) => {
 								if (item.routeName === parentRouteName) {
 									this.currentTab = index;

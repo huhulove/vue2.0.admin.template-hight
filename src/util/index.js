@@ -16,6 +16,10 @@ const nodeAddField = (data, field, value) => {
 			let flag = true;
 			// 判断条件
 			if (item.routeName && item.routeName === value.name) {
+				if (!value.meta) {
+					value.meta = {};
+				}
+				value.meta.title = item.menuName;
 				item[field] = value;
 				flag = false;
 			}

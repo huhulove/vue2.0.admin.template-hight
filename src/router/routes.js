@@ -48,9 +48,8 @@ const routes = [
 				name: 'Home',
 				meta: {
 					title: '首页',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
+					aside: {
+						isMenu: false
 					}
 				},
 				component: Home
@@ -59,11 +58,7 @@ const routes = [
 				path: 'system/userManager',
 				name: 'UserManager',
 				meta: {
-					title: '用户管理',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '用户管理'
 				},
 				component: UserManager
 			},
@@ -71,11 +66,7 @@ const routes = [
 				path: 'system/roleManager',
 				name: 'RoleManager',
 				meta: {
-					title: '角色管理',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '角色管理'
 				},
 				component: RoleManager
 			},
@@ -83,11 +74,7 @@ const routes = [
 				path: 'system/authorizeManager',
 				name: 'AuthorizeManager',
 				meta: {
-					title: '权限管理',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '权限管理'
 				},
 				component: AuthorizeManager
 			},
@@ -95,11 +82,7 @@ const routes = [
 				path: 'system/menuManager',
 				name: 'MenuManager',
 				meta: {
-					title: '菜单管理',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: ''
 				},
 				component: MenuManager
 			},
@@ -107,11 +90,7 @@ const routes = [
 				path: 'system/department', // 部门管理
 				name: 'Department',
 				meta: {
-					title: '部门管理',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '部门管理'
 				},
 				component: Department
 			},
@@ -119,11 +98,7 @@ const routes = [
 				path: 'company/companyManager',
 				name: 'CompanyManager',
 				meta: {
-					title: '公司管理',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '公司管理'
 				},
 				component: CompanyManager
 			},
@@ -131,11 +106,7 @@ const routes = [
 				path: 'log/login', // 登录日志
 				name: 'LoginLog',
 				meta: {
-					title: '登录日志',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '登录日志'
 				},
 				component: LoginLog
 			},
@@ -143,11 +114,7 @@ const routes = [
 				path: 'log/operation', // 操作日志
 				name: 'OperationLog',
 				meta: {
-					title: '操作日志',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '操作日志'
 				},
 				component: OperationLog
 			},
@@ -155,11 +122,7 @@ const routes = [
 				path: 'log/service', // 错误日志
 				name: 'ServiceLog',
 				meta: {
-					title: '错误日志',
-					tab: {
-						isAdd: true,
-						parentRouteName: ''
-					}
+					title: '错误日志'
 				},
 				component: ServiceLog
 			},
@@ -168,9 +131,13 @@ const routes = [
 				name: 'Profile',
 				meta: {
 					title: '个人信息',
-					tab: {
-						isAdd: true,
+					/* tab: {
+						isAdd: false,
 						parentRouteName: 'UserManager'
+					}, */
+					aside: {
+						isMenu: false
+						/* activedRouteName: 'UserManager' */
 					}
 				},
 				component: ProfileInformation
@@ -181,8 +148,7 @@ const routes = [
 				meta: {
 					title: '404',
 					tab: {
-						isAdd: true,
-						parentRouteName: ''
+						isAdd: true
 					}
 				},
 				component: v404

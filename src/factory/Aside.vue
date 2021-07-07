@@ -38,19 +38,7 @@ export default {
 	},
 	async created() {
 		await this.menuAuthorizeList();
-		let routeName = null;
-		if (this.$route.name === 'AddEnterprise') {
-			routeName = 'Enterprise';
-		} else if (this.$route.name === 'EventProcessing' || this.$route.name === 'EventProcessingCondition') {
-			routeName = 'ParameterSetting';
-		} else {
-			routeName = this.$route.name;
-		}
-		getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
-			hsetStorage('btnPowers', node.powers);
-			this.defaultActive = `${node.id}`;
-			this.defaultOpeneds.push(`${pNode.id}`);
-		});
+		this.autoActiveMenu();
 	},
 	watch: {
 		'$store.state.userStore.isRefreshAside': {
@@ -61,23 +49,45 @@ export default {
 		},
 		$route: {
 			handler() {
-				let routeName = null;
-				if (this.$route.name === 'AddEnterprise') {
-					routeName = 'Enterprise';
-				} else if (this.$route.name === 'EventProcessing' || this.$route.name === 'EventProcessingCondition') {
-					routeName = 'ParameterSetting';
-				} else {
-					routeName = this.$route.name;
-				}
-				getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
-					this.defaultActive = `${node.id}`;
-					this.defaultOpeneds = [];
-					this.defaultOpeneds.push(`${pNode.id}`);
-				});
+				this.autoActiveMenu();
 			}
 		}
 	},
 	methods: {
+		autoActiveMenu() {
+			let routeName = null;
+			let isMenuFlag = null;
+			if (!this.$route.meta.aside) {
+				isMenuFlag = 1; // 类型是菜单
+			} else {
+				const { isMenu, activedRouteName } = this.$route.meta.aside;
+				if (isMenu === undefined || isMenu) {
+					isMenuFlag = 1;
+				} else if (!activedRouteName) {
+					isMenuFlag = 0;
+				} else {
+					isMenuFlag = 2;
+				}
+			}
+			if (isMenuFlag === 1) {
+				routeName = this.$route.name;
+			} else if (isMenuFlag === 2) {
+				const { activedRouteName } = this.$route.meta.aside;
+				routeName = activedRouteName;
+			} else if (isMenuFlag === 0) {
+				routeName = '';
+			}
+			if (routeName) {
+				getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
+					hsetStorage('btnPowers', node.powers);
+					this.defaultActive = `${node.id}`;
+					this.defaultOpeneds.push(`${pNode.id}`);
+				});
+			} else {
+				this.defaultActive = '';
+				this.defaultOpeneds = [];
+			}
+		},
 		clickMenu(menu) {
 			hsetStorage('btnPowers', menu.powers);
 		},
