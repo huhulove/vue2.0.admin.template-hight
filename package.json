@@ -41,6 +41,7 @@
     "lint-staged": "^9.5.0",
     "mockjs": "^1.1.0",
     "script-loader": "^0.7.2",
+    "svg-sprite-loader": "^6.0.9",
     "vue-template-compiler": "^2.6.11"
   },
   "gitHooks": {

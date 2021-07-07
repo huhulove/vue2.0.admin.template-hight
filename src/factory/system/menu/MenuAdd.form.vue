@@ -10,7 +10,13 @@
 			<Input v-model="formData.menuSort" placeholder="请输入排序" />
 		</el-form-item>
 		<el-form-item label="图标">
-			<Input v-model="formData.menuIcon" placeholder="请输入图标" />
+			<el-popover placement="bottom-start" width="450" trigger="click" @show="$refs['iconSelect'].reset()">
+				<IconSelect ref="iconSelect" @selected="selectedIcon" />
+				<el-input slot="reference" v-model="formData.menuIcon" style="width: 450px" placeholder="点击选择图标" readonly>
+					<svg-icon v-if="formData.menuIcon" slot="prefix" :icon-class="formData.menuIcon" class="el-input__icon" style="height: 32px; width: 16px" />
+					<i v-else slot="prefix" class="el-icon-search el-input__icon" />
+				</el-input>
+			</el-popover>
 		</el-form-item>
 		<el-form-item label="路由名称">
 			<Input v-model="formData.routeName" placeholder="请输入路由名称" />
@@ -34,6 +40,7 @@ import SelectTree from '@c/ui/SelectTree';
 import Radio from '@c/ui/Radio';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
+import IconSelect from '@c/ui/IconSelect';
 
 import { menuAddService, menuEditService, menuListService } from '@s/system/MenuService';
 
@@ -43,7 +50,8 @@ export default {
 		SelectTree,
 		Radio,
 		DataForm,
-		Input
+		Input,
+		IconSelect
 	},
 	data() {
 		return {
@@ -52,7 +60,7 @@ export default {
 				menuName: '',
 				url: '',
 				menuSort: '',
-				menuIcon: '1',
+				menuIcon: '',
 				isShow: 0,
 				status: 0,
 				pid: 0,
@@ -124,6 +132,10 @@ export default {
 		}
 	},
 	methods: {
+		// 选中图标
+		selectedIcon(name) {
+			this.formData.menuIcon = name;
+		},
 		async menuList() {
 			const dataJson = {};
 			const res = await menuListService(dataJson);

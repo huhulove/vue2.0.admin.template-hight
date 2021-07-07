@@ -66,14 +66,7 @@
 						<el-tooltip class="item" effect="dark" content="选择指定菜单分配权限" placement="top">
 							<span class="role-span">权限分配</span>
 						</el-tooltip>
-						<el-button
-							:disabled="editId === -1"
-							icon="el-icon-check"
-							size="mini"
-							style="float: right; padding: 6px 9px"
-							type="primary"
-							@click="saveMenu"
-						>
+						<el-button :disabled="editId === -1" icon="el-icon-check" size="mini" style="float: right; padding: 6px 9px" type="primary" @click="saveMenu">
 							保存
 						</el-button>
 					</div>
@@ -93,12 +86,7 @@
 		</el-row>
 		<!-- AEForm -->
 		<Dialog :title="AEDialogTitle" :visible.sync="isShowAEDialog">
-			<MenuAEForm
-				v-if="isShowAEDialog"
-				:isShowAEDialog_p.sync="isShowAEDialog"
-				:isRefreshList_p.sync="isRefreshList"
-				:selectData_p="selectData"
-			></MenuAEForm>
+			<MenuAEForm v-if="isShowAEDialog" :isShowAEDialog_p.sync="isShowAEDialog" :isRefreshList_p.sync="isRefreshList" :selectData_p="selectData"></MenuAEForm>
 		</Dialog>
 	</div>
 </template>
@@ -156,7 +144,8 @@ export default {
 				},
 				{
 					label: '图标',
-					field: 'menuIcon'
+					field: 'menuIcon',
+					type: 'icon'
 				}
 			],
 			delTips: '',
