@@ -16,7 +16,8 @@ const filterRoleData = () => {
 	roleData = roleDataRef.map(item => {
 		return {
 			id: item.id,
-			name: item.name
+			name: item.name,
+			powerCodes: item.powerCodes
 		};
 	});
 };
@@ -67,6 +68,14 @@ export const userLoginDetailService = () => {
 		roleData.forEach(role => {
 			if (roleId === role.id) {
 				result.role.push(role.name);
+			}
+		});
+	});
+	result.powers = [];
+	result.roleIds.forEach(roleId => {
+		roleData.forEach(role => {
+			if (roleId === role.id) {
+				result.powers.push(...role.powerCodes);
 			}
 		});
 	});

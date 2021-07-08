@@ -4,6 +4,8 @@
  *@Date: 2020-12-08 14:02:35
  */
 import routes from '@/router/routes.js';
+import { hgetStorage } from '@u/htools.web';
+import { getTreeNodeById } from '@u/htools.tree';
 /*
  *@Description: 前端路由表和后台返回菜单数据合并出最终的路由信息
  *@MethodAuthor:  myw
@@ -37,6 +39,18 @@ export const mergeRoutes = data => {
 		nodeAddField(data, 'frontendRoute', route);
 	});
 	return data;
+};
+/* 指定权限可编辑 */
+export const changePowerToEdit = targetPowers => {
+	const currentUserPowers = hgetStorage('powers');
+	console.log(currentUserPowers);
+	currentUserPowers.forEach(item => {
+		console.log(item);
+		getTreeNodeById(targetPowers, 'powerCode', item, node => {
+			console.log(node);
+			node.disabled = false;
+		});
+	});
 };
 
 export default mergeRoutes;

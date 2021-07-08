@@ -81,7 +81,11 @@ export default {
 				getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
 					hsetStorage('btnPowers', node.powers);
 					this.defaultActive = `${node.id}`;
-					this.defaultOpeneds.push(`${pNode.id}`);
+					if (pNode) {
+						this.defaultOpeneds.push(`${pNode.id}`);
+					} else {
+						this.defaultOpeneds = [];
+					}
 				});
 			} else {
 				this.defaultActive = '';

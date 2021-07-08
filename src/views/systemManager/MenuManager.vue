@@ -10,7 +10,7 @@
 				:authorize_p="'menu'"
 			></Button>
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="18">
-				<el-card class="box-card" shadow="never">
+				<Card>
 					<div slot="header" class="clearfix">
 						<span class="role-span">菜单列表</span>
 					</div>
@@ -57,11 +57,11 @@
 							</template>
 						</el-table-column>
 					</Table>
-				</el-card>
+				</Card>
 			</el-col>
 			<!-- 菜单授权 -->
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="6">
-				<el-card class="box-card" shadow="never">
+				<Card>
 					<div slot="header" class="clearfix">
 						<el-tooltip class="item" effect="dark" content="选择指定菜单分配权限" placement="top">
 							<span class="role-span">权限分配</span>
@@ -70,7 +70,7 @@
 							保存
 						</el-button>
 					</div>
-					<!-- <el-alert title="单击父节点名称可选中全部子节点" type="warning" style="margin-bottom: 10px"></el-alert> -->
+					<el-alert title="单击父节点名称可选中全部子节点" type="warning" style="margin-bottom: 10px" :closable="false"></el-alert>
 					<el-tree
 						ref="tree"
 						:props="defaultProps"
@@ -81,7 +81,7 @@
 						:expand-on-click-node="false"
 						@check="checkChange"
 					></el-tree>
-				</el-card>
+				</Card>
 			</el-col>
 		</el-row>
 		<!-- AEForm -->
@@ -94,10 +94,13 @@
 <script>
 import ListMixin from '@m/List.mixin';
 import { getTreeNodeById } from '@u/htools.tree.js';
+// eslint-disable-next-line import/no-cycle
+import { changePowerToEdit } from '@u/index';
 
-import Table from '@c/ui/Table.vue';
-import Button from '@c/ui/Button.vue';
-import Dialog from '@c/ui/Dialog.vue';
+import Table from '@c/ui/Table';
+import Button from '@c/ui/Button';
+import Dialog from '@c/ui/Dialog';
+import Card from '@c/ui/Card';
 
 import MenuAEForm from '@f/system/menu/MenuAdd.form';
 
@@ -112,6 +115,7 @@ export default {
 		Table,
 		Button,
 		Dialog,
+		Card,
 		MenuAEForm
 	},
 	data() {
@@ -175,6 +179,7 @@ export default {
 			const dataJson = {};
 			const res = await authorizeListService(dataJson);
 			this.authorizeData = res;
+			changePowerToEdit(this.authorizeData, this.$envConfig);
 		},
 		async menuList() {
 			const dataJson = {};
@@ -236,13 +241,6 @@ export default {
 					}
 				}
 			});
-
-			/* addTreeKey(this.authorizeData);
-			res.powers.forEach(item => {
-				getTreeNodeById(this.authorizeData, 'powerCode', item, node => {
-					node.disabled = false;
-				});
-			}); */
 		},
 		async saveMenu() {
 			const checkedNodes = this.$refs.tree.getCheckedNodes();
@@ -343,8 +341,6 @@ export default {
 			console.log(node);
 		},
 		changeNodeStatus(treeNode, node) {
-			console.log(treeNode);
-			console.log(node);
 			let isIndeterminate = false;
 			let isChecked = true;
 			treeNode.childNodes.forEach(item => {

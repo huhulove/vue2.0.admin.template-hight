@@ -20,18 +20,21 @@
 					v-if="!item.type || item.type === 'text'"
 				></el-table-column>
 				<el-table-column v-else :width="item.columnWidth ? item.columnWidth : 'auto'" :prop="item.field" :label="item.label" :key="item.field">
-					<template slot-scope="scope" v-if="item.type === 'image'">
-						<img :src="scope.row[item.field]" :width="item.imageWidth ? item.imageWidth : 30" :height="item.imageHeight ? item.imageHeight : 30" alt="" srcset="" />
-					</template>
-					<template slot-scope="scope" v-if="item.type === 'date'">
-						{{ scope.row[item.field] | formatDate }}
-					</template>
-					<template slot-scope="scope" v-if="item.type === 'link'">
-						<router-link v-if="item.isInlink" :to="scope.row[item.linkField]">{{ scope.row[item.field] }}</router-link>
-						<a v-if="!item.isInlink" :href="scope.row[item.linkField]" target="_blank">{{ scope.row[item.field] }}</a>
-					</template>
-					<template slot-scope="scope" v-if="item.type === 'icon'">
-						<svg-icon :icon-class="scope.row[item.field]" class="el-input__icon" style="height: 40px; width: 20px" />
+					<template slot-scope="scope">
+						<img
+							v-if="item.type === 'image'"
+							:src="scope.row[item.field]"
+							:width="item.imageWidth ? item.imageWidth : 30"
+							:height="item.imageHeight ? item.imageHeight : 30"
+							alt=""
+							srcset=""
+						/>
+						<span v-else-if="item.type === 'date'">{{ scope.row[item.field] | formatDate }}</span>
+						<span v-else-if="item.type === 'link'">
+							<router-link v-if="item.isInlink" :to="scope.row[item.linkField]">{{ scope.row[item.field] }}</router-link>
+							<a v-if="!item.isInlink" :href="scope.row[item.linkField]" target="_blank">{{ scope.row[item.field] }}</a>
+						</span>
+						<svg-icon v-else-if="item.type === 'icon'" :icon-class="scope.row[item.field]" class="el-input__icon" style="height: 40px; width: 20px" />
 					</template>
 				</el-table-column>
 			</template>

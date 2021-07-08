@@ -11,7 +11,7 @@
 				:authorize_p="'role'"
 			></Button>
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="18">
-				<el-card class="box-card" shadow="never">
+				<Card>
 					<div slot="header" class="clearfix">
 						<span class="role-span">角色列表</span>
 					</div>
@@ -53,11 +53,11 @@
 					</Table>
 					<!-- 分页 -->
 					<Pagination :total="total" :pageIndex_p.sync="pageIndex" :pageSize_p.sync="pageSize"></Pagination>
-				</el-card>
+				</Card>
 			</el-col>
 			<!-- 角色授权 -->
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="6">
-				<el-card class="box-card" shadow="never">
+				<Card>
 					<div slot="header" class="clearfix">
 						<el-tooltip class="item" effect="dark" content="选择指定角色分配权限" placement="top">
 							<span class="role-span">权限分配</span>
@@ -73,7 +73,7 @@
 							保存
 						</el-button>
 					</div>
-					<!-- <el-alert title="双击父节点可选中全部子节点" type="warning" style="margin-bottom: 10px"></el-alert> -->
+					<el-alert title="单击父节点名称可选中全部子节点" type="warning" style="margin-bottom: 10px" :closable="false"></el-alert>
 					<el-tree
 						ref="tree"
 						:props="defaultProps"
@@ -84,7 +84,7 @@
 						:expand-on-click-node="false"
 						@check="checkChange"
 					></el-tree>
-				</el-card>
+				</Card>
 			</el-col>
 		</el-row>
 		<Dialog :title="AEDialogTitle" :visible.sync="isShowAEDialog">
@@ -101,11 +101,14 @@
 <script>
 import ListMixin from '@m/List.mixin';
 import { getTreeNodeById } from '@u/htools.tree.js';
+// eslint-disable-next-line import/no-cycle
+import { changePowerToEdit } from '@u/index';
 
 import Button from '@c/ui/Button';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 import Dialog from '@c/ui/Dialog';
+import Card from '@c/ui/Card';
 
 import RoleAddForm from '@f/system/role/RoleAdd.form';
 import RoleSearchForm from '@f/system/role/RoleSearch.form';
@@ -122,6 +125,7 @@ export default {
 		Pagination,
 		Button,
 		Dialog,
+		Card,
 		RoleAddForm,
 		RoleSearchForm
 	},
@@ -193,6 +197,7 @@ export default {
 			const dataJson = {};
 			const res = await authorizeListService(dataJson);
 			this.authorizeData = res;
+			changePowerToEdit(this.authorizeData, this.$envConfig);
 		},
 		async roleList() {
 			const dataJson = {

@@ -44,7 +44,7 @@ export default {
 			this.nickName = res.nickName;
 			this.userName = res.userName;
 			hsetStorage('powers', res.powers);
-			hsetStorage('roleIds', res.userRoles);
+			hsetStorage('roleIds', res.roleIds);
 		},
 		loginOut() {
 			this.$store.dispatch('loginOutStore');

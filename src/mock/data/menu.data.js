@@ -73,7 +73,7 @@ let menuData = [
 ];
 const menuStatusArr = [0, 1];
 menuData.forEach(item => {
-	item.menuIcon = '0';
+	item.menuIcon = 'app';
 	item.createDate = Mock.Random.datetime();
 	item.menuSort = Mock.Random.natural(1, 100);
 	item.status = Mock.mock({
@@ -123,6 +123,7 @@ export const userMenuAuthorizeService = () => {
 			asideMenuData.push(asideMenuItem);
 		}
 	});
+	console.log(asideMenuData);
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',

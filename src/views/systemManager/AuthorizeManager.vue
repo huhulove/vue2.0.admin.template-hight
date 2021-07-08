@@ -98,11 +98,13 @@ export default {
 				},
 				{
 					label: '创建时间',
-					field: 'createDate'
+					field: 'createDate',
+					type: 'date'
 				},
 				{
 					label: '更新时间',
-					field: 'updateDate'
+					field: 'updateDate',
+					type: 'date'
 				},
 				{
 					label: '备注',
