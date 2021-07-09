@@ -11,7 +11,6 @@ export const loginService = data => {
 		};
 		try {
 			const res = await hpostRequest('user/login', dataJson);
-			console.log(res);
 			hsetStorage('token', res);
 			resolve(res);
 		} catch (error) {

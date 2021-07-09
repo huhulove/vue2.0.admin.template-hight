@@ -1,1 +1,1 @@
-import './business.directive';
+import './authorize.directive';

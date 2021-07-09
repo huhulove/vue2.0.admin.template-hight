@@ -43,11 +43,8 @@ export const mergeRoutes = data => {
 /* 指定权限可编辑 */
 export const changePowerToEdit = targetPowers => {
 	const currentUserPowers = hgetStorage('powers');
-	console.log(currentUserPowers);
 	currentUserPowers.forEach(item => {
-		console.log(item);
 		getTreeNodeById(targetPowers, 'powerCode', item, node => {
-			console.log(node);
 			node.disabled = false;
 		});
 	});

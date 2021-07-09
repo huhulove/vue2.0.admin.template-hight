@@ -121,7 +121,16 @@ export const userEditAvatarService = options => {
 /* 用户列表 */
 export const userListService = options => {
 	const { nickName, pageIndex, pageSize } = JSON.parse(options.body);
-	const searchResult = userData.records.filter(item => {
+	const companyId = hgetStorage('companyId');
+	const companyUsers = {
+		records: userData.records
+	};
+	if (companyId !== 0) {
+		companyUsers.records = userData.records.filter(item => {
+			return item.companyId === companyId;
+		});
+	}
+	const searchResult = companyUsers.records.filter(item => {
 		return item.nickName.indexOf(nickName) > -1;
 	});
 	searchResult.sort((a, b) => {
@@ -211,6 +220,14 @@ export const userEditService = options => {
 /* 用户删除 */
 export const userDeleteService = options => {
 	const { ids } = JSON.parse(options.body);
+	const currentUid = hgetStorage('token');
+	if (ids.indexOf(currentUid) > -1) {
+		return Mock.mock({
+			code: 400,
+			msg: '当前登录人不能删除自己',
+			result: ids
+		});
+	}
 	userData.records = userData.records.filter(item => {
 		return ids.indexOf(item.id) === -1;
 	});

@@ -22,35 +22,7 @@ request.interceptors.request.use(
 		config.headers = {
 			Authorization: hgetStorage('token')
 		};
-		if (config.url.indexOf('huser/') > -1) {
-			config.url = config.url.replace('huser/', envConfig.userUrl);
-		} else if (config.url.indexOf('hbtyong/') > -1) {
-			config.url = config.url.replace('hbtyong/', envConfig.btyongUrl);
-		} else if (config.url.indexOf('hrole/') > -1) {
-			config.url = config.url.replace('hrole/', envConfig.roleUrl);
-		} else if (config.url.indexOf('hauthorize/') > -1) {
-			config.url = config.url.replace('hauthorize/', envConfig.authorizeUrl);
-		} else if (config.url.indexOf('hmenu/') > -1) {
-			config.url = config.url.replace('hmenu/', envConfig.menuUrl);
-		} else if (config.url.indexOf('horder/') > -1) {
-			config.url = config.url.replace('horder/', envConfig.orderUrl);
-		} else if (config.url.indexOf('hbase/') > -1) {
-			config.url = config.url.replace('hbase/', envConfig.baseDataUrl);
-		} else if (config.url.indexOf('hdevice:') > -1) {
-			config.url = config.url.replace('hdevice:', envConfig.deviveUrl);
-		} else if (config.url.indexOf('htax/') > -1) { 
-			config.url = config.url.replace('htax/', envConfig.taxUrl);
-		} else if (config.url.indexOf('hsta/') > -1) { 
-			config.url = config.url.replace('hsta/', envConfig.staUrl);
-		} else if (config.url.indexOf('hlog/') > -1) { 
-			config.url = config.url.replace('hlog/', envConfig.logUrl);
-		} else if (config.url.indexOf('hdeli/') > -1) { 
-			config.url = config.url.replace('hdeli/', envConfig.hdeli);
-		} else if (config.url.indexOf('hexport/') > -1) { 
-			config.url = config.url.replace('hexport/', envConfig.hexport);
-		} else {
-			config.url = `${envConfig.baseUrl}${config.url}`;
-		}
+		config.url = `${envConfig.baseUrl}${config.url}`;
 		loading = Loading.service({ lock: true, text: '正在加载...', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)', fullscreen: true });
 		return config;
 	},
@@ -79,12 +51,12 @@ request.interceptors.response.use(
 			hremoveStorage('token');
 			return Promise.reject();
 		}
-		if (code === 500) {
+		if (code === 400) {
 			const { msg } = response.data;
 			Message.error(msg);
 			return Promise.reject();
 		}
-		if (code === 1000) {
+		if (code === 500) {
 			Message.error('请检查网络连接');
 			return Promise.reject();
 		}

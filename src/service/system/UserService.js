@@ -1,4 +1,5 @@
 import { hgetRequest, hpostRequest } from '../../util/htools.axios';
+import { hsetStorage } from '../../util/htools.web.js';
 
 /* 用户列表 */
 export const userListService = data => {
@@ -91,6 +92,9 @@ export const userLoginDetailService = data => {
 				...data
 			};
 			const res = await hpostRequest('user/listUserAll', dataJson);
+			hsetStorage('powers', res.powers);
+			hsetStorage('roleIds', res.roleIds);
+			hsetStorage('companyId', res.companyId);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

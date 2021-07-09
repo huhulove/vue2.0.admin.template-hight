@@ -1,5 +1,5 @@
 import Mock from 'mockjs';
-import { hgetAllParams } from '../../util/htools.web';
+import { hgetAllParams, hgetStorage } from '../../util/htools.web';
 /* 引用数据 */
 // eslint-disable-next-line import/no-cycle
 import { companyDataRef } from './company.data';
@@ -36,7 +36,17 @@ const roleData = Mock.mock({
 /* 角色列表 */
 export const roleListService = options => {
 	const { name, pageIndex, pageSize } = JSON.parse(options.body);
-	const searchResult = roleData.records.filter(item => {
+	const companyId = hgetStorage('companyId');
+	const companyRoles = {
+		records: roleData.records
+	};
+	if (companyId !== 0) {
+		companyRoles.records = roleData.records.filter(item => {
+			return item.companyId === companyId;
+		});
+	}
+	console.log(companyRoles);
+	const searchResult = companyRoles.records.filter(item => {
 		return item.name.indexOf(name) > -1;
 	});
 	searchResult.sort((a, b) => {
@@ -100,6 +110,20 @@ export const roleEditService = options => {
 /* 角色删除 */
 export const roleDeleteService = options => {
 	const { ids } = JSON.parse(options.body);
+	const currentUserRole = hgetStorage('roleIds');
+	let isDelFlag = true;
+	ids.forEach(id => {
+		if (currentUserRole.indexOf(id) > -1) {
+			isDelFlag = false;
+		}
+	});
+	if (!isDelFlag) {
+		return Mock.mock({
+			code: 400,
+			msg: '当前登录人不能删除其关联角色',
+			result: ids
+		});
+	}
 	roleData.records = roleData.records.filter(item => {
 		return ids.indexOf(item.id) === -1;
 	});

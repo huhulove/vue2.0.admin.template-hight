@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { hgetStorage } from '@u/htools.web';
 import ListMixin from '@m/List.mixin';
 
 import Button from '@c/ui/Button';
@@ -71,50 +72,54 @@ export default {
 		UserAEForm
 	},
 	data() {
+		const tableColumn = [
+			{
+				label: '序号',
+				field: 'id',
+				columnWidth: 55
+			},
+			{
+				label: '用户名',
+				field: 'userName',
+				columnWidth: 120
+			},
+			{
+				label: '密码',
+				field: 'userPwd',
+				columnWidth: 120
+			},
+			{
+				label: '昵称',
+				field: 'nickName',
+				columnWidth: 100
+			},
+			{
+				label: '创建日期',
+				field: 'createDate',
+				type: 'date'
+			},
+			{
+				label: '更新日期',
+				field: 'updateDate',
+				type: 'date'
+			},
+			{
+				label: '备注',
+				field: 'remark',
+				columnWidth: 300
+			}
+		];
+		const companyId = hgetStorage('companyId');
+		if (companyId === 0) {
+			tableColumn.splice(4, 0, {
+				label: '企业',
+				field: 'company.name',
+				columnWidth: 100
+			});
+		}
 		return {
 			// 表格
-			tableColumn: [
-				{
-					label: '序号',
-					field: 'id',
-					columnWidth: 55
-				},
-				{
-					label: '用户名',
-					field: 'userName',
-					columnWidth: 120
-				},
-				{
-					label: '密码',
-					field: 'userPwd',
-					columnWidth: 120
-				},
-				{
-					label: '昵称',
-					field: 'nickName',
-					columnWidth: 100
-				},
-				{
-					label: '企业',
-					field: 'company.name',
-					columnWidth: 100
-				},
-				{
-					label: '创建日期',
-					field: 'createDate',
-					type: 'date'
-				},
-				{
-					label: '更新日期',
-					field: 'updateDate',
-					type: 'date'
-				},
-				{
-					label: '备注',
-					field: 'remark',
-					columnWidth: 300
-				}
-			],
+			tableColumn: tableColumn,
 			delTips: ''
 		};
 	},

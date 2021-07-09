@@ -21,7 +21,6 @@
 <script>
 // eslint-disable-next-line import/named
 import { userLoginDetailService } from '@s/system/UserService.js';
-import { hsetStorage } from '@u/htools.web.js';
 
 export default {
 	props: ['isCollapse_p'],
@@ -43,8 +42,6 @@ export default {
 			const res = await userLoginDetailService(dataJson);
 			this.nickName = res.nickName;
 			this.userName = res.userName;
-			hsetStorage('powers', res.powers);
-			hsetStorage('roleIds', res.roleIds);
 		},
 		loginOut() {
 			this.$store.dispatch('loginOutStore');

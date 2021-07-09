@@ -62,14 +62,7 @@
 						<el-tooltip class="item" effect="dark" content="选择指定角色分配权限" placement="top">
 							<span class="role-span">权限分配</span>
 						</el-tooltip>
-						<el-button
-							:disabled="editId === -1"
-							icon="el-icon-check"
-							size="mini"
-							style="float: right; padding: 6px 9px"
-							type="primary"
-							@click="saveMenu"
-						>
+						<el-button :disabled="editId === -1" icon="el-icon-check" size="mini" style="float: right; padding: 6px 9px" type="primary" @click="saveMenu">
 							保存
 						</el-button>
 					</div>
@@ -88,17 +81,13 @@
 			</el-col>
 		</el-row>
 		<Dialog :title="AEDialogTitle" :visible.sync="isShowAEDialog">
-			<RoleAddForm
-				v-if="isShowAEDialog"
-				:isShowAEDialog_p.sync="isShowAEDialog"
-				:isRefreshList_p.sync="isRefreshList"
-				:selectData_p="selectData"
-			></RoleAddForm>
+			<RoleAddForm v-if="isShowAEDialog" :isShowAEDialog_p.sync="isShowAEDialog" :isRefreshList_p.sync="isRefreshList" :selectData_p="selectData"></RoleAddForm>
 		</Dialog>
 	</div>
 </template>
 
 <script>
+import { hgetStorage } from '@u/htools.web';
 import ListMixin from '@m/List.mixin';
 import { getTreeNodeById } from '@u/htools.tree.js';
 // eslint-disable-next-line import/no-cycle
@@ -130,38 +119,43 @@ export default {
 		RoleSearchForm
 	},
 	data() {
+		const tableColumn = [
+			{
+				label: '序号',
+				field: 'id',
+				columnWidth: 55
+			},
+			{
+				label: '角色名称',
+				field: 'name',
+				columnWidth: 100
+			},
+			{
+				label: '描述',
+				field: 'remark'
+			},
+			{
+				label: '创建日期',
+				field: 'createDate',
+				type: 'date'
+			},
+			{
+				label: '更新日期',
+				filed: 'updateDate',
+				type: 'date'
+			}
+		];
+		const companyId = hgetStorage('companyId');
+		if (companyId === 0) {
+			tableColumn.splice(4, 0, {
+				label: '企业',
+				field: 'company.name',
+				columnWidth: 100
+			});
+		}
 		return {
 			// 表格
-			tableColumn: [
-				{
-					label: '序号',
-					field: 'id',
-					columnWidth: 55
-				},
-				{
-					label: '角色名称',
-					field: 'name',
-					columnWidth: 100
-				},
-				{
-					label: '描述',
-					field: 'remark'
-				},
-				{
-					label: '企业',
-					field: 'company.name'
-				},
-				{
-					label: '创建日期',
-					field: 'createDate',
-					type: 'date'
-				},
-				{
-					label: '更新日期',
-					filed: 'updateDate',
-					type: 'date'
-				}
-			],
+			tableColumn: tableColumn,
 			delTips: '',
 			authorizeData: [],
 			defaultProps: { children: 'children', label: 'powerName' }
