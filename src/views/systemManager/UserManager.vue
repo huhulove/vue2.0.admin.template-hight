@@ -81,17 +81,31 @@ export default {
 			{
 				label: '用户名',
 				field: 'userName',
-				columnWidth: 120
+				columnWidth: 100
 			},
 			{
 				label: '密码',
 				field: 'userPwd',
-				columnWidth: 120
+				columnWidth: 100
 			},
 			{
 				label: '昵称',
 				field: 'nickName',
 				columnWidth: 100
+			},
+			{
+				label: '手机号',
+				field: 'phone',
+				columnWidth: 100
+			},
+			{
+				label: '部门',
+				field: 'department.name'
+			},
+			{
+				label: '生日',
+				field: 'birthday',
+				type: 'date'
 			},
 			{
 				label: '创建日期',
@@ -106,7 +120,7 @@ export default {
 			{
 				label: '备注',
 				field: 'remark',
-				columnWidth: 300
+				columnWidth: 200
 			}
 		];
 		const companyId = hgetStorage('companyId');
@@ -190,11 +204,11 @@ export default {
 			this.searchFormHandlerMixin(searchForm);
 			this.userList();
 		},
-		resetPasswordHandler(row) {
+		async resetPasswordHandler(row) {
 			const dataJson = {
 				id: row.id
 			};
-			userPasswordEditService(dataJson);
+			await userPasswordEditService(dataJson);
 		}
 	}
 };

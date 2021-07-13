@@ -45,7 +45,6 @@ export const roleListService = options => {
 			return item.companyId === companyId;
 		});
 	}
-	console.log(companyRoles);
 	const searchResult = companyRoles.records.filter(item => {
 		return item.name.indexOf(name) > -1;
 	});
@@ -136,6 +135,7 @@ export const roleDeleteService = options => {
 /* 角色赋权限 */
 export const roleAuthorizeService = options => {
 	const body = JSON.parse(options.body);
+	body.updateDate = Mock.Random.now();
 	roleData.records.forEach((item, index) => {
 		if (item.id === body.id) {
 			roleData.records[index] = { ...item, ...body };

@@ -141,13 +141,13 @@ export default {
 			},
 			{
 				label: '更新日期',
-				filed: 'updateDate',
+				field: 'updateDate',
 				type: 'date'
 			}
 		];
 		const companyId = hgetStorage('companyId');
 		if (companyId === 0) {
-			tableColumn.splice(4, 0, {
+			tableColumn.splice(2, 0, {
 				label: '企业',
 				field: 'company.name',
 				columnWidth: 100

@@ -1,7 +1,7 @@
 <template>
 	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
 		<el-form-item label="所属企业" prop="companyId">
-			<Select v-model="formData.companyId" :optionsData_p="companyData" placeholder="请选择所属企业">
+			<Select v-model="formData.companyId" :optionsData_p="companyData" placeholder="请选择所属企业" :disabled="!isSupperAdmin">
 				<el-option label="平台" :value="0"></el-option>
 			</Select>
 		</el-form-item>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { hgetStorage } from '@u/htools.web';
+
 import Select from '@c/ui/Select';
 import Radio from '@c/ui/Radio';
 import Input from '@c/ui/Input';
@@ -63,6 +65,7 @@ export default {
 				{ label: '正常', value: 0 },
 				{ label: '禁用', value: 1 }
 			],
+			isSupperAdmin: false,
 			companyData: null
 		};
 	},
@@ -77,6 +80,13 @@ export default {
 			},
 			deep: true,
 			immediate: true
+		}
+	},
+	mounted() {
+		const companyId = hgetStorage('companyId');
+		this.formData.companyId = companyId;
+		if (hgetStorage('roleIds').indexOf(1) > -1) {
+			this.isSupperAdmin = true;
 		}
 	},
 	methods: {

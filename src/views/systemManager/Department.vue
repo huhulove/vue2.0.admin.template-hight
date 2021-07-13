@@ -97,6 +97,10 @@ export default {
 					field: 'dutyPeople.name'
 				},
 				{
+					label: '企业',
+					field: 'company.name'
+				},
+				{
 					label: '添加日期',
 					field: 'createDate',
 					type: 'date'

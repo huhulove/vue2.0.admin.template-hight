@@ -6,17 +6,14 @@
 		<el-form-item label="密码" prop="userPwd" v-if="editId === -1">
 			<Input type="password" v-model="formData.userPwd" placeholder="请输入密码" />
 		</el-form-item>
-		<el-form-item label="昵称" prop="nickName">
+		<el-form-item label="昵称">
 			<Input v-model="formData.nickName" placeholder="请输入昵称" />
 		</el-form-item>
 		<el-form-item label="角色" prop="roleIds">
-			<Select
-				v-model="formData.roleIds"
-				:optionsData_p="roleData"
-				:optionJson_p="{ label: 'name', value: 'id' }"
-				placeholder="请选择角色"
-				multiple
-			></Select>
+			<Select v-model="formData.roleIds" :optionsData_p="roleData" :optionJson_p="{ label: 'name', value: 'id' }" placeholder="请选择角色" multiple></Select>
+		</el-form-item>
+		<el-form-item label="部门">
+			<SelectTree v-model="formData.departmentId" :data="departmentData" node-key="id"></SelectTree>
 		</el-form-item>
 		<el-form-item label="状态" prop="status">
 			<Radio v-model="formData.status" :data_p="statusData"></Radio>
@@ -32,11 +29,13 @@ import Select from '@c/ui/Select';
 import Radio from '@c/ui/Radio';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
+import SelectTree from '@c/ui/SelectTree';
 
 // eslint-disable-next-line import/named
 import { userAddService, userEditService } from '@s/system/UserService';
 // eslint-disable-next-line import/no-cycle
 import { roleListService } from '@s/system/RoleService';
+import { departmentListService } from '@s/system/DepartmentService';
 
 export default {
 	props: ['selectData_p'],
@@ -44,7 +43,8 @@ export default {
 		Select,
 		Radio,
 		DataForm,
-		Input
+		Input,
+		SelectTree
 	},
 	data() {
 		return {
@@ -55,6 +55,7 @@ export default {
 				nickName: '',
 				status: 0,
 				companyId: 0,
+				departmentId: null,
 				remark: '',
 				roleIds: []
 			},
@@ -79,13 +80,6 @@ export default {
 						trigger: 'blur'
 					}
 				],
-				nickName: [
-					{
-						required: true,
-						message: '请输入用户昵称',
-						trigger: 'blur'
-					}
-				],
 				roleIds: [
 					{
 						required: true,
@@ -94,7 +88,8 @@ export default {
 					}
 				]
 			},
-			roleData: [],
+			roleData: null,
+			departmentData: null,
 			statusData: [
 				{ label: '正常', value: 0 },
 				{ label: '禁用', value: 1 }
@@ -104,7 +99,8 @@ export default {
 	watch: {
 		selectData_p: {
 			async handler(newValue) {
-				this.roleData.length === 0 && (await this.roleList());
+				this.roleData === null && (await this.roleList());
+				this.departmentData === null && (await this.departmentList());
 				if (newValue.length > 0) {
 					this.editId = newValue[0].id;
 					this.formData = { ...newValue[0] };
@@ -116,6 +112,16 @@ export default {
 		}
 	},
 	methods: {
+		async departmentList() {
+			const dataJson = {
+				pageIndex: 1,
+				pageSize: 10000,
+				name: ''
+			};
+			const res = await departmentListService(dataJson);
+			console.log(res);
+			this.departmentData = res;
+		},
 		async roleList() {
 			const dataJson = {
 				pageIndex: 1,

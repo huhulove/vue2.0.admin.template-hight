@@ -116,5 +116,29 @@ export const addTreeKey = (data, level, json = {}) => {
 		return data;
 	}
 };
+/* 获取树中某一节点的所有子级 */
+const childNodesDeep = (nodes, arr, key) => {
+	if (nodes) {
+		nodes.forEach(ele => {
+			arr.push(ele[key]);
+			if (ele.children) {
+				this.childNodesDeep(ele.children, arr, key);
+			}
+		});
+	}
+};
+export const getChildrenNodes = (nodes, value, arr, key = 'id') => {
+	for (const el of nodes) {
+		if (el[key] === value) {
+			arr.push(el[key]);
+			if (el.children) {
+				childNodesDeep(el.children, arr, key);
+			}
+		} else if (el.children) {
+			getChildrenNodes(el.children, value, arr, key);
+		}
+	}
+	return arr;
+};
 
 export default changeTreeDataToChildren;

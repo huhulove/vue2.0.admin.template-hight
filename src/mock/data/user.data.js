@@ -1,10 +1,13 @@
 import Mock from 'mockjs';
 import { hgetAllParams, hgetStorage } from '../../util/htools.web';
+import { changeTreeDataToChildren, getChildrenNodes } from '../../util/htools.tree';
 /* 引用数据 */
 // eslint-disable-next-line import/no-cycle
 import { roleDataRef } from './role.data';
 // eslint-disable-next-line import/no-cycle
 import { companyDataRef } from './company.data';
+// eslint-disable-next-line import/no-cycle
+import { departmentDataRef } from './department.data';
 
 const userName = ['admin'];
 const userStatus = [0, 1];
@@ -30,6 +33,16 @@ const filterCompanyData = () => {
 		};
 	});
 };
+let departmentData = [];
+const filterDepartmentData = () => {
+	departmentData = departmentDataRef.map(item => {
+		return {
+			id: item.id,
+			name: item.name,
+			dutyPeopleId: item.dutyPeopleId
+		};
+	});
+};
 const userData = Mock.mock({
 	records: [
 		{
@@ -43,6 +56,7 @@ const userData = Mock.mock({
 			remark: Mock.Random.title(),
 			roleIds: roleDataIds,
 			companyId: companyDataRef[0].id,
+			departmentId: null,
 			birthday: null,
 			email: null,
 			phone: null,
@@ -63,18 +77,12 @@ export const userLoginDetailService = () => {
 	})[0];
 	result.company = company.name;
 	result.role = [];
+	result.powers = [];
 	filterRoleData();
 	result.roleIds.forEach(roleId => {
 		roleData.forEach(role => {
 			if (roleId === role.id) {
 				result.role.push(role.name);
-			}
-		});
-	});
-	result.powers = [];
-	result.roleIds.forEach(roleId => {
-		roleData.forEach(role => {
-			if (roleId === role.id) {
 				result.powers.push(...role.powerCodes);
 			}
 		});
@@ -130,19 +138,63 @@ export const userListService = options => {
 			return item.companyId === companyId;
 		});
 	}
-	const searchResult = companyUsers.records.filter(item => {
+	let searchResult = companyUsers.records.filter(item => {
 		return item.nickName.indexOf(nickName) > -1;
 	});
 	searchResult.sort((a, b) => {
 		return b.id - a.id;
 	});
-	const records = [];
+	let records = [];
 	searchResult.forEach((item, index) => {
 		if (index >= (pageIndex - 1) * pageSize && index <= pageIndex * pageSize - 1) {
 			records.push({ ...item });
 		}
 	});
-	filterRoleData();
+	const departmentId = hgetStorage('departmentId');
+	const userRoles = hgetStorage('roleIds');
+	const userId = hgetStorage('token');
+	//
+	const companyAdminRoles = [2];
+	let isCompanyAdmin = false;
+	companyAdminRoles.forEach(companyRole => {
+		if (userRoles.indexOf(companyRole) > -1) {
+			isCompanyAdmin = true;
+		}
+	});
+	// 企业管理员返回当前公司下所有员工
+
+	// 当前登录人角色不是超级管理员
+	// 当前登录人角色也不是企业管理员
+	if (userRoles.indexOf(1) === -1 && !isCompanyAdmin) {
+		if (departmentId) {
+			let isDutyPeople = false; // true -> 部门负责人  false -> 不是部门负责人
+			departmentData.forEach(department => {
+				if (department.id === departmentId && department.dutyPeopleId === userId) {
+					isDutyPeople = true;
+				}
+			});
+			console.log(isDutyPeople);
+			// 是部门负责人
+			if (isDutyPeople) {
+				const departmentTemp = changeTreeDataToChildren(departmentDataRef);
+				const departmentIdsArr = [];
+				getChildrenNodes(departmentTemp, departmentId, departmentIdsArr);
+				records = records.filter(user => {
+					return departmentIdsArr.indexOf(user.departmentId) > -1;
+				});
+			}
+			// 不是部门负责人
+			if (!isDutyPeople) {
+				records = records.filter(user => {
+					return user.departmentId === departmentId;
+				});
+			}
+		} else {
+			searchResult = [];
+			records = [];
+		}
+	}
+
 	filterCompanyData();
 	records.forEach(user => {
 		companyData.forEach(company => {
@@ -152,6 +204,7 @@ export const userListService = options => {
 			}
 		});
 	});
+	filterRoleData();
 	records.forEach(user => {
 		user.role = [];
 		user.roleIds.forEach(roleId => {
@@ -162,6 +215,15 @@ export const userListService = options => {
 			});
 		});
 		delete user.roleIds;
+	});
+	filterDepartmentData();
+	records.forEach(user => {
+		departmentData.forEach(department => {
+			if (department.id === user.departmentId) {
+				user.department = { ...department };
+				delete user.departmentId;
+			}
+		});
 	});
 	return Mock.mock({
 		code: 200,
@@ -194,7 +256,8 @@ export const userAddService = options => {
 	const body = JSON.parse(options.body);
 	body.createDate = Mock.Random.now();
 	body.id = userData.records[userData.records.length - 1].id + 1;
-	userData.records.unshift(body);
+	body.companyId = body.companyId ? body.companyId : hgetStorage('companyId');
+	userData.records.push(body);
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
@@ -241,7 +304,7 @@ export const userDeleteService = options => {
 export const userPasswordEditService = options => {
 	const { id, userPwdNew, userPwdOld } = JSON.parse(options.body);
 	const result = userData.records.filter(item => {
-		return item.id === id || hgetStorage('token');
+		return item.id === (id || hgetStorage('token'));
 	})[0];
 	if (!id) {
 		if (result.userPwd === userPwdOld) {
@@ -256,7 +319,7 @@ export const userPasswordEditService = options => {
 	} else {
 		result.userPwd = '123456';
 	}
-
+	result.updateDate = Mock.Random.now();
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',

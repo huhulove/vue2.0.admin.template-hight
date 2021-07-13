@@ -1,7 +1,10 @@
 import Mock from 'mockjs';
-import { hgetAllParams } from '../../util/htools.web';
+import { hgetAllParams, hgetStorage } from '../../util/htools.web';
 /* 引用数据 */
+// eslint-disable-next-line import/no-cycle
 import { userDataRef } from './user.data';
+// eslint-disable-next-line import/no-cycle
+import { companyDataRef } from './company.data';
 
 let departmentData = [
 	{
@@ -38,14 +41,31 @@ const fileterUserData = () => {
 		};
 	});
 };
+let companyData = [];
+const filterCompanyData = () => {
+	companyData = companyDataRef.map(item => {
+		return {
+			id: item.id,
+			name: item.name
+		};
+	});
+};
 departmentData.forEach(item => {
 	item.createDate = Mock.Random.datetime();
 	item.updateDate = null;
+	item.companyId = 0;
 });
 /* 部门列表 */
 export const departmentListService = options => {
 	const { name, pageIndex, pageSize } = JSON.parse(options.body);
-	const searchResult = departmentData.filter(item => {
+	const companyId = hgetStorage('companyId');
+	let companyDepartments = departmentData;
+	if (companyId !== 0) {
+		companyDepartments = departmentData.filter(item => {
+			return item.companyId === companyId;
+		});
+	}
+	const searchResult = companyDepartments.filter(item => {
 		return item.name.indexOf(name) > -1;
 	});
 	searchResult.sort((a, b) => {
@@ -70,6 +90,15 @@ export const departmentListService = options => {
 		}
 		delete item.dutyPeopleId;
 	});
+	filterCompanyData();
+	records.forEach(department => {
+		companyData.forEach(company => {
+			if (company.id === department.companyId) {
+				department.company = { ...company };
+				delete department.companyId;
+			}
+		});
+	});
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
@@ -87,6 +116,7 @@ export const departmentAddService = options => {
 	const body = JSON.parse(options.body);
 	body.createDate = Mock.Random.now();
 	body.id = departmentData[departmentData.length - 1].id + 1;
+	body.companyId = hgetStorage('companyId');
 	departmentData.push(body);
 	return Mock.mock({
 		code: 200,
@@ -147,5 +177,5 @@ export const departmentDeleteService = options => {
 		result: ids
 	});
 };
-
+export const departmentDataRef = departmentData;
 export default departmentListService;

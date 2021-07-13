@@ -77,7 +77,8 @@ export const companyAddService = options => {
 		userPwd: body.password,
 		companyId: body.id,
 		nickName: '',
-		roleIds: []
+		roleIds: [],
+		status: 0
 	};
 	userAddService({ body: JSON.stringify(user) });
 	companyData.records.push(body);

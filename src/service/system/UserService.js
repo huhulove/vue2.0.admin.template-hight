@@ -95,6 +95,7 @@ export const userLoginDetailService = data => {
 			hsetStorage('powers', res.powers);
 			hsetStorage('roleIds', res.roleIds);
 			hsetStorage('companyId', res.companyId);
+			hsetStorage('departmentId', res.departmentId);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
