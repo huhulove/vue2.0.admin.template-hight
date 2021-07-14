@@ -21,7 +21,11 @@ export const loginService = data => {
 
 export const loginOutService = () => {
 	hremoveStorage('token');
-	hremoveStorage('organization');
+	hremoveStorage('companyId');
+	hremoveStorage('powers');
+	hremoveStorage('departmentId');
+	hremoveStorage('btnPowers');
+	hremoveStorage('roleIds');
 };
 
 export default loginService;

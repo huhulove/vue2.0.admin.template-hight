@@ -80,6 +80,7 @@
 						:check-strictly="true"
 						:expand-on-click-node="false"
 						@check="checkChange"
+						@node-click="nodeClick"
 					></el-tree>
 				</Card>
 			</el-col>
@@ -93,7 +94,7 @@
 
 <script>
 import ListMixin from '@m/List.mixin';
-import { getTreeNodeById } from '@u/htools.tree.js';
+import { getTreeNodeById, getChildrenNodes } from '@u/htools.tree.js';
 // eslint-disable-next-line import/no-cycle
 import { changePowerToEdit } from '@u/index';
 
@@ -361,6 +362,43 @@ export default {
 					this.$refs.tree.setChecked(node.powerCode, false, false);
 				}
 			}
+		},
+		nodeClick(data, node) {
+			const checkedNodes = this.$refs.tree.getCheckedNodes();
+			const halfCheckedNodes = this.$refs.tree.getHalfCheckedNodes();
+			const activedPowerCodes = [];
+			getChildrenNodes(this.authorizeData, data.powerCode, activedPowerCodes, 'powerCode');
+			halfCheckedNodes.forEach(halfNode => {
+				if (data.powerCode !== halfNode.powerCode) {
+					const index = checkedNodes.indexOf(halfNode);
+					if (index > -1) {
+						checkedNodes.splice(index, 1);
+					}
+				}
+			});
+			if (!node.checked) {
+				checkedNodes.forEach(node => {
+					activedPowerCodes.push(node.powerCode);
+				});
+				this.$refs.tree.setCheckedKeys(activedPowerCodes);
+			} else {
+				for (let i = 0; i < checkedNodes.length; i++) {
+					const node = checkedNodes[i];
+					const index = activedPowerCodes.indexOf(node.powerCode);
+					if (index > -1) {
+						checkedNodes.splice(i, 1);
+						i--;
+					}
+				}
+				this.$refs.tree.setCheckedNodes(checkedNodes);
+			}
+
+			halfCheckedNodes.forEach(halfNode => {
+				if (data.powerCode !== halfNode.powerCode) {
+					const treeNode = this.$refs.tree.getNode(halfNode.powerCode);
+					treeNode.indeterminate = true;
+				}
+			});
 		}
 	}
 };

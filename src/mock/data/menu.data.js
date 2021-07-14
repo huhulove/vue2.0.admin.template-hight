@@ -102,7 +102,6 @@ export const userMenuAuthorizeService = () => {
 	const userRole = roleDataRef.filter(item => {
 		return user.roleIds.indexOf(item.id) > -1;
 	});
-	console.log(userRole);
 	const powerCodes = [];
 	userRole.forEach(item => {
 		powerCodes.push(...item.powerCodes);
@@ -124,7 +123,6 @@ export const userMenuAuthorizeService = () => {
 			asideMenuData.push(asideMenuItem);
 		}
 	});
-	console.log(asideMenuData);
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',

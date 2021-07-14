@@ -21,14 +21,12 @@
 				></el-table-column>
 				<el-table-column v-else :width="item.columnWidth ? item.columnWidth : 'auto'" :prop="item.field" :label="item.label" :key="item.field">
 					<template slot-scope="scope">
-						<img
+						<ImageViewer
 							v-if="item.type === 'image'"
-							:src="scope.row[item.field]"
-							:width="item.imageWidth ? item.imageWidth : 30"
-							:height="item.imageHeight ? item.imageHeight : 30"
-							alt=""
-							srcset=""
-						/>
+							:imageData_p="[scope.row[item.field]]"
+							:width_p="item.imageWidth ? item.imageWidth : 30"
+							:height_p="item.imageHeight ? item.imageHeight : 30"
+						></ImageViewer>
 						<span v-else-if="item.type === 'date'">{{ scope.row[item.field] | formatDate }}</span>
 						<span v-else-if="item.type === 'link'">
 							<router-link v-if="item.isInlink" :to="scope.row[item.linkField]">{{ scope.row[item.field] }}</router-link>
@@ -44,9 +42,14 @@
 </template>
 
 <script>
+import ImageViewer from '@c/ui/ImageViewer';
+
 export default {
 	inheritAttrs: false,
 	props: ['tableColumn_p', 'selectData_p', 'isHideCheckbox_p'],
+	components: {
+		ImageViewer
+	},
 	data() {
 		return {};
 	},

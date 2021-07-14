@@ -173,7 +173,6 @@ export const userListService = options => {
 					isDutyPeople = true;
 				}
 			});
-			console.log(isDutyPeople);
 			// 是部门负责人
 			if (isDutyPeople) {
 				const departmentTemp = changeTreeDataToChildren(departmentDataRef);
