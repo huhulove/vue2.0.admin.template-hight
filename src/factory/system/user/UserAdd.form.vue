@@ -12,7 +12,7 @@
 		<el-form-item label="角色" prop="roleIds">
 			<Select v-model="formData.roleIds" :optionsData_p="roleData" :optionJson_p="{ label: 'name', value: 'id' }" placeholder="请选择角色" multiple></Select>
 		</el-form-item>
-		<el-form-item label="部门">
+		<el-form-item label="部门" v-if="!isSupperAdmin || loginCompanyId === formData.companyId">
 			<SelectTree v-model="formData.departmentId" :data="departmentData" node-key="id"></SelectTree>
 		</el-form-item>
 		<el-form-item label="状态" prop="status">
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { hgetStorage } from '@u/htools.web';
+
 import Select from '@c/ui/Select';
 import Radio from '@c/ui/Radio';
 import Input from '@c/ui/Input';
@@ -49,6 +51,8 @@ export default {
 	data() {
 		return {
 			editId: -1,
+			loginCompanyId: null,
+			isSupperAdmin: false,
 			formData: {
 				userName: '',
 				userPwd: '',
@@ -110,6 +114,12 @@ export default {
 			deep: true,
 			immediate: true
 		}
+	},
+	mounted() {
+		if (hgetStorage('roleIds').indexOf(1) > -1) {
+			this.isSupperAdmin = true;
+		}
+		this.loginCompanyId = hgetStorage('companyId');
 	},
 	methods: {
 		async departmentList() {

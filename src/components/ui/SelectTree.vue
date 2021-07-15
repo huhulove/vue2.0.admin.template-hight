@@ -1,5 +1,6 @@
 <template>
 	<el-select
+		ref="selectTreeEle"
 		:value="nodeName"
 		v-bind="$attrs"
 		v-on="$listeners"
@@ -55,6 +56,7 @@ export default {
 			this.nodeName = node.label;
 			/* this.$emit('update:nodeValue_p', node[this.$attrs['node-key']]); */
 			this.$emit('input', node[this.$attrs['node-key']]);
+			this.$refs.selectTreeEle.blur();
 		},
 		clearHandler() {
 			this.nodeName = null;
