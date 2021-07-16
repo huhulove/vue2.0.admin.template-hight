@@ -12,17 +12,17 @@ import {
 	userPasswordEditService,
 	userEditLoginInfoService,
 	userEditAvatarService
-} from './data/user.data';
+} from './action/user.action';
 /* 权限 */
-import { authorizeListService, authorizeAddService, authorizeEditService, authorizeDeleteService, authorizeDetailService } from './data/authorize.data';
+import { authorizeListService, authorizeAddService, authorizeEditService, authorizeDeleteService, authorizeDetailService } from './action/authorize.action';
 /* 角色 */
-import { roleListService, roleAddService, roleEditService, roleDeleteService, roleAuthorizeService, roleDetailService } from './data/role.data';
+import { roleListService, roleAddService, roleEditService, roleDeleteService, roleAuthorizeService, roleDetailService } from './action/role.action';
 /* 菜单 */
-import { menuListService, userMenuAuthorizeService, menuAddService, menuEditService, menuDeleteService, menuAuthorizeService, menuDetailService } from './data/menu.data';
+import { menuListService, userMenuAuthorizeService, menuAddService, menuEditService, menuDeleteService, menuAuthorizeService, menuDetailService } from './action/menu.action';
 /* 企业 */
-import { companyListService, companyAddService, companyEditService, companyDetailService, companyRemoveService } from './data/company.data';
+import { companyListService, companyAddService, companyEditService, companyDetailService, companyRemoveService } from './action/company.action';
 /* 部门 */
-import { departmentListService, departmentAddService, departmentEditService, departmentDetailService, departmentDeleteService } from './data/department.data';
+import { departmentListService, departmentAddService, departmentEditService, departmentDetailService, departmentDeleteService } from './action/department.action';
 /* 公共 */
 import { uploadImgService } from './data/common.data';
 
