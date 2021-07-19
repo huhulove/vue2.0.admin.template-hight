@@ -1,6 +1,6 @@
 import Mock from 'mockjs';
 /* 登录 */
-import { login } from './data/login.data';
+import { login } from './action/login.action';
 /* 用户 */
 import {
 	userLoginDetailService,

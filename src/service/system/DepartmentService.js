@@ -14,7 +14,10 @@ export const departmentListService = data => {
 			const res = await hpostRequest('department/departmentAllQuery', dataJson);
 			const resTreeTemp = changeTreeDataToChildren(res.records);
 			const resTree = addTreeKey(resTreeTemp, 0, { value: 'id', label: 'name' });
-			resolve(resTree);
+			res.records = resTree;
+			res.pages = Math.ceil(resTree.length / dataJson.pageSize);
+			res.total = resTree.length;
+			resolve(res);
 		} catch (error) {
 			console.log(error);
 		}

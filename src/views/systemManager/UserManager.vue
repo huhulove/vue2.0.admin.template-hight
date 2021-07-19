@@ -123,8 +123,8 @@ export default {
 				columnWidth: 200
 			}
 		];
-		const companyId = hgetStorage('companyId');
-		if (companyId === 0) {
+		const userRolesId = hgetStorage('roleIds');
+		if (userRolesId.indexOf(this.$envConfig.superAdminRoleId) === 0) {
 			tableColumn.splice(4, 0, {
 				label: '企业',
 				field: 'company.name',

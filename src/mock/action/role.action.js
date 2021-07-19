@@ -9,10 +9,11 @@ import roleData from '../data/role.data';
 export const roleListService = options => {
 	const { name, pageIndex, pageSize } = JSON.parse(options.body);
 	const companyId = hgetStorage('companyId');
+	const userRoles = hgetStorage('roleIds');
 	const companyRoles = {
 		records: roleData
 	};
-	if (companyId !== 0) {
+	if (companyId !== 0 || (companyId === 0 && userRoles.indexOf(1) === -1)) {
 		companyRoles.records = roleData.filter(item => {
 			return item.companyId === companyId;
 		});
@@ -54,6 +55,7 @@ export const roleAddService = options => {
 	const body = JSON.parse(options.body);
 	body.id = roleData[roleData.length - 1].id + 1;
 	body.createDate = Mock.Random.now();
+	body.companyId = hgetStorage('companyId');
 	body.powerCodes = [];
 	roleData.push(body);
 	return Mock.mock({
@@ -94,9 +96,13 @@ export const roleDeleteService = options => {
 			result: ids
 		});
 	}
-	roleData = roleData.filter(item => {
-		return ids.indexOf(item.id) === -1;
-	});
+	for (let i = 0; i < roleData.length; i++) {
+		const item = roleData[i];
+		if (ids.indexOf(item.id) > -1) {
+			roleData.splice(i, 1);
+			i--;
+		}
+	}
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
@@ -146,5 +152,13 @@ export const filterRoleData = () => {
 export const roleDataIds = () => {
 	return roleData.map(item => {
 		return item.id;
+	});
+};
+/* 查询所有角色 */
+export const allRoleData = () => {
+	return Mock.mock({
+		code: 200,
+		msg: '操作成功',
+		result: roleData
 	});
 };

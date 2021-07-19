@@ -1,59 +1,39 @@
 <template>
 	<div class="login-container">
-		<el-form
-			ref="loginForm"
-			:model="loginForm"
-			:rules="loginRules"
-			class="login-form"
-			auto-complete="on"
-			label-position="left"
-		>
+		<DataForm class="login-form" ref="formEle" :model="formData" :rules="formRules" :labelWidth_p="'0px'">
 			<div class="title-container">
-				<h3 class="title">医工/第三方智能化平台</h3>
+				<h3 class="title">管理后台</h3>
 			</div>
 			<el-form-item prop="userName">
-				<el-input
-					ref="userName"
-					v-model="loginForm.userName"
-					placeholder="请输入用户名"
-					name="username"
-					type="text"
-					tabindex="1"
-					auto-complete="on"
-				/>
+				<Input v-model="formData.userName" placeholder="请输入用户名" />
 			</el-form-item>
 			<el-form-item prop="userPwd">
-				<el-input
-					key="userPwd"
-					ref="userPwd"
-					v-model="loginForm.userPwd"
-					type="password"
-					placeholder="请输入密码"
-					name="userPwd"
-					tabindex="2"
-					auto-complete="on"
-				/>
+				<Input v-model="formData.userPwd" type="password" placeholder="请输入密码" />
 			</el-form-item>
-			<el-button
-				:loading="loading"
-				type="primary"
-				style="width: 100%; margin-bottom: 30px"
-				@click.native.prevent="handleLogin"
-			>登录</el-button>
-		</el-form>
+			<template slot="footer">
+				<el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">登录</el-button>
+			</template>
+		</DataForm>
 	</div>
 </template>
 
 <script>
+import DataForm from '@c/ui/DataForm';
+import Input from '@c/ui/Input';
+
 export default {
 	name: 'Login',
+	components: {
+		DataForm,
+		Input
+	},
 	data() {
 		return {
-			loginForm: {
+			formData: {
 				userName: '',
 				userPwd: ''
 			},
-			loginRules: {
+			formRules: {
 				userName: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
 				userPwd: [{ required: true, trigger: 'blur', message: '请输入密码' }]
 			},
@@ -79,11 +59,11 @@ export default {
 	},
 	methods: {
 		handleLogin() {
-			this.$refs.loginForm.validate(async valid => {
+			this.$refs.formEle.$refs.formEle.validate(async valid => {
 				if (valid) {
 					this.loading = true;
 					try {
-						await this.$store.dispatch('loginStore', this.loginForm);
+						await this.$store.dispatch('loginStore', this.formData);
 						this.$router.push({ path: this.redirect || '/' });
 						this.loading = false;
 					} catch (error) {
@@ -105,7 +85,7 @@ export default {
 	width: 100%;
 	background-color: #2d3a4b;
 	overflow: hidden;
-	background: url(../assets/login_bg.jpg) no-repeat;
+	background: url(../../assets/login_bg.jpg) no-repeat;
 	.login-form {
 		position: relative;
 		width: 520px;

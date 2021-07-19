@@ -94,22 +94,25 @@ export default {
 				},
 				{
 					label: '权限标识',
-					field: 'powerCode'
+					field: 'powerCode',
+					columnWidth: '220'
 				},
 				{
 					label: '创建时间',
 					field: 'createDate',
-					type: 'date'
+					type: 'date',
+					columnWidth: '200'
 				},
 				{
 					label: '更新时间',
 					field: 'updateDate',
-					type: 'date'
+					type: 'date',
+					columnWidth: '200'
 				},
 				{
 					label: '备注',
 					field: 'remark',
-					columnWidth: 400
+					columnWidth: '300'
 				}
 			],
 			delTips: ''

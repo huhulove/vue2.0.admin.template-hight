@@ -70,18 +70,7 @@
 							保存
 						</el-button>
 					</div>
-					<el-alert title="单击父节点名称可选中全部子节点" type="warning" style="margin-bottom: 10px" :closable="false"></el-alert>
-					<el-tree
-						ref="tree"
-						:props="defaultProps"
-						:data="authorizeData"
-						node-key="powerCode"
-						show-checkbox
-						:check-strictly="true"
-						:expand-on-click-node="false"
-						@check="checkChange"
-						@node-click="nodeClick"
-					></el-tree>
+					<AuthorizeTree ref="authorizeTreeEle" :hasPowerCodes_p="hasPowerCodes"></AuthorizeTree>
 				</Card>
 			</el-col>
 		</el-row>
@@ -94,7 +83,6 @@
 
 <script>
 import ListMixin from '@m/List.mixin';
-import { getTreeNodeById, getChildrenNodes } from '@u/htools.tree.js';
 // eslint-disable-next-line import/no-cycle
 import { changePowerToEdit } from '@u/index';
 
@@ -104,6 +92,7 @@ import Dialog from '@c/ui/Dialog';
 import Card from '@c/ui/Card';
 
 import MenuAEForm from '@f/system/menu/MenuAdd.form';
+import AuthorizeTree from '@f/layout/AuthorizeTree';
 
 // eslint-disable-next-line import/no-cycle
 import { menuListService, menuDeleteService, menuAuthorizeService, menuDetailService } from '@s/system/MenuService';
@@ -117,7 +106,8 @@ export default {
 		Button,
 		Dialog,
 		Card,
-		MenuAEForm
+		MenuAEForm,
+		AuthorizeTree
 	},
 	data() {
 		return {
@@ -154,9 +144,7 @@ export default {
 				}
 			],
 			delTips: '',
-			authorizeData: [],
-			defaultProps: { children: 'children', label: 'powerName' },
-			checkedNode: []
+			hasPowerCodes: null
 		};
 	},
 	computed: {
@@ -209,10 +197,7 @@ export default {
 			this.isRefreshList = true;
 		},
 		async editSingleHandler(row) {
-			const dataJson = {
-				id: row.id
-			};
-			const res = await menuDetailService(dataJson);
+			const res = await this.menuDetail(row);
 			this.editSingleHandlerMixin(res);
 			this.setAuthorizeHandler(res);
 		},
@@ -220,33 +205,20 @@ export default {
 			this.deleteSingleHandlerMixin(row);
 		},
 		async setAuthorizeHandler(row) {
-			this.checkedNode = [];
+			const res = await this.menuDetail(row);
+			this.hasPowerCodes = res.powers;
+		},
+		async menuDetail(row) {
 			const dataJson = {
 				id: row.id
 			};
 			this.editId = row.id;
 			const res = await menuDetailService(dataJson);
-			// this.$refs.tableDom.setCurrentRow(row);
-			// console.log(res.powers);
-			this.$refs.tree.setCheckedKeys(res.powers);
-
-			const allCheckedNodes = this.$refs.tree.getCheckedNodes(false, true);
-			allCheckedNodes.forEach(node => {
-				const treeNode = this.$refs.tree.getNode(node.powerCode);
-				if (treeNode.childNodes !== undefined && treeNode.childNodes.length > 0) {
-					// 有子节点，说明是父级
-					const allcs = this.getNodeChildrenCheckState(treeNode);
-					// console.log(allcs);
-					if (allcs !== 2) {
-						treeNode.indeterminate = true;
-					}
-				}
-			});
+			return res;
 		},
 		async saveMenu() {
 			const checkedNodes = this.$refs.tree.getCheckedNodes();
 			const halfCheckedNodes = this.$refs.tree.getHalfCheckedNodes();
-			/* const lastNodesArr = this.lastNodesMixin(checkedNodes); */
 			const ids = checkedNodes.map(item => {
 				return item.powerCode;
 			});
@@ -261,144 +233,6 @@ export default {
 			};
 			await menuAuthorizeService(dataJson);
 			this.$store.commit('setRefreshAside', true);
-		},
-		checkChange(node) {
-			const treeNode = this.$refs.tree.getNode(node.powerCode);
-
-			if (treeNode.checked) {
-				treeNode.hasBeenChecked = true;
-			} else {
-				treeNode.hasBeenChecked = false;
-			}
-
-			let pTreeNode = null;
-			let ppowerCode = null;
-			getTreeNodeById(this.authorizeData, 'powerCode', node.parentId, pnode => {
-				pTreeNode = this.$refs.tree.getNode(pnode.powerCode);
-				ppowerCode = pnode.powerCode;
-				// console.log(pTreeNode);
-			});
-
-			if (node.children === undefined) {
-				// console.log('当前节点被选中');
-				// 当前点击的节点是被选中
-				// 判断当前节点的父级，下面的所有，是否都被选中了 0，都没选中，1，部分选中，2全选中
-				if (pTreeNode != null) {
-					const allChecked = this.getNodeChildrenCheckState(pTreeNode);
-					console.log(`父节点下子节点选中状态${allChecked}`);
-					if (allChecked === 0) {
-						// 判断原来父级自己是否点选过
-						const pHasChecked = pTreeNode.hasBeenChecked === undefined ? false : pTreeNode.hasBeenChecked;
-						if (pHasChecked) {
-							// 设置父级为半选状态
-							pTreeNode.indeterminate = true;
-							// this.$refs.tree.setChecked(ppowerCode, false, false);
-						} else {
-							// 设置父级为不选状态
-							pTreeNode.indeterminate = false;
-							this.$refs.tree.setChecked(ppowerCode, false, false);
-						}
-					} else if (allChecked === 1) {
-						// 设置父级为半选状态
-						pTreeNode.indeterminate = true;
-						// this.$refs.tree.setChecked(ppowerCode, false, false);
-					} else if (allChecked === 2) {
-						// 设置父级为选中状态
-						pTreeNode.indeterminate = false;
-						this.$refs.tree.setChecked(ppowerCode, true, false);
-					}
-				}
-			} else {
-				// 点击父节点
-				const allChecked = this.getNodeChildrenCheckState(treeNode);
-				// console.log(`父级下的子节点选中状态${allChecked}`);
-				if (allChecked === 0) {
-					// 响应事件
-					if (treeNode.checked) {
-						treeNode.indeterminate = true;
-					}
-				} else {
-					// 不变
-					if (allChecked === 1) {
-						treeNode.indeterminate = true;
-					} else if (allChecked === 2) {
-						this.$refs.tree.setChecked(node.powerCode, true, false);
-					}
-					console.log('');
-				}
-			}
-		},
-		getNodeChildrenCheckState(node) {
-			let checkedcnt = 0;
-			if (node === null) return 2;
-			node.childNodes.forEach(item => {
-				if (item.checked) checkedcnt++;
-			});
-			if (checkedcnt === 0) return 0;
-			if (checkedcnt === node.childNodes.length) return 2;
-			return 1;
-		},
-		getParentNode(node) {
-			console.log(node);
-		},
-		changeNodeStatus(treeNode, node) {
-			let isIndeterminate = false;
-			let isChecked = true;
-			treeNode.childNodes.forEach(item => {
-				if (item.checked) {
-					isIndeterminate = true;
-				}
-				if (!item.checked) {
-					isChecked = false;
-				}
-			});
-			if (isChecked) {
-				this.$refs.tree.setChecked(node.powerCode, true, false);
-			}
-			if (!isChecked) {
-				if (isIndeterminate) {
-					treeNode.indeterminate = isIndeterminate;
-				} else {
-					this.$refs.tree.setChecked(node.powerCode, false, false);
-				}
-			}
-		},
-		nodeClick(data, node) {
-			const checkedNodes = this.$refs.tree.getCheckedNodes();
-			const halfCheckedNodes = this.$refs.tree.getHalfCheckedNodes();
-			const activedPowerCodes = [];
-			getChildrenNodes(this.authorizeData, data.powerCode, activedPowerCodes, 'powerCode');
-			halfCheckedNodes.forEach(halfNode => {
-				if (data.powerCode !== halfNode.powerCode) {
-					const index = checkedNodes.indexOf(halfNode);
-					if (index > -1) {
-						checkedNodes.splice(index, 1);
-					}
-				}
-			});
-			if (!node.checked) {
-				checkedNodes.forEach(node => {
-					activedPowerCodes.push(node.powerCode);
-				});
-				this.$refs.tree.setCheckedKeys(activedPowerCodes);
-			} else {
-				for (let i = 0; i < checkedNodes.length; i++) {
-					const node = checkedNodes[i];
-					const index = activedPowerCodes.indexOf(node.powerCode);
-					if (index > -1) {
-						checkedNodes.splice(i, 1);
-						i--;
-					}
-				}
-				this.$refs.tree.setCheckedNodes(checkedNodes);
-			}
-
-			halfCheckedNodes.forEach(halfNode => {
-				if (data.powerCode !== halfNode.powerCode) {
-					const treeNode = this.$refs.tree.getNode(halfNode.powerCode);
-					treeNode.indeterminate = true;
-				}
-			});
 		}
 	}
 };

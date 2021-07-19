@@ -1,3 +1,4 @@
+import Mock from 'mockjs';
 import { hgetAllParams } from '../../util/htools.web';
 // eslint-disable-next-line import/no-cycle
 import { userAddService } from './user.action';
@@ -6,7 +7,7 @@ import companyData from '../data/company.data';
 /* 公司列表 */
 export const companyListService = options => {
 	const { name, pageIndex, pageSize } = JSON.parse(options.body);
-	const searchResult = companyData.records.filter(item => {
+	const searchResult = companyData.filter(item => {
 		return item.id !== 0 && item.name.indexOf(name) > -1;
 	});
 	searchResult.sort((a, b) => {
@@ -30,7 +31,7 @@ export const companyListService = options => {
 /* 公司添加 */
 export const companyAddService = options => {
 	const body = JSON.parse(options.body);
-	body.id = companyData.records[companyData.records.length - 1].id + 1;
+	body.id = companyData[companyData.length - 1].id + 1;
 	body.createDate = Mock.Random.now();
 	const user = {
 		userName: body.userName,
@@ -41,7 +42,7 @@ export const companyAddService = options => {
 		status: 0
 	};
 	userAddService({ body: JSON.stringify(user) });
-	companyData.records.push(body);
+	companyData.push(body);
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
@@ -52,9 +53,9 @@ export const companyAddService = options => {
 export const companyEditService = options => {
 	const body = JSON.parse(options.body);
 	body.updateDate = Mock.Random.now();
-	companyData.records.forEach((item, index) => {
+	companyData.forEach((item, index) => {
 		if (item.id === body.id) {
-			companyData.records[index] = body;
+			companyData[index] = body;
 		}
 	});
 	return Mock.mock({
@@ -66,7 +67,7 @@ export const companyEditService = options => {
 /* 公司详情 */
 export const companyDetailService = options => {
 	const { id } = hgetAllParams(options.url);
-	const result = companyData.records.filter(item => {
+	const result = companyData.filter(item => {
 		return item.id === Number(id);
 	})[0];
 	return Mock.mock({
@@ -78,9 +79,13 @@ export const companyDetailService = options => {
 /* 公司删除 */
 export const companyRemoveService = options => {
 	const { ids } = JSON.parse(options.body);
-	companyData.records = companyData.records.filter(item => {
-		return ids.indexOf(item.id) === -1;
-	});
+	for (let i = 0; i < companyData.length; i++) {
+		const item = companyData[i];
+		if (ids.indexOf(item.id) > -1) {
+			companyData.splice(i, 1);
+			i--;
+		}
+	}
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',

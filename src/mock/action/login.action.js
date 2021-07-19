@@ -1,10 +1,11 @@
 import Mock from 'mockjs';
-import { userDataRef } from './user.data';
+import { allUserData } from './user.action';
 
 /* 登录 */
 export const login = options => {
+	const allUses = allUserData().result;
 	const body = JSON.parse(options.body);
-	const result = userDataRef.filter(item => {
+	const result = allUses.filter(item => {
 		return item.userName === body.userName && item.userPwd === body.userPwd;
 	});
 	if (result.length > 0) {

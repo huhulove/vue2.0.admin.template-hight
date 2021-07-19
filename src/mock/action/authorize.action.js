@@ -52,13 +52,27 @@ export const authorizeEditService = options => {
 	});
 };
 /* 权限删除 */
-export const authorizeDeleteService = options => {
-	const { powerCode } = JSON.parse(options.body);
-	authorizeData.forEach((item, index) => {
-		if (powerCode.indexOf(item.powerCode) !== -1 && powerCode.indexOf(item.parentId) !== -1) {
-			authorizeData.splice(index, 1);
+export const deleteList = ids => {
+	for (let i = 0; i < authorizeData.length; i++) {
+		const item = authorizeData[i];
+		if (ids.indexOf(item.powerCode) > -1) {
+			authorizeData.splice(i, 1);
+			i--;
+		}
+	}
+	const newIds = [];
+	authorizeData.forEach(item => {
+		if (ids.indexOf(item.parentId) > -1) {
+			newIds.push(item.powerCode);
 		}
 	});
+	if (newIds.length !== 0) {
+		deleteList(newIds);
+	}
+};
+export const authorizeDeleteService = options => {
+	const { powerCode } = JSON.parse(options.body);
+	deleteList(powerCode);
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',

@@ -11,8 +11,9 @@ import { filterCompanyData } from './company.action';
 export const departmentListService = options => {
 	const { name, pageIndex, pageSize } = JSON.parse(options.body);
 	const companyId = hgetStorage('companyId');
+	const userRoles = hgetStorage('roleIds');
 	let companyDepartments = departmentData;
-	if (companyId !== 0) {
+	if (companyId !== 0 || (companyId === 0 && userRoles.indexOf(1) === -1)) {
 		companyDepartments = departmentData.filter(item => {
 			return item.companyId === companyId;
 		});
@@ -105,9 +106,13 @@ export const departmentDetailService = options => {
 };
 /* 部门删除 */
 export const deleteList = ids => {
-	departmentData = departmentData.filter(item => {
-		return ids.indexOf(item.id) === -1;
-	});
+	for (let i = 0; i < departmentData.length; i++) {
+		const item = departmentData[i];
+		if (ids.indexOf(item.id) > -1) {
+			departmentData.splice(i, 1);
+			i--;
+		}
+	}
 	const newIds = [];
 	departmentData.forEach(item => {
 		if (ids.indexOf(item.parentId) > -1) {
@@ -135,5 +140,13 @@ export const filterDepartmentData = () => {
 			name: item.name,
 			dutyPeopleId: item.dutyPeopleId
 		};
+	});
+};
+/* 查询所有部门 */
+export const allDepartmentData = () => {
+	return Mock.mock({
+		code: 200,
+		msg: '操作成功',
+		result: departmentData
 	});
 };

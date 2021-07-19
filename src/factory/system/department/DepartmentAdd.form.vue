@@ -80,7 +80,7 @@ export default {
 				pageSize: 10000
 			};
 			const res = await departmentListService(dataJson);
-			this.optionsDept = res;
+			this.optionsDept = res.records;
 		},
 		// 查询所有负责人列表
 		async userListService() {

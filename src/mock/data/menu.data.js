@@ -1,7 +1,7 @@
 import Mock from 'mockjs';
 
 // eslint-disable-next-line import/no-mutable-exports
-let menuData = [
+const menuData = [
 	{
 		menuName: '系统管理',
 		id: 1,
@@ -81,19 +81,5 @@ menuData.forEach(item => {
 	item.isDel = 0;
 	item.children = null;
 });
-export const deleteList = ids => {
-	menuData = menuData.filter(item => {
-		return ids.indexOf(item.id) === -1;
-	});
-	const newIds = [];
-	menuData.forEach(item => {
-		if (ids.indexOf(item.pid) > -1) {
-			newIds.push(item.id);
-		}
-	});
-	if (newIds.length !== 0) {
-		deleteList(newIds);
-	}
-};
 
 export default menuData;

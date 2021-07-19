@@ -129,8 +129,7 @@ export default {
 				name: ''
 			};
 			const res = await departmentListService(dataJson);
-			console.log(res);
-			this.departmentData = res;
+			this.departmentData = res.records;
 		},
 		async roleList() {
 			const dataJson = {

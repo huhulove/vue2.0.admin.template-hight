@@ -1,7 +1,7 @@
-import Login from '../views/Login.vue';
-import v404 from '../views/404.vue';
-import Layout from '../views/Layout.vue';
-import Home from '../views/Home.vue';
+import Login from '../views/layout/Login.vue';
+import v404 from '../views/layout/404.vue';
+import Layout from '../views/layout/Layout.vue';
+import Home from '../views/layout/Home.vue';
 /* 系统管理 */
 import UserManager from '../views/systemManager/UserManager';
 import RoleManager from '../views/systemManager/RoleManager';
@@ -14,11 +14,6 @@ import CompanyManager from '../views/baseData/Company';
 
 /* WebServer 临时测试websocket */
 import WebServer from '../views/webServer/WebServer';
-
-/* 日志 */
-import LoginLog from '../views/log/LoginLog';
-import OperationLog from '../views/log/OperationLog';
-import ServiceLog from '../views/log/ServiceLog';
 
 const routes = [
 	{
@@ -101,30 +96,6 @@ const routes = [
 					title: '公司管理'
 				},
 				component: CompanyManager
-			},
-			{
-				path: 'log/login', // 登录日志
-				name: 'LoginLog',
-				meta: {
-					title: '登录日志'
-				},
-				component: LoginLog
-			},
-			{
-				path: 'log/operation', // 操作日志
-				name: 'OperationLog',
-				meta: {
-					title: '操作日志'
-				},
-				component: OperationLog
-			},
-			{
-				path: 'log/service', // 错误日志
-				name: 'ServiceLog',
-				meta: {
-					title: '错误日志'
-				},
-				component: ServiceLog
 			},
 			{
 				path: 'system/profile',

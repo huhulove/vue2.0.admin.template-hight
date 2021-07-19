@@ -5,7 +5,8 @@ import { changeTreeDataToChildren, getChildrenNodes } from '../../util/htools.tr
 import { filterCompanyData } from './company.action';
 // eslint-disable-next-line import/no-cycle
 import { filterRoleData } from './role.action';
-import { filterDepartmentData } from './department.action';
+// eslint-disable-next-line import/no-cycle
+import { filterDepartmentData, allDepartmentData } from './department.action';
 // eslint-disable-next-line import/no-cycle
 import userData from '../data/user.data';
 
@@ -72,6 +73,8 @@ export const userEditAvatarService = options => {
 /* 用户列表 */
 export const userListService = options => {
 	const { nickName, pageIndex, pageSize } = JSON.parse(options.body);
+	// 企业管理员角色ID
+	const companyAdminRoles = [2];
 	const companyId = hgetStorage('companyId');
 	const companyUsers = {
 		records: userData
@@ -96,8 +99,7 @@ export const userListService = options => {
 	const departmentId = hgetStorage('departmentId');
 	const userRoles = hgetStorage('roleIds');
 	const userId = hgetStorage('token');
-	//
-	const companyAdminRoles = [2];
+
 	let isCompanyAdmin = false;
 	companyAdminRoles.forEach(companyRole => {
 		if (userRoles.indexOf(companyRole) > -1) {
@@ -111,14 +113,14 @@ export const userListService = options => {
 	if (userRoles.indexOf(1) === -1 && !isCompanyAdmin) {
 		if (departmentId) {
 			let isDutyPeople = false; // true -> 部门负责人  false -> 不是部门负责人
-			departmentData.forEach(department => {
+			filterDepartmentData().forEach(department => {
 				if (department.id === departmentId && department.dutyPeopleId === userId) {
 					isDutyPeople = true;
 				}
 			});
 			// 是部门负责人
 			if (isDutyPeople) {
-				const departmentTemp = changeTreeDataToChildren(departmentDataRef);
+				const departmentTemp = changeTreeDataToChildren(allDepartmentData().result);
 				const departmentIdsArr = [];
 				getChildrenNodes(departmentTemp, departmentId, departmentIdsArr);
 				records = records.filter(user => {
@@ -230,9 +232,13 @@ export const userDeleteService = options => {
 			result: ids
 		});
 	}
-	userData = userData.filter(item => {
-		return ids.indexOf(item.id) === -1;
-	});
+	for (let i = 0; i < userData.length; i++) {
+		const item = userData[i];
+		if (ids.indexOf(item.id) > -1) {
+			userData.splice(i, 1);
+			i--;
+		}
+	}
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
@@ -273,5 +279,13 @@ export const filterUserData = () => {
 			name: item.nickName,
 			roleIds: item.roleIds
 		};
+	});
+};
+/* 查询所有用户数据 */
+export const allUserData = () => {
+	return Mock.mock({
+		code: 200,
+		msg: '操作成功',
+		result: userData
 	});
 };

@@ -2,7 +2,7 @@ import Mock from 'mockjs';
 
 import { hgetAllParams, hgetStorage, harrIntersect } from '../../util/htools.web';
 import { changeTreeDataToChildren } from '../../util/htools.tree';
-import menuData, { deleteList } from '../data/menu.data';
+import menuData from '../data/menu.data';
 import { filterRoleData } from './role.action';
 import { filterUserData } from './user.action';
 
@@ -81,10 +81,27 @@ export const menuEditService = options => {
 	});
 };
 /* 菜单删除 */
+export const deleteList = ids => {
+	for (let i = 0; i < menuData.length; i++) {
+		const item = menuData[i];
+		if (ids.indexOf(item.id) > -1) {
+			menuData.splice(i, 1);
+			i--;
+		}
+	}
+	const newIds = [];
+	menuData.forEach(item => {
+		if (ids.indexOf(item.pid) > -1) {
+			newIds.push(item.id);
+		}
+	});
+	if (newIds.length !== 0) {
+		deleteList(newIds);
+	}
+};
 export const menuDeleteService = options => {
 	const { ids } = JSON.parse(options.body);
 	deleteList(ids);
-	console.log(menuData);
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',

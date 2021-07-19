@@ -1,5 +1,5 @@
 <template>
-	<el-aside class="sidebar-container">
+	<el-aside class="sidebar-container" :style="{ width: `${width_p} !important` }">
 		<el-menu class="el-menu-vertical-demo" router :default-openeds="defaultOpeneds" :default-active="defaultActive" :collapse="isCollapse_p" :unique-opened="true">
 			<template v-for="(menu, index) in menuData">
 				<span :key="index">
@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import Submenu from '@c/ui/Submenu.vue';
-import { userMenuAuthorizeService } from '@s/system/UserService';
-import { mergeRoutes } from '@u/index';
 import { hsetStorage } from '@u/htools.web';
 import { getTreePNodeByNodeId } from '@u/htools.tree';
+import { mergeRoutes } from '@u/index';
+import { userMenuAuthorizeService } from '@s/system/UserService';
+import Submenu from './Submenu.vue';
 
 export default {
-	props: ['isCollapse_p'],
+	props: ['isCollapse_p', 'width_p'],
 	components: {
 		Submenu
 	},
@@ -112,8 +112,7 @@ export default {
 	color: #333;
 	background: #304156;
 	white-space: nowrap;
-	/* width: 219px !important; */
-	width: auto !important;
+	transition: all .5s;
 	.el-menu {
 		background: transparent;
 		color: rgb(191, 203, 217);
@@ -138,6 +137,7 @@ export default {
 	.el-menu--collapse {
 		i {
 			margin-right: 17px !important;
+			display: none;
 		}
 	}
 	.is-active > .el-submenu__title {
