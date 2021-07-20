@@ -1,21 +1,3 @@
-// ----------------- 加载 public config.json 文件 --------------
-import axios from 'axios';
-import { Message } from 'element-ui';
-
-export const huploadConfigJson = () => {
-	return new Promise((resolve, reject) => {
-		axios
-			.get('/envConfig.json')
-			.then(res => {
-				resolve(res.data);
-			})
-			.catch(error => {
-				Message.error('加载config.json文件出错！');
-				reject(error);
-			});
-	});
-};
-
 // ---------------------- 网址参数 -----------------------------
 /*
  * @Author: huhulove

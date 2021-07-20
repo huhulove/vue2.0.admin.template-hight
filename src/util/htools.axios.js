@@ -1,6 +1,6 @@
 import { Message, Loading } from 'element-ui';
 import axios from 'axios';
-import { hgetStorage, hremoveStorage, huploadConfigJson } from './htools.web';
+import { hgetStorage, hremoveStorage } from './htools.web';
 // eslint-disable-next-line import/no-cycle
 import router from '../router/index';
 
@@ -12,18 +12,20 @@ const request = axios.create();
  *@Date: 2020-10-22 17:39:31
  *@Description: axios - 请求拦截器
  */
-let envConfig = null;
 let loading = null;
 request.interceptors.request.use(
 	async config => {
-		if (!envConfig) {
-			envConfig = await huploadConfigJson();
-		}
 		config.headers = {
 			Authorization: hgetStorage('token')
 		};
-		config.url = `${envConfig.baseUrl}${config.url}`;
-		loading = Loading.service({ lock: true, text: '正在加载...', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)', fullscreen: true });
+		config.url = `${globalConfig.baseUrl}${config.url}`;
+		loading = Loading.service({
+			lock: true,
+			text: '正在加载...',
+			spinner: 'el-icon-loading',
+			background: 'rgba(0, 0, 0, 0.7)',
+			fullscreen: true
+		});
 		return config;
 	},
 	error => {

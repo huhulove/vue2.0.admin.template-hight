@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import echarts from 'echarts';
-import { huploadConfigJson } from './util/htools.web';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'element-ui/lib/theme-chalk/index.css';
 import './directives/index';
@@ -15,6 +14,7 @@ import './mock/index';
 
 Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
+Vue.prototype.$globalConfig = globalConfig;
 
 Vue.use(ElementUI, { size: 'small' });
 
@@ -23,8 +23,5 @@ new Vue({
 	store,
 	render: h => {
 		return h(App);
-	},
-	async created() {
-		Vue.prototype.$envConfig = await huploadConfigJson();
 	}
 }).$mount('#app');

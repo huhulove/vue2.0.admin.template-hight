@@ -124,7 +124,7 @@ export default {
 			}
 		];
 		const userRolesId = hgetStorage('roleIds');
-		if (userRolesId.indexOf(this.$envConfig.superAdminRoleId) === 0) {
+		if (userRolesId.indexOf(this.$globalConfig.superAdminRoleId) === 0) {
 			tableColumn.splice(4, 0, {
 				label: '企业',
 				field: 'company.name',
