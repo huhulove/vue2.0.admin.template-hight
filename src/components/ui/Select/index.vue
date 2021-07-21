@@ -1,11 +1,11 @@
 <template>
 	<el-select v-bind="$attrs" v-on="$listeners" class="select-item" filterable clearable>
-        <slot></slot>
+		<slot></slot>
 		<el-option
 			v-for="item in optionsData_p"
-			:key="item[optionJson_p && optionJson_p.value || 'id']"
-			:label="item[optionJson_p && optionJson_p.label || 'name']"
-			:value="item[optionJson_p && optionJson_p.value || 'id']"
+			:key="item[(optionJson_p && optionJson_p.value) || 'id']"
+			:label="item[(optionJson_p && optionJson_p.label) || 'name']"
+			:value="item[(optionJson_p && optionJson_p.value) || 'id']"
 		></el-option>
 	</el-select>
 </template>
@@ -17,5 +17,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+.select-item {
+	width: 100%;
+}
 </style>

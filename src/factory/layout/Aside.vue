@@ -81,10 +81,10 @@ export default {
 				getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
 					hsetStorage('btnPowers', node.powers);
 					this.defaultActive = `${node.id}`;
+					this.defaultOpeneds = [];
 					if (pNode) {
-						this.defaultOpeneds.push(`${pNode.id}`);
-					} else {
 						this.defaultOpeneds = [];
+						this.defaultOpeneds.push(`${pNode.id}`);
 					}
 				});
 			} else {
@@ -109,39 +109,13 @@ export default {
 	min-height: 400px;
 }
 .sidebar-container {
-	color: #333;
-	background: #304156;
 	white-space: nowrap;
 	transition: all .5s;
-	.el-menu {
-		background: transparent;
-		color: rgb(191, 203, 217);
-	}
-	.el-menu-item {
-		background-color: #1f2d3d !important;
-		color: rgb(191, 203, 217);
-		&:hover {
-			background-color: #001528 !important;
-		}
-		&.is-active {
-			color: #409eff !important;
-		}
-	}
-	/deep/ .el-submenu__title {
-		color: rgb(191, 203, 217);
-		background-color: #1f2d3d !important;
-		&:hover {
-			background-color: #263445 !important;
-		}
-	}
 	.el-menu--collapse {
 		i {
 			margin-right: 17px !important;
 			display: none;
 		}
-	}
-	.is-active > .el-submenu__title {
-		color: #f4f4f5 !important;
 	}
 }
 </style>

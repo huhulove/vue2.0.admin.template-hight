@@ -186,17 +186,4 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-/deep/ .el-dialog {
-	width: 500px;
-	overflow: hidden;
-}
-/deep/.el-dialog .el-form-item {
-	width: 100%;
-	margin-right: 15px;
-	float: left;
-	height: 33px;
-}
-/deep/ .el-select {
-	width: 100%;
-}
 </style>

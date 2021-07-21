@@ -16,6 +16,7 @@
 				v-bind="$attrs"
 				v-on="$listeners"
 				highlight-current
+				accordion
 				@node-click="nodeClickHandler"
 				:filter-node-method="filterNode"
 				:default-expanded-keys="defaultExpandedKeys"
@@ -61,7 +62,7 @@ export default {
 		clearHandler() {
 			this.nodeName = null;
 			/* this.$emit('update:nodeValue_p', 0); */
-            this.$emit('input', 0);
+			this.$emit('input', 0);
 		},
 		filterHandler(searchKey) {
 			this.$refs.tree.filter(searchKey);
@@ -74,5 +75,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="less">
+.el-select-dropdown__item {
+	background-color: #fff;
+	padding: 0 !important;
+}
+/deep/ .el-tree-node__label{
+	font-weight: normal;
+}
 </style>

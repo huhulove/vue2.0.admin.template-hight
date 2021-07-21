@@ -2,7 +2,7 @@
 	<div class="login-container">
 		<DataForm class="login-form" ref="formEle" :model="formData" :rules="formRules" :labelWidth_p="'0px'">
 			<div class="title-container">
-				<h3 class="title">管理后台</h3>
+				<h3>管理后台</h3>
 			</div>
 			<el-form-item prop="userName">
 				<Input v-model="formData.userName" placeholder="请输入用户名" />
@@ -11,7 +11,7 @@
 				<Input v-model="formData.userPwd" type="password" placeholder="请输入密码" />
 			</el-form-item>
 			<template slot="footer">
-				<el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">登录</el-button>
+				<el-button class="login-button" :loading="loading" type="primary" @click.native.prevent="handleLogin">登录</el-button>
 			</template>
 		</DataForm>
 	</div>
@@ -93,35 +93,20 @@ export default {
 		padding: 160px 35px 0;
 		margin: 0 auto;
 		overflow: hidden;
-	}
-	.tips {
-		font-size: 14px;
-		color: #fff;
-		margin-bottom: 10px;
-		span {
-			&:first-of-type {
-				margin-right: 16px;
+		.title-container {
+			position: relative;
+			h3 {
+				font-size: 26px;
+				color: #fff;
+				margin: 0px auto 40px auto;
+				text-align: center;
+				font-weight: bold;
 			}
 		}
-	}
-	.title-container {
-		position: relative;
-		.title {
-			font-size: 26px;
-			color: #fff;
-			margin: 0px auto 40px auto;
-			text-align: center;
-			font-weight: bold;
+		.login-button {
+			width: 100%;
+			margin-bottom: 30px;
 		}
-	}
-	.show-pwd {
-		position: absolute;
-		right: 10px;
-		top: 7px;
-		font-size: 16px;
-		color: #fff;
-		cursor: pointer;
-		user-select: none;
 	}
 }
 </style>

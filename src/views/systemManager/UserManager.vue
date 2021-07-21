@@ -215,10 +215,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.orglist {
-	height: 400px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
 </style>

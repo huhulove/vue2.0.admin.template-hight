@@ -31,7 +31,4 @@ export default {
 </script>
 
 <style>
-.form {
-	display: flex;
-}
 </style>

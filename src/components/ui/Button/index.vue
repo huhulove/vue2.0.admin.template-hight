@@ -1,17 +1,9 @@
 <template>
-	<div class="head-container">
-		<el-button
-			id="btn-add"
-			class="filter-item"
-			type="primary"
-			v-authorize="{ name: 'add', type: authorize_p, id: 'btn-add' }"
-			@click="showDialogAdd"
-		>
-			新增
-		</el-button>
+	<div class="head-button">
+		<el-button id="btn-add" class="button-item" type="primary" v-authorize="{ name: 'add', type: authorize_p, id: 'btn-add' }" @click="showDialogAdd">新增</el-button>
 		<el-button
 			id="btn-update"
-			class="filter-item"
+			class="button-item"
 			type="success"
 			v-authorize="{ name: 'update', type: authorize_p, id: 'btn-update' }"
 			:disabled="selectData_p.length !== 1"
@@ -21,7 +13,7 @@
 		</el-button>
 		<el-button
 			id="btn-remove"
-			class="filter-item"
+			class="button-item"
 			type="danger"
 			v-authorize="{ name: 'remove', type: authorize_p, id: 'btn-remove' }"
 			:disabled="selectData_p.length < 1"
@@ -29,14 +21,6 @@
 		>
 			删除
 		</el-button>
-		<!-- <el-button
-			id="btn-download"
-			class="filter-item"
-			type="warning"
-			v-authorize="{ name: 'download', type: authorize_p, id: 'btn-download' }"
-		>
-			导出
-		</el-button> -->
 		<slot></slot>
 	</div>
 </template>
@@ -85,15 +69,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.head-container {
+.head-button {
 	margin: 12px 0;
-	.el-form-item {
-		margin-bottom: 12px;
-	}
-	.filter-item {
+	.button-item {
 		display: inline-block;
-		vertical-align: middle;
-		margin: 0 3px 0 0;
+		margin-right: 6px;
+		margin-left: 0;
 	}
 }
 </style>

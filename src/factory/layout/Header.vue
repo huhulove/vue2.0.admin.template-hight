@@ -1,11 +1,11 @@
 <template>
 	<el-row>
 		<el-col :span="12">
-			<i class="el-icon-s-fold collapse-btn" @click="collapseHandler" style="font-size: 20px"></i>
+			<i class="el-icon-s-fold collapse-btn" @click="collapseHandler"></i>
 		</el-col>
-		<el-col :span="12" style="text-align: right">
+		<el-col :span="12" class="head-right-container">
 			<el-dropdown>
-				<i class="el-icon-setting" style="margin-right: 15px; font-size: 20px; color: #bfcbd9"></i>
+				<i class="el-icon-setting"></i>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item>
 						<router-link to="/system/profile">个人信息</router-link>
@@ -13,7 +13,7 @@
 					<el-dropdown-item @click.native="loginOut">退出</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<span style="font-size: 16px">{{ nickName || userName }}</span>
+			<span>{{ nickName || userName }}</span>
 		</el-col>
 	</el-row>
 </template>
@@ -54,8 +54,19 @@ export default {
 <style scoped lang="less">
 .collapse-btn {
 	cursor: pointer;
+	font-size: 20px;
 }
-.el-dropdown {
-	height: 34px;
+.head-right-container {
+	text-align: right;
+	& > span {
+		font-size: 16px;
+	}
+	.el-icon-setting {
+		margin-right: 15px;
+		font-size: 20px;
+	}
+	.el-dropdown {
+		height: 34px;
+	}
 }
 </style>
