@@ -1,39 +1,56 @@
 <template>
-	<SearchForm :model="formData" @search="searchHandler">
+	<SearchForm :model="formData" @search="searchHandler" :inline="true">
 		<el-form-item label="用户名称">
 			<Input v-model="formData.nickName" placeholder="请输入用户名称" />
 		</el-form-item>
-		<!-- <el-form-item label="企业名称" prop="name">
-				<el-select v-model="formData.organizationId" placeholder="请选择企业名称" class="select-item" clearable filterable>
-					<el-option
-						v-for="(enterprise, index) in enterpriseData"
-						:key="index"
-						:label="enterprise.organizationName"
-						:value="enterprise.id"
-					></el-option>
-				</el-select>
-			</el-form-item> -->
+		<el-form-item label="公司名称" v-if="isSupperAdmin">
+			<Select v-model="formData.companyId" placeholder="请选择公司名称" :optionsData_p="companyData">
+				<el-option label="平台" :value="0"></el-option>
+			</Select>
+		</el-form-item>
 	</SearchForm>
 </template>
 
 <script>
+import { hgetStorage } from '@u/htools.web';
+
 import SearchForm from '@c/ui/SearchForm';
 import Input from '@c/ui/Input';
+import Select from '@c/ui/Select';
+
+import { companyListService } from '@s/base/CompanyService';
 
 export default {
 	components: {
 		SearchForm,
-		Input
+		Input,
+		Select
 	},
 	data() {
 		return {
 			formData: {
 				nickName: '',
-				organizationId: ''
-			}
+				companyId: ''
+			},
+			companyData: null,
+			isSupperAdmin: false
 		};
 	},
+	mounted() {
+		if (hgetStorage('roleIds').indexOf(1) > -1) {
+			this.isSupperAdmin = true;
+		}
+		this.companyList();
+	},
 	methods: {
+		async companyList() {
+			const dataJson = {
+				pageIndex: 1,
+				pageSize: 100000
+			};
+			const res = await companyListService(dataJson);
+			this.companyData = res.records;
+		},
 		searchHandler() {
 			this.$emit('searchForm', this.formData);
 		}

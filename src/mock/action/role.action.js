@@ -7,13 +7,18 @@ import roleData from '../data/role.data';
 
 /* 角色列表 */
 export const roleListService = options => {
-	const { name, pageIndex, pageSize } = JSON.parse(options.body);
-	const companyId = hgetStorage('companyId');
+	const { name, pageIndex, pageSize, companyId } = JSON.parse(options.body);
+	const loginCompanyId = hgetStorage('companyId');
 	const userRoles = hgetStorage('roleIds');
 	const companyRoles = {
 		records: roleData
 	};
-	if (companyId !== 0 || (companyId === 0 && userRoles.indexOf(1) === -1)) {
+	if (loginCompanyId !== 0 || (loginCompanyId === 0 && userRoles.indexOf(1) === -1)) {
+		companyRoles.records = roleData.filter(item => {
+			return item.companyId === loginCompanyId;
+		});
+	}
+	if (companyId !== '') {
 		companyRoles.records = roleData.filter(item => {
 			return item.companyId === companyId;
 		});

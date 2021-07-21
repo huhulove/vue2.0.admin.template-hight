@@ -8,6 +8,7 @@ export const departmentListService = data => {
 			const dataJson = {
 				pageIndex: 1,
 				pageSize: 10,
+				companyId: '',
 				name: '',
 				...data
 			};

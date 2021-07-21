@@ -72,14 +72,19 @@ export const userEditAvatarService = options => {
 };
 /* 用户列表 */
 export const userListService = options => {
-	const { nickName, pageIndex, pageSize } = JSON.parse(options.body);
+	const { nickName, pageIndex, pageSize, companyId } = JSON.parse(options.body);
 	// 企业管理员角色ID
 	const companyAdminRoles = [2];
-	const companyId = hgetStorage('companyId');
+	const loginCompanyId = hgetStorage('companyId');
 	const companyUsers = {
 		records: userData
 	};
-	if (companyId !== 0) {
+	if (loginCompanyId !== 0) {
+		companyUsers.records = userData.filter(item => {
+			return item.companyId === loginCompanyId;
+		});
+	}
+	if (companyId !== '') {
 		companyUsers.records = userData.filter(item => {
 			return item.companyId === companyId;
 		});

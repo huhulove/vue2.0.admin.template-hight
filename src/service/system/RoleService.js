@@ -7,6 +7,7 @@ export const roleListService = data => {
 			const dataJson = {
 				pageIndex: 0,
 				pageSize: 0,
+				companyId: '',
 				name: '',
 				...data
 			};

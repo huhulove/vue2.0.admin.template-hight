@@ -9,11 +9,16 @@ import { filterCompanyData } from './company.action';
 
 /* 部门列表 */
 export const departmentListService = options => {
-	const { name, pageIndex, pageSize } = JSON.parse(options.body);
-	const companyId = hgetStorage('companyId');
+	const { name, pageIndex, pageSize, companyId } = JSON.parse(options.body);
+	const loginCompanyId = hgetStorage('companyId');
 	const userRoles = hgetStorage('roleIds');
 	let companyDepartments = departmentData;
-	if (companyId !== 0 || (companyId === 0 && userRoles.indexOf(1) === -1)) {
+	if (loginCompanyId !== 0 || (loginCompanyId === 0 && userRoles.indexOf(1) === -1)) {
+		companyDepartments = departmentData.filter(item => {
+			return item.companyId === loginCompanyId;
+		});
+	}
+	if (companyId !== '') {
 		companyDepartments = departmentData.filter(item => {
 			return item.companyId === companyId;
 		});

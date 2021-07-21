@@ -7,6 +7,7 @@ export const userListService = data => {
 		try {
 			const dataJson = {
 				nickName: '',
+				companyId: '',
 				pageIndex: '',
 				pageSize: '',
 				...data
