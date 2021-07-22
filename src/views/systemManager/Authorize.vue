@@ -63,11 +63,11 @@ import Button from '@c/ui/Button';
 import Table from '@c/ui/Table';
 import Dialog from '@c/ui/Dialog';
 
-import AuthorizeAEForm from '@f/system//authorize/AuthorizeAdd.form';
-import AuthorizeSearchForm from '@f/system/authorize/AuthorizeSearch.form';
+import AuthorizeAEForm from '@f/systemManager/authorize/AuthorizeAdd.form';
+import AuthorizeSearchForm from '@f/systemManager/authorize/AuthorizeSearch.form';
 
 // eslint-disable-next-line import/no-cycle
-import { authorizeListService, authorizeDeleteService, authorizeDetailService } from '@s/system/AuthorizeService';
+import { authorizeListService, authorizeDeleteService, authorizeDetailService } from '@s/systemManager/AuthorizeService';
 
 export default {
 	mixins: [ListMixin],

@@ -63,11 +63,11 @@ import Button from '@c/ui/Button';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 
-import DepartmentAEForm from '@f/system/department/DepartmentAdd.form';
-import DeptSearchForm from '@f/system/department/DepartmentSearch.form';
+import DepartmentAEForm from '@f/systemManager/department/DepartmentAdd.form';
+import DeptSearchForm from '@f/systemManager/department/DepartmentSearch.form';
 
 // eslint-disable-next-line import/no-cycle
-import { departmentListService, departmentDeleteService, departmentDetailService } from '@s/system/DepartmentService';
+import { departmentListService, departmentDeleteService, departmentDetailService } from '@s/systemManager/DepartmentService';
 
 export default {
 	mixins: [ListMixin],
@@ -158,7 +158,6 @@ export default {
 			};
 			const res = await departmentDetailService(dataJson);
 			this.selectData = [res];
-			this.showDialogEditHandlerMixin();
 		},
 		async showDeleteHandler() {
 			const ids = this.filterSelectIdsMixin();

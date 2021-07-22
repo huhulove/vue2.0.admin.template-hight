@@ -1,5 +1,5 @@
 <template>
-	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
+	<DataForm :model_p="formData" :rules_p="formRules" @cancel="formCancel" @submit="formSubmit">
 		<el-form-item label="用户名" prop="userName">
 			<Input v-model="formData.userName" placeholder="请输入用户名" />
 		</el-form-item>
@@ -34,10 +34,10 @@ import DataForm from '@c/ui/DataForm';
 import SelectTree from '@c/ui/SelectTree';
 
 // eslint-disable-next-line import/named
-import { userAddService, userEditService } from '@s/system/UserService';
+import { userAddService, userEditService } from '@s/systemManager/UserService';
 // eslint-disable-next-line import/no-cycle
-import { roleListService } from '@s/system/RoleService';
-import { departmentListService } from '@s/system/DepartmentService';
+import { roleListService } from '@s/systemManager/RoleService';
+import { departmentListService } from '@s/systemManager/DepartmentService';
 
 export default {
 	props: ['selectData_p'],

@@ -55,11 +55,11 @@ import Table from '@c/ui/Table';
 import Dialog from '@c/ui/Dialog';
 import Pagination from '@c/ui/Pagination';
 
-import UserSearchForm from '@f/system/user/UserSearch.form';
-import UserAEForm from '@f/system/user/UserAdd.form';
+import UserSearchForm from '@f/systemManager/user/UserSearch.form';
+import UserAEForm from '@f/systemManager/user/UserAdd.form';
 
 // eslint-disable-next-line import/no-cycle
-import { userDeleteService, userListService, userDetailService, userPasswordEditService } from '@s/system/UserService';
+import { userDeleteService, userListService, userDetailService, userPasswordEditService } from '@s/systemManager/UserService';
 
 export default {
 	mixins: [ListMixin],

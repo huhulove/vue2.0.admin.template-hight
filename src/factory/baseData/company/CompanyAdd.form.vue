@@ -1,5 +1,5 @@
 <template>
-	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
+	<DataForm :model_p="formData" :rules_p="formRules" @cancel="formCancel" @submit="formSubmit">
 		<el-form-item label="机构名称" prop="name">
 			<Input v-model="formData.name" placeholder="请输入机构名称" />
 		</el-form-item>
@@ -47,7 +47,7 @@ import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 
 // eslint-disable-next-line import/named
-import { companyAddService, companyEditService } from '@s/base/CompanyService';
+import { companyAddService, companyEditService } from '@s/baseData/CompanyService';
 
 export default {
 	props: ['selectData_p'],

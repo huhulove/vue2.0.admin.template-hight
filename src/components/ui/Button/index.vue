@@ -29,10 +29,14 @@
 export default {
 	props: {
 		selectData_p: {
-			type: Array
+			type: Array,
+			default: () => {
+				return [];
+			}
 		},
 		delTips_p: {
-			type: String
+			type: String,
+			default: ''
 		},
 		authorize_p: {
 			type: String

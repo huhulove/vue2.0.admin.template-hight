@@ -3,10 +3,10 @@ import v404 from '../views/layout/404.vue';
 import Layout from '../views/layout/Layout.vue';
 import Home from '../views/layout/Home.vue';
 /* 系统管理 */
-import UserManager from '../views/systemManager/UserManager';
-import RoleManager from '../views/systemManager/RoleManager';
-import AuthorizeManager from '../views/systemManager/AuthorizeManager';
-import MenuManager from '../views/systemManager/MenuManager';
+import UserManager from '../views/systemManager/User';
+import RoleManager from '../views/systemManager/Role';
+import AuthorizeManager from '../views/systemManager/Authorize';
+import MenuManager from '../views/systemManager/Menu';
 import Department from '../views/systemManager/Department';
 import ProfileInformation from '../views/systemManager/ProfileInformation';
 /* 基础数据 */

@@ -1,5 +1,15 @@
 <template>
-	<el-form ref="formEle" size="small" :label-width="labelWidth_p || '100px'" v-bind="$attrs" v-on="$listeners">
+	<el-form
+		ref="formEle"
+		:model="model_p"
+		:rules="rules_p"
+		:size="size_p"
+		:label-width="labelWidth_p"
+		:inline="inline_p"
+		:label-position="labelPosition_p"
+		v-bind="$attrs"
+		v-on="$listeners"
+	>
 		<slot></slot>
 		<slot name="footer">
 			<el-form-item>
@@ -14,7 +24,32 @@ import FooterForm from './FooterForm';
 
 export default {
 	inheritAttrs: false,
-	props: ['labelWidth_p'],
+	props: {
+		size_p: {
+			type: String,
+			default: 'small'
+		},
+		model_p: {
+			type: Object,
+			required: true
+		},
+		rules_p: {
+			type: Object,
+			required: true
+		},
+		inline_p: {
+			type: Boolean,
+			default: false
+		},
+		labelPosition_p: {
+			type: String,
+			default: 'right' // right/left/top
+		},
+		labelWidth_p: {
+			type: String,
+			default: '100px'
+		}
+	},
 	components: {
 		FooterForm
 	},

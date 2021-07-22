@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { hospitalLevelAddService, hospitalLevelEditService, hospitalLevelDetailService } from '@s/base/HospitalLevelService';
+import { hospitalLevelAddService, hospitalLevelEditService, hospitalLevelDetailService } from '@s/baseData/HospitalLevelService';
 // import { enterpriseListService } from '@s/base/EnterpriseService';
 // // eslint-disable-next-line import/no-cycle
 // import { equipmentCodeListService } from '@s/base/EquipmentCodeService';

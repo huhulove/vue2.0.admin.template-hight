@@ -18,7 +18,7 @@ import SearchForm from '@c/ui/SearchForm';
 import Input from '@c/ui/Input';
 import Select from '@c/ui/Select';
 
-import { companyListService } from '@s/base/CompanyService';
+import { companyListService } from '@s/baseData/CompanyService';
 
 export default {
 	components: {

@@ -1,5 +1,5 @@
 <template>
-	<el-card shadow="never" v-bind="$attrs" v-on="$listeners">
+	<el-card :shadow="shadow_p" :body-style="bodyStyle_p" v-bind="$attrs" v-on="$listeners">
 		<template slot="header">
 			<slot name="header"></slot>
 		</template>
@@ -9,7 +9,19 @@
 
 <script>
 export default {
-	inheritAttrs: false
+	inheritAttrs: false,
+	props: {
+		shadow_p: {
+			type: String,
+			default: 'never' // always / hover / never
+		},
+		bodyStyle_p: {
+			type: Object,
+			default: () => {
+				return { padding: '20px' };
+			}
+		}
+	}
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
 	<SearchForm :model="formData" @search="searchHandler" :inline="true">
-		<el-form-item label="用户名称">
-			<Input v-model="formData.nickName" placeholder="请输入用户名称" />
+		<el-form-item label="角色名称">
+			<Input v-model="formData.name" placeholder="请输入角色名称" />
 		</el-form-item>
 		<el-form-item label="公司名称" v-if="isSupperAdmin">
 			<Select v-model="formData.companyId" placeholder="请选择公司名称" :optionsData_p="companyData">
@@ -18,7 +18,7 @@ import SearchForm from '@c/ui/SearchForm';
 import Input from '@c/ui/Input';
 import Select from '@c/ui/Select';
 
-import { companyListService } from '@s/base/CompanyService';
+import { companyListService } from '@s/baseData/CompanyService';
 
 export default {
 	components: {
@@ -29,7 +29,7 @@ export default {
 	data() {
 		return {
 			formData: {
-				nickName: '',
+				name: '',
 				companyId: ''
 			},
 			companyData: null,

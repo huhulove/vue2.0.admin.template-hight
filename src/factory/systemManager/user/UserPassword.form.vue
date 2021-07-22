@@ -19,7 +19,7 @@
 import DataForm from '@c/ui/DataForm';
 import Input from '@c/ui/Input';
 
-import { userPasswordEditService } from '@s/system/UserService';
+import { userPasswordEditService } from '@s/systemManager/UserService';
 
 export default {
 	inheritAttrs: false,

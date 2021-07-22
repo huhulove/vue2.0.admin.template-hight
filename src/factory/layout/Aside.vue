@@ -21,7 +21,7 @@
 import { hsetStorage } from '@u/htools.web';
 import { getTreePNodeByNodeId } from '@u/htools.tree';
 import { mergeRoutes } from '@u/index';
-import { userMenuAuthorizeService } from '@s/system/UserService';
+import { userMenuAuthorizeService } from '@s/systemManager/UserService';
 import Submenu from './Submenu.vue';
 
 export default {

@@ -20,7 +20,7 @@
 
 <script>
 // eslint-disable-next-line import/named
-import { userLoginDetailService } from '@s/system/UserService.js';
+import { userLoginDetailService } from '@s/systemManager/UserService.js';
 
 export default {
 	props: ['isCollapse_p'],

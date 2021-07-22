@@ -1,5 +1,5 @@
 <template>
-	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
+	<DataForm :model_p="formData" :rules_p="formRules" @cancel="formCancel" @submit="formSubmit">
 		<el-form-item label="名称" prop="powerName">
 			<Input v-model="formData.powerName" placeholder="请输入权限名称" />
 		</el-form-item>
@@ -29,7 +29,7 @@ import Radio from '@c/ui/Radio';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 
-import { authorizeAddService, authorizeEditService, authorizeListService } from '@s/system/AuthorizeService';
+import { authorizeAddService, authorizeEditService, authorizeListService } from '@s/systemManager/AuthorizeService';
 
 export default {
 	props: ['selectData_p'],

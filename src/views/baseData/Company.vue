@@ -56,11 +56,11 @@ import Button from '@c/ui/Button';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 
-import CompanyAEForm from '@f/base/company/CompanyAdd.form';
-import CompanySearchForm from '@f/base/company/CompanySearch.form';
+import CompanyAEForm from '@f/baseData/company/CompanyAdd.form';
+import CompanySearchForm from '@f/baseData/company/CompanySearch.form';
 
 // eslint-disable-next-line import/no-cycle
-import { companyListService, companyDeleteService, companyDetailService } from '@s/base/CompanyService';
+import { companyListService, companyDeleteService, companyDetailService } from '@s/baseData/CompanyService';
 
 export default {
 	mixins: [ListMixin],

@@ -1,5 +1,5 @@
 <template>
-	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
+	<DataForm :model_p="formData" :rules_p="formRules" @cancel="formCancel" @submit="formSubmit">
 		<el-form-item label="名称" prop="menuName">
 			<Input v-model="formData.menuName" placeholder="请输入菜单名称" />
 		</el-form-item>
@@ -42,7 +42,7 @@ import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 import IconSelect from '@c/ui/IconSelect';
 
-import { menuAddService, menuEditService, menuListService } from '@s/system/MenuService';
+import { menuAddService, menuEditService, menuListService } from '@s/systemManager/MenuService';
 
 export default {
 	props: ['selectData_p'],

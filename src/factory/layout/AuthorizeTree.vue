@@ -17,7 +17,7 @@
 
 <script>
 import { getTreeNodeById, getChildrenNodes } from '@u/htools.tree.js';
-import { authorizeListService } from '@s/system/AuthorizeService';
+import { authorizeListService } from '@s/systemManager/AuthorizeService';
 // eslint-disable-next-line import/no-cycle
 import { changePowerToEdit } from '@u/index';
 

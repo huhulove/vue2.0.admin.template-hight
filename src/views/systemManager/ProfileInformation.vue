@@ -42,11 +42,11 @@
 import Card from '@c/ui/Card';
 import Upload from '@c/ui/Upload';
 
-import UserPassword from '@f/system/user/UserPassword.form';
-import UserProfile from '@f/system/user/UserProfile.form';
+import UserPassword from '@f/systemManager/user/UserPassword.form';
+import UserProfile from '@f/systemManager/user/UserProfile.form';
 
 // eslint-disable-next-line import/no-cycle
-import { userLoginDetailService, userEditAvatarService } from '@s/system/UserService.js';
+import { userLoginDetailService, userEditAvatarService } from '@s/systemManager/UserService.js';
 
 export default {
 	components: {

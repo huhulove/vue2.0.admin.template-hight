@@ -1,5 +1,5 @@
 <template>
-	<DataForm :model="formData" :rules="formRules" @cancel="formCancel" @submit="formSubmit">
+	<DataForm :model_p="formData" :rules_p="formRules" @cancel="formCancel" @submit="formSubmit">
 		<el-form-item label="名称" prop="name">
 			<Input v-model="formData.name" placeholder="请输入角色名称" />
 		</el-form-item>
@@ -19,7 +19,7 @@ import Radio from '@c/ui/Radio';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 
-import { roleAddService, roleEditService } from '@s/system/RoleService';
+import { roleAddService, roleEditService } from '@s/systemManager/RoleService';
 
 export default {
 	props: ['selectData_p'],

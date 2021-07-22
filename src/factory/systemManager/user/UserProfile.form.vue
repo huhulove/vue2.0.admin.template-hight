@@ -35,7 +35,7 @@ import DataForm from '@c/ui/DataForm';
 import Input from '@c/ui/Input';
 import Select from '@c/ui/Select';
 
-import { userLoginDetailService, userEditLoginInfoService } from '@s/system/UserService.js';
+import { userLoginDetailService, userEditLoginInfoService } from '@s/systemManager/UserService.js';
 
 export default {
 	components: {
