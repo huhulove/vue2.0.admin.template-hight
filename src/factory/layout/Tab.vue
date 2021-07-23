@@ -57,7 +57,8 @@ export default {
 								title: this.$route.meta.title,
 								path: this.$route.fullPath,
 								btnAuthorize: hgetStorage('btnPowers'),
-								routeName: this.$route.name
+								routeName: this.$route.name,
+								isKeepAlive: this.$route.meta.isKeepAlive
 							});
 							this.currentTab = this.tabList.length - 1;
 						} else if (isAddFlag === 0) {

@@ -3,10 +3,16 @@
 		<el-table
 			ref="table"
 			style="width: 100%"
+			:border="border_p"
+			:size="size_p"
+			:fit="fit_p"
+			:show-header="showHeader_p"
+			:highlight-current-row="highlightCurrentRow_p"
+			:empty-text="emptyText_p"
+			:show-summary="showSummary_p"
 			v-bind="$attrs"
 			v-on="$listeners"
 			@selection-change="selectionChangeHandler"
-			border
 			:header-cell-style="{ background: '#F4F4F4' }"
 		>
 			<el-table-column v-if="!isHideCheckbox_p" type="selection" width="55" />
@@ -46,7 +52,62 @@ import ImageViewer from '@c/ui/ImageViewer';
 
 export default {
 	inheritAttrs: false,
-	props: ['tableColumn_p', 'selectData_p', 'isHideCheckbox_p'],
+	props: {
+		/* 列头 */
+		tableColumn_p: {
+			type: Array,
+			default: () => {
+				return [];
+			}
+		},
+		/* 选中数据 */
+		selectData_p: {
+			type: Array,
+			default: () => {
+				return [];
+			}
+		},
+		/* 是否隐藏复选框 */
+		isHideCheckbox_p: {
+			type: Boolean,
+			default: false
+		},
+		/* 是否带有纵向边框 */
+		border_p: {
+			type: Boolean,
+			default: true
+		},
+		/* Table 的尺寸 */
+		size_p: {
+			type: String,
+			default: '' // medium / small / mini
+		},
+		/* 列的宽度是否自撑开 */
+		fit_p: {
+			type: Boolean,
+			default: true
+		},
+		/* 是否显示表头 */
+		showHeader_p: {
+			type: Boolean,
+			default: true
+		},
+		/* 是否要高亮当前行 */
+		highlightCurrentRow_p: {
+			type: Boolean,
+			default: false
+		},
+		/* 空数据时显示的文本内容 */
+		emptyText_p: {
+			type: String,
+			default: '暂无数据'
+		},
+		/* 是否在表尾显示合计行 */
+		showSummary_p: {
+			type: Boolean,
+			default: false
+		}
+	},
 	components: {
 		ImageViewer
 	},

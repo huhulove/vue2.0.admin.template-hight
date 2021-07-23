@@ -10,13 +10,13 @@
 			<Input v-model="formData.nickName" placeholder="请输入昵称" />
 		</el-form-item>
 		<el-form-item label="角色" prop="roleIds">
-			<Select v-model="formData.roleIds" :optionsData_p="roleData" :optionJson_p="{ label: 'name', value: 'id' }" placeholder="请选择角色" multiple></Select>
+			<Select v-model="formData.roleIds" :optionsData_p="roleData" :optionJson_p="{ label: 'name', value: 'id' }" placeholder="请选择角色" :multiple_p="true"></Select>
 		</el-form-item>
 		<el-form-item label="部门" v-if="!isSupperAdmin || loginCompanyId === formData.companyId">
 			<SelectTree v-model="formData.departmentId" :data="departmentData" node-key="id"></SelectTree>
 		</el-form-item>
 		<el-form-item label="状态" prop="status">
-			<Radio v-model="formData.status" :data_p="statusData"></Radio>
+			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="备注">
 			<Input type="textarea" :rows="4" v-model="formData.remark" />
@@ -28,7 +28,7 @@
 import { hgetStorage } from '@u/htools.web';
 
 import Select from '@c/ui/Select';
-import Radio from '@c/ui/Radio';
+import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 import SelectTree from '@c/ui/SelectTree';
@@ -43,7 +43,7 @@ export default {
 	props: ['selectData_p'],
 	components: {
 		Select,
-		Radio,
+		RadioGroup,
 		DataForm,
 		Input,
 		SelectTree

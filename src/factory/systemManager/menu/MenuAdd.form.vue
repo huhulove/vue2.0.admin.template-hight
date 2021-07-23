@@ -22,10 +22,10 @@
 			<Input v-model="formData.routeName" placeholder="请输入路由名称" />
 		</el-form-item>
 		<el-form-item label="状态">
-			<Radio v-model="formData.status" :data_p="statusData"></Radio>
+			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="是否外链">
-			<Radio v-model="formData.targetProperty" :data_p="targetData"></Radio>
+			<RadioGroup v-model="formData.targetProperty" :data_p="targetData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="父级">
 			<SelectTree v-model="formData.pid" node-key="id" :data="menuData" placeholder="请选择父级"></SelectTree>
@@ -37,7 +37,7 @@
 import { deleteTreeNodeById } from '@u/htools.tree';
 
 import SelectTree from '@c/ui/SelectTree';
-import Radio from '@c/ui/Radio';
+import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 import IconSelect from '@c/ui/IconSelect';
@@ -48,7 +48,7 @@ export default {
 	props: ['selectData_p'],
 	components: {
 		SelectTree,
-		Radio,
+		RadioGroup,
 		DataForm,
 		Input,
 		IconSelect

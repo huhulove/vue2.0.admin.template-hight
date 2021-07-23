@@ -13,7 +13,23 @@
 import './initViewer';
 
 export default {
-	props: ['imageData_p', 'width_p', 'height_p']
+	props: {
+		/* 图片数组 */
+		imageData_p: {
+			type: Array,
+			default: () => {
+				return [];
+			}
+		},
+		/* 图片宽度 */
+		width_p: {
+			type: Number
+		},
+		/* 图片高度 */
+		height_p: {
+			type: Number
+		}
+	}
 };
 </script>
 

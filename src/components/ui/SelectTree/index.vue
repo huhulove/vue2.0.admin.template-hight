@@ -5,8 +5,9 @@
 		v-bind="$attrs"
 		v-on="$listeners"
 		class="select-item"
-		filterable
-		clearable
+		:filterable="filterable_p"
+		:clearable="clearable_p"
+		:size="size_p"
 		@clear="clearHandler"
 		:filter-method="filterHandler"
 	>
@@ -30,7 +31,26 @@ import { getTreeNodeById } from '@u/htools.tree';
 
 export default {
 	inheritAttrs: false,
-	props: ['nodeValue'],
+	props: {
+		nodeValue: {
+			type: String
+		},
+		/* 是否可搜索 */
+		filterable_p: {
+			type: Boolean,
+			default: true
+		},
+		/* 是否可以清空选项 */
+		clearable_p: {
+			type: Boolean,
+			default: true
+		},
+		/* 输入框尺寸 */
+		size_p: {
+			type: String,
+			default: ''		// medium/small/mini
+		}
+	},
 	model: {
 		prop: 'nodeValue',
 		event: 'input'

@@ -1,6 +1,6 @@
 <template>
-	<div style="text-align: right">
-		<span class="dialog-footer">
+	<div class="dialog-footer">
+		<span>
 			<el-button @click="formCancel" v-if="!$attrs.isHideCancel_p">取 消</el-button>
 			<el-button type="primary" @click="formSubmit">确 定</el-button>
 		</span>
@@ -23,5 +23,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="less">
+.dialog-footer {
+	text-align: right;
+}
 </style>

@@ -22,35 +22,20 @@
 		>
 			<el-table-column label="操作" align="left" fixed="right">
 				<template slot-scope="scope">
-					<el-button
-						id="btn-update-row"
-						type="primary"
-						v-authorize="{ name: 'update', type: 'department', id: 'btn-update-row' }"
-						@click="editSingleHandler(scope.row)"
-					>
+					<el-button id="btn-update-row" type="primary" v-authorize="{ name: 'update', type: 'department', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)">
 						编辑
 					</el-button>
-					<el-button
-						id="btn-remove-row"
-						type="danger"
-						v-authorize="{ name: 'remove', type: 'department', id: 'btn-remove-row' }"
-						@click="deleteSingleHandler(scope.row)"
-					>
+					<el-button id="btn-remove-row" type="danger" v-authorize="{ name: 'remove', type: 'department', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)">
 						删除
 					</el-button>
 				</template>
 			</el-table-column>
 		</Table>
 		<!-- 分页 -->
-		<Pagination :total="total" :pageIndex_p.sync="pageIndex" :pageSize_p.sync="pageSize"></Pagination>
+		<Pagination :total_p="total" :pageIndex_p.sync="pageIndex" :pageSize_p.sync="pageSize"></Pagination>
 		<!-- AEForm -->
-		<Dialog :title="AEDialogTitle" :visible.sync="isShowAEDialog">
-			<DepartmentAEForm
-				v-if="isShowAEDialog"
-				:isShowAEDialog_p.sync="isShowAEDialog"
-				:isRefreshList_p.sync="isRefreshList"
-				:selectData_p="selectData"
-			></DepartmentAEForm>
+		<Dialog :title_p="AEDialogTitle" :visible_p.sync="isShowAEDialog">
+			<DepartmentAEForm v-if="isShowAEDialog" :isShowAEDialog_p.sync="isShowAEDialog" :isRefreshList_p.sync="isRefreshList" :selectData_p="selectData"></DepartmentAEForm>
 		</Dialog>
 	</div>
 </template>

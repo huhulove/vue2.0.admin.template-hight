@@ -75,7 +75,7 @@
 			</el-col>
 		</el-row>
 		<!-- AEForm -->
-		<Dialog :title="AEDialogTitle" :visible.sync="isShowAEDialog">
+		<Dialog :title_p="AEDialogTitle" :visible_p.sync="isShowAEDialog">
 			<MenuAEForm v-if="isShowAEDialog" :isShowAEDialog_p.sync="isShowAEDialog" :isRefreshList_p.sync="isRefreshList" :selectData_p="selectData"></MenuAEForm>
 		</Dialog>
 	</div>

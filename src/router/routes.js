@@ -109,7 +109,8 @@ const routes = [
 					aside: {
 						isMenu: false
 						/* activedRouteName: 'UserManager' */
-					}
+					},
+					isKeepAlive: true	// 是否缓存
 				},
 				component: ProfileInformation
 			},

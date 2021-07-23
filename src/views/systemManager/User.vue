@@ -38,9 +38,9 @@
 			</el-table-column>
 		</Table>
 		<!-- 分页 -->
-		<Pagination :total="total" :pageIndex_p.sync="pageIndex" :pageSize_p.sync="pageSize"></Pagination>
+		<Pagination :total_p="total" :pageIndex_p.sync="pageIndex" :pageSize_p.sync="pageSize"></Pagination>
 		<!-- AEForm -->
-		<Dialog :title="AEDialogTitle" :visible.sync="isShowAEDialog">
+		<Dialog :title_p="AEDialogTitle" :visible_p.sync="isShowAEDialog">
 			<UserAEForm v-if="isShowAEDialog" :isShowAEDialog_p.sync="isShowAEDialog" :isRefreshList_p.sync="isRefreshList" :selectData_p="selectData"></UserAEForm>
 		</Dialog>
 	</div>
@@ -81,11 +81,6 @@ export default {
 			{
 				label: '用户名',
 				field: 'userName',
-				columnWidth: 100
-			},
-			{
-				label: '密码',
-				field: 'userPwd',
 				columnWidth: 100
 			},
 			{

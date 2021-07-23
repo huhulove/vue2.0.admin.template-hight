@@ -7,7 +7,10 @@
 			</el-header>
 			<Tab></Tab>
 			<el-main class="main-container">
-				<router-view></router-view>
+				<keep-alive>
+					<router-view v-if="$route.meta.isKeepAlive"></router-view>
+				</keep-alive>
+				<router-view v-if="!$route.meta.isKeepAlive"></router-view>
 			</el-main>
 		</el-container>
 	</el-container>

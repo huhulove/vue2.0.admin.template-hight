@@ -52,7 +52,7 @@
 						</el-table-column>
 					</Table>
 					<!-- 分页 -->
-					<Pagination :total="total" :pageIndex_p.sync="pageIndex" :pageSize_p.sync="pageSize"></Pagination>
+					<Pagination :total_p="total" :pageIndex_p.sync="pageIndex" :pageSize_p.sync="pageSize"></Pagination>
 				</Card>
 			</el-col>
 			<!-- 角色授权 -->
@@ -70,7 +70,7 @@
 				</Card>
 			</el-col>
 		</el-row>
-		<Dialog :title="AEDialogTitle" :visible.sync="isShowAEDialog">
+		<Dialog :title_p="AEDialogTitle" :visible_p.sync="isShowAEDialog">
 			<RoleAddForm v-if="isShowAEDialog" :isShowAEDialog_p.sync="isShowAEDialog" :isRefreshList_p.sync="isRefreshList" :selectData_p="selectData"></RoleAddForm>
 		</Dialog>
 	</div>

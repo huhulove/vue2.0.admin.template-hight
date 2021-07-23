@@ -1,5 +1,5 @@
 <template>
-	<DataForm ref="profileFormEle" :model="formData" :rules="formRules">
+	<DataForm ref="profileFormEle" :model_p="formData" :rules_p="formRules">
 		<el-form-item label="用户名" prop="userName">
 			<Input v-model="formData.userName" disabled placeholder="请输入姓名" />
 		</el-form-item>

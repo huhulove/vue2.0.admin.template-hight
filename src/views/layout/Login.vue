@@ -1,6 +1,6 @@
 <template>
 	<div class="login-container">
-		<DataForm class="login-form" ref="formEle" :model="formData" :rules="formRules" :labelWidth_p="'0px'">
+		<DataForm class="login-form" ref="formEle" :model_p="formData" :rules_p="formRules" :labelWidth_p="'0px'">
 			<div class="title-container">
 				<h3>管理后台</h3>
 			</div>

@@ -4,7 +4,7 @@
 			<Input v-model="formData.name" placeholder="请输入角色名称" />
 		</el-form-item>
 		<el-form-item label="状态">
-			<Radio v-model="formData.status" :data_p="statusData"></Radio>
+			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="描述">
 			<Input type="textarea" :rows="4" v-model="formData.remark" placeholder="请输入角色描述" />
@@ -15,7 +15,7 @@
 <script>
 import { hgetStorage } from '@u/htools.web';
 
-import Radio from '@c/ui/Radio';
+import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 
@@ -24,7 +24,7 @@ import { roleAddService, roleEditService } from '@s/systemManager/RoleService';
 export default {
 	props: ['selectData_p'],
 	components: {
-		Radio,
+		RadioGroup,
 		DataForm,
 		Input
 	},

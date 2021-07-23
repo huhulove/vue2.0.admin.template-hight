@@ -10,7 +10,7 @@
 			<Input v-model="formData.powerSort" type="number" placeholder="请输入排序" />
 		</el-form-item>
 		<el-form-item label="状态" prop="status">
-			<Radio v-model="formData.status" :data_p="statusData"></Radio>
+			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="父级">
 			<SelectTree v-model="formData.parentId" node-key="powerCode" :data="authorizeData" placeholder="请选择父级"></SelectTree>
@@ -25,7 +25,7 @@
 import { deleteTreeNodeById } from '@u/htools.tree';
 
 import SelectTree from '@c/ui/SelectTree';
-import Radio from '@c/ui/Radio';
+import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 
@@ -35,7 +35,7 @@ export default {
 	props: ['selectData_p'],
 	components: {
 		SelectTree,
-		Radio,
+		RadioGroup,
 		DataForm,
 		Input
 	},
