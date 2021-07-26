@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import DataForm from '@c/ui/DataForm';
+import { hphoneValid, hemailValid } from '@u/htools.validator';
+import DataForm from '@c/custom/DataForm';
 import Input from '@c/ui/Input';
 import Select from '@c/ui/Select';
 
@@ -44,22 +45,6 @@ export default {
 		Select
 	},
 	data() {
-		const emailValid = (rule, value, callback) => {
-			const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-			if (value && !reg.test(value)) {
-				callback(new Error('请输入正确的邮箱地址'));
-			} else {
-				callback();
-			}
-		};
-		const phoneValid = (rule, value, callback) => {
-			const reg = /^(?:(?:\+|00)86)?1\d{10}$/;
-			if (value && !reg.test(value)) {
-				callback(new Error('请输入正确的手机号码'));
-			} else {
-				callback();
-			}
-		};
 		return {
 			optionsData: [
 				{
@@ -91,7 +76,7 @@ export default {
 				],
 				email: [
 					{
-						validator: emailValid,
+						validator: hemailValid,
 						trigger: 'blur'
 					}
 				],
@@ -102,7 +87,7 @@ export default {
 						trigger: 'blur'
 					},
 					{
-						validator: phoneValid,
+						validator: hphoneValid,
 						trigger: 'blur'
 					}
 				]

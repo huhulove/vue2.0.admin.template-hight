@@ -8,7 +8,7 @@
 				<Input v-model="formData.userName" placeholder="请输入用户名" />
 			</el-form-item>
 			<el-form-item prop="userPwd">
-				<Input v-model="formData.userPwd" type="password" placeholder="请输入密码" />
+				<Input v-model="formData.userPwd" type_p="password" placeholder="请输入密码" />
 			</el-form-item>
 			<template slot="footer">
 				<el-button class="login-button" :loading="loading" type="primary" @click.native.prevent="handleLogin">登录</el-button>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import DataForm from '@c/ui/DataForm';
+import DataForm from '@c/custom/DataForm';
 import Input from '@c/ui/Input';
 
 export default {

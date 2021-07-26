@@ -24,5 +24,18 @@ export const hwebsiteValid = (rule, value, callback) => {
 		callback();
 	}
 };
+/*
+ *@Description: 验证邮箱
+ *@ClassAuthor: myw
+ *@Date: 2021-07-26 11:56:49
+ */
+export const hemailValid = (rule, value, callback) => {
+	const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	if (value && !reg.test(value)) {
+		callback(new Error('请输入正确的邮箱地址'));
+	} else {
+		callback();
+	}
+};
 
 export default hphoneValid;

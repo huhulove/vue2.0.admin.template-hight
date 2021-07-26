@@ -1,5 +1,5 @@
 <template>
-	<SearchForm :model="formData" @search="searchHandler" :inline="true">
+	<SearchForm :model_p="formData" @search="searchHandler" :inline_p="true">
 		<el-form-item label="角色名称">
 			<Input v-model="formData.name" placeholder="请输入角色名称" />
 		</el-form-item>

@@ -1,31 +1,33 @@
 <template>
 	<div class="head-button">
-		<el-button id="btn-add" class="button-item" type="primary" v-authorize="{ name: 'add', type: authorize_p, id: 'btn-add' }" @click="showDialogAdd">新增</el-button>
-		<el-button
+		<Button id="btn-add" class="button-item" type_p="primary" v-authorize="{ name: 'add', type: authorize_p, id: 'btn-add' }" @click="showDialogAdd">新增</Button>
+		<Button
 			id="btn-update"
 			class="button-item"
-			type="success"
+			type_p="success"
 			v-authorize="{ name: 'update', type: authorize_p, id: 'btn-update' }"
 			:disabled="selectData_p.length !== 1"
 			@click="showDialogEdit"
 		>
 			修改
-		</el-button>
-		<el-button
+		</Button>
+		<Button
 			id="btn-remove"
 			class="button-item"
-			type="danger"
+			type_p="danger"
 			v-authorize="{ name: 'remove', type: authorize_p, id: 'btn-remove' }"
 			:disabled="selectData_p.length < 1"
 			@click="showDeleteHandler"
 		>
 			删除
-		</el-button>
+		</Button>
 		<slot></slot>
 	</div>
 </template>
 
 <script>
+import Button from '@c/ui/Button';
+
 export default {
 	props: {
 		selectData_p: {
@@ -44,6 +46,9 @@ export default {
 		editDisabled_p: {
 			type: Boolean
 		}
+	},
+	components: {
+		Button
 	},
 	data() {
 		return {};

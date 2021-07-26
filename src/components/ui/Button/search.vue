@@ -31,7 +31,7 @@ export default {
 		/* 类型 */
 		type_p: {
 			type: String,
-			default: '' // primary / success / warning / danger / info / text
+			default: 'success' // primary / success / warning / danger / info / text
 		},
 		/* 是否朴素按钮 */
 		plain_p: {
@@ -56,7 +56,7 @@ export default {
 		/* 图标类名 */
 		icon_p: {
 			type: String,
-			default: ''
+			default: 'el-icon-search'
 		},
 		/* 是否默认聚焦 */
 		autofocus_p: {

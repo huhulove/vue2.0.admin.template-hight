@@ -30,8 +30,8 @@ import { hgetStorage } from '@u/htools.web';
 import Select from '@c/ui/Select';
 import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
-import DataForm from '@c/ui/DataForm';
-import SelectTree from '@c/custom/SelectTree';
+import DataForm from '@c/custom/DataForm';
+import SelectTree from '@c/ui/SelectTree';
 
 // eslint-disable-next-line import/named
 import { userAddService, userEditService } from '@s/systemManager/UserService';

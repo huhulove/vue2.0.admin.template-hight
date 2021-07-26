@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import DataForm from '@c/ui/DataForm';
+import DataForm from '@c/custom/DataForm';
 import Input from '@c/ui/Input';
 
 import { userPasswordEditService } from '@s/systemManager/UserService';

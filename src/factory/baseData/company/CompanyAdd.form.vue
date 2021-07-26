@@ -37,7 +37,7 @@
 <script>
 import Upload from '@c/ui/Upload';
 import Input from '@c/ui/Input';
-import DataForm from '@c/ui/DataForm';
+import DataForm from '@c/custom/DataForm';
 import { hphoneValid, hwebsiteValid } from '@u/htools.validator';
 
 // eslint-disable-next-line import/named
