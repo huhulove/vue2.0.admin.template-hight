@@ -7,12 +7,7 @@
 			<SelectTree v-model="formData.parentId" node-key="id" :data="optionsDept" placeholder="请选择父级"></SelectTree>
 		</el-form-item>
 		<el-form-item label="负责人姓名" prop="dutyPeopleId">
-			<Select
-				v-model="formData.dutyPeopleId"
-				:optionsData_p="optionsPeople"
-				:optionJson_p="{ label: 'nickName' }"
-				placeholder="请选择负责人姓名"
-			></Select>
+			<Select v-model="formData.dutyPeopleId" :optionsData_p="optionsPeople" :optionJson_p="{ label: 'nickName', value: 'id' }" placeholder="请选择负责人姓名"></Select>
 		</el-form-item>
 	</DataForm>
 </template>

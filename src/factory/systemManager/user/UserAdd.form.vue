@@ -19,7 +19,7 @@
 			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="备注">
-			<Input type="textarea" :rows="4" v-model="formData.remark" />
+			<Input type_p="textarea" :rows_p="4" v-model="formData.remark" />
 		</el-form-item>
 	</DataForm>
 </template>

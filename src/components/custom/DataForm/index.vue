@@ -25,7 +25,7 @@ export default {
 			this.$emit('cancel');
 		},
 		formSubmit() {
-			this.$refs.formEle.validate(async valid => {
+			this.$refs.formEle.$refs.formEle.validate(async valid => {
 				this.$emit('submit', valid);
 			});
 		}

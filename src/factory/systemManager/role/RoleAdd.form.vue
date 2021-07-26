@@ -7,7 +7,7 @@
 			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="描述">
-			<Input type="textarea" :rows="4" v-model="formData.remark" placeholder="请输入角色描述" />
+			<Input type_p="textarea" :rows_p="4" v-model="formData.remark" placeholder="请输入角色描述" />
 		</el-form-item>
 	</DataForm>
 </template>

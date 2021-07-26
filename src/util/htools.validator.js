@@ -37,5 +37,18 @@ export const hemailValid = (rule, value, callback) => {
 		callback();
 	}
 };
+/*
+ *@Description: 验证正整数
+ *@ClassAuthor: myw
+ *@Date: 2021-07-26 17:31:03
+*/
+export const hpositiveIntegerValid = (rule, value, callback) => {
+	const reg = /^\d{1,}$/;
+	if (value && !reg.test(value)) {
+		callback(new Error('请输入正确的数字'));
+	} else {
+		callback();
+	}
+};
 
 export default hphoneValid;

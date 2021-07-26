@@ -6,13 +6,13 @@
 		<el-form-item label="链接地址">
 			<Input v-model="formData.url" placeholder="请输入链接地址" />
 		</el-form-item>
-		<el-form-item label="排序">
+		<el-form-item label="排序" prop="menuSort">
 			<Input v-model="formData.menuSort" placeholder="请输入排序" />
 		</el-form-item>
 		<el-form-item label="图标">
 			<el-popover placement="bottom-start" width="450" trigger="click" @show="$refs['iconSelect'].reset()">
 				<IconSelect ref="iconSelect" @selected="selectedIcon" />
-				<el-input slot="reference" v-model="formData.menuIcon" style="width: 450px" placeholder="点击选择图标" readonly>
+				<el-input slot="reference" v-model="formData.menuIcon" style="width: 100%" placeholder="点击选择图标" readonly>
 					<svg-icon v-if="formData.menuIcon" slot="prefix" :icon-class="formData.menuIcon" class="el-input__icon" style="height: 32px; width: 16px" />
 					<i v-else slot="prefix" class="el-icon-search el-input__icon" />
 				</el-input>
@@ -35,6 +35,7 @@
 
 <script>
 import { deleteTreeNodeById } from '@u/htools.tree';
+import { hpositiveIntegerValid } from '@u/htools.validator';
 
 import SelectTree from '@c/ui/SelectTree';
 import RadioGroup from '@c/ui/RadioGroup';
@@ -87,6 +88,12 @@ export default {
 					{
 						required: true,
 						message: '请输入路由名称',
+						trigger: 'blur'
+					}
+				],
+				menuSort: [
+					{
+						validator: hpositiveIntegerValid,
 						trigger: 'blur'
 					}
 				],
