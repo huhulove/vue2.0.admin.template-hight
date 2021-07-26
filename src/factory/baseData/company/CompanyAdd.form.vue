@@ -27,14 +27,7 @@
 			</Upload>
 		</el-form-item>
 		<el-form-item label="营业执照" prop="website">
-			<Upload
-				:action="uploadImgAction"
-				:limit="1"
-				list-type="picture-card"
-				:file-list="licenseFile"
-				:on-success="licenseSuccessHandler"
-				:isShowTip_p="true"
-			>
+			<Upload :action="uploadImgAction" :limit="1" list-type="picture-card" :file-list="licenseFile" :on-success="licenseSuccessHandler" :isShowTip_p="true">
 				<p>营业执照只能上传一张图片</p>
 			</Upload>
 		</el-form-item>
@@ -45,6 +38,7 @@
 import Upload from '@c/ui/Upload';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
+import { hphoneValid, hwebsiteValid } from '@u/htools.validator';
 
 // eslint-disable-next-line import/named
 import { companyAddService, companyEditService } from '@s/baseData/CompanyService';
@@ -57,22 +51,6 @@ export default {
 		Input
 	},
 	data() {
-		const phoneValid = (rule, value, callback) => {
-			const reg = /^(?:(?:\+|00)86)?1\d{10}$/;
-			if (value && !reg.test(value)) {
-				callback(new Error('请输入正确的手机号码'));
-			} else {
-				callback();
-			}
-		};
-		const websiteValid = (rule, value, callback) => {
-			const reg = /^(((ht|f)tps?):\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/;
-			if (value && !reg.test(value)) {
-				callback(new Error('请输入正确的网址'));
-			} else {
-				callback();
-			}
-		};
 		return {
 			editId: -1,
 			formData: {
@@ -96,13 +74,13 @@ export default {
 				],
 				phone: [
 					{
-						validator: phoneValid,
+						validator: hphoneValid,
 						trigger: 'blur'
 					}
 				],
 				website: [
 					{
-						validator: websiteValid,
+						validator: hwebsiteValid,
 						trigger: 'blur'
 					}
 				]

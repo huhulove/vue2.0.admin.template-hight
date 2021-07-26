@@ -3,14 +3,14 @@
 		<!-- 搜索区域 -->
 		<DeptSearchForm @searchForm="searchFormHandler"></DeptSearchForm>
 		<!-- 顶部按钮 -->
-		<Button
+		<ButtonGroup
 			@showDialogAdd="showDialogAddHandler"
 			@showDialogEdit="showDialogEditHandler"
 			@showDelete="showDeleteHandler"
 			:selectData_p="selectData"
 			:delTips_p="delTips"
 			:authorize_p="'department'"
-		></Button>
+		></ButtonGroup>
 		<!--表格渲染-->
 		<Table
 			ref="tableDom"
@@ -44,7 +44,7 @@
 import ListMixin from '@m/List.mixin';
 
 import Dialog from '@c/ui/Dialog';
-import Button from '@c/ui/Button';
+import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 
@@ -60,7 +60,7 @@ export default {
 		Table,
 		Dialog,
 		Pagination,
-		Button,
+		ButtonGroup,
 		DepartmentAEForm,
 		DeptSearchForm
 	},

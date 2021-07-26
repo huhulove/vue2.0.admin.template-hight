@@ -3,14 +3,14 @@
 		<!-- 搜索区域 -->
 		<UserSearchForm @searchForm="searchFormHandler"></UserSearchForm>
 		<!-- 顶部按钮 -->
-		<Button
+		<ButtonGroup
 			@showDialogAdd="showDialogAddHandler"
 			@showDialogEdit="showDialogEditHandler"
 			@showDelete="showDeleteHandler"
 			:selectData_p="selectData"
 			:delTips_p="delTips"
 			:authorize_p="'user'"
-		></Button>
+		></ButtonGroup>
 		<!--表格渲染-->
 		<Table ref="tableDom" :data.sync="tableData" :tableColumn_p="tableColumn" :selectData_p.sync="selectData">
 			<el-table-column label="角色">
@@ -50,7 +50,7 @@
 import { hgetStorage } from '@u/htools.web';
 import ListMixin from '@m/List.mixin';
 
-import Button from '@c/ui/Button';
+import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Dialog from '@c/ui/Dialog';
 import Pagination from '@c/ui/Pagination';
@@ -64,7 +64,7 @@ import { userDeleteService, userListService, userDetailService, userPasswordEdit
 export default {
 	mixins: [ListMixin],
 	components: {
-		Button,
+		ButtonGroup,
 		Table,
 		Pagination,
 		Dialog,

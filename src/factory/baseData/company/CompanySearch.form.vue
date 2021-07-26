@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import SearchForm from '@c/ui/SearchForm';
+import SearchForm from '@c/custom/SearchForm';
 import Input from '@c/ui/Input';
 
 export default {

@@ -2,14 +2,14 @@
 	<div class="app-container">
 		<el-row :gutter="15">
 			<!-- 功能按钮 -->
-			<Button
+			<ButtonGroup
 				@showDialogAdd="showDialogAddHandler"
 				@showDialogEdit="showDialogEditHandler"
 				@showDelete="showDeleteHandler"
 				:selectData_p="selectData"
 				:delTips_p="delTips"
 				:authorize_p="'role'"
-			></Button>
+			></ButtonGroup>
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="18">
 				<Card>
 					<div slot="header" class="clearfix">
@@ -80,7 +80,7 @@
 import { hgetStorage } from '@u/htools.web';
 import ListMixin from '@m/List.mixin';
 
-import Button from '@c/ui/Button';
+import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 import Dialog from '@c/ui/Dialog';
@@ -98,7 +98,7 @@ export default {
 	components: {
 		Table,
 		Pagination,
-		Button,
+		ButtonGroup,
 		Dialog,
 		Card,
 		RoleAddForm,

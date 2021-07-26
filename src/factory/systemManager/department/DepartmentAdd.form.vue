@@ -21,7 +21,7 @@
 import { deleteTreeNodeById } from '@u/htools.tree';
 
 import Select from '@c/ui/Select';
-import SelectTree from '@c/ui/SelectTree';
+import SelectTree from '@c/custom/SelectTree';
 import Input from '@c/ui/Input';
 import DataForm from '@c/ui/DataForm';
 

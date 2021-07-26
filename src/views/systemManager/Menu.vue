@@ -1,14 +1,14 @@
 <template>
 	<div class="app-container">
 		<el-row :gutter="15">
-			<Button
+			<ButtonGroup
 				@showDialogAdd="showDialogAddHandler"
 				@showDialogEdit="showDialogEditHandler"
 				@showDelete="showDeleteHandler"
 				:selectData_p="selectData"
 				:delTips_p="delTips"
 				:authorize_p="'menu'"
-			></Button>
+			></ButtonGroup>
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="18">
 				<Card>
 					<div slot="header" class="clearfix">
@@ -87,7 +87,7 @@ import ListMixin from '@m/List.mixin';
 import { changePowerToEdit } from '@u/index';
 
 import Table from '@c/ui/Table';
-import Button from '@c/ui/Button';
+import ButtonGroup from '@c/custom/ButtonGroup';
 import Dialog from '@c/ui/Dialog';
 import Card from '@c/ui/Card';
 
@@ -103,7 +103,7 @@ export default {
 	mixins: [ListMixin],
 	components: {
 		Table,
-		Button,
+		ButtonGroup,
 		Dialog,
 		Card,
 		MenuAEForm,

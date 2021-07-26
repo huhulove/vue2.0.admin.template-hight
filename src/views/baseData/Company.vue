@@ -3,14 +3,14 @@
 		<!-- 搜索 -->
 		<CompanySearchForm @searchForm="searchFormHandler"></CompanySearchForm>
 		<!-- 顶部按钮 -->
-		<Button
+		<ButtonGroup
 			@showDialogAdd="showDialogAddHandler"
 			@showDialogEdit="showDialogEditHandler"
 			@showDelete="showDeleteHandler"
 			:selectData_p="selectData"
 			:delTips_p="delTips"
 			:authorize_p="'company'"
-		></Button>
+		></ButtonGroup>
 		<!--表格渲染-->
 		<Table ref="tableDom" :data.sync="tableData" :tableColumn_p="tableColumn" :selectData_p.sync="selectData">
 			<el-table-column label="操作" align="left" fixed="right">
@@ -37,7 +37,7 @@
 import ListMixin from '@m/List.mixin';
 
 import Dialog from '@c/ui/Dialog';
-import Button from '@c/ui/Button';
+import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
 
@@ -53,7 +53,7 @@ export default {
 		Table,
 		Dialog,
 		Pagination,
-		Button,
+		ButtonGroup,
 		CompanyAEForm,
 		CompanySearchForm
 	},

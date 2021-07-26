@@ -3,14 +3,14 @@
 		<!-- 搜索区域 -->
 		<AuthorizeSearchForm @searchForm="searchFormHandler"></AuthorizeSearchForm>
 		<!-- 顶部按钮 -->
-		<Button
+		<ButtonGroup
 			@showDialogAdd="showDialogAddHandler"
 			@showDialogEdit="showDialogEditHandler"
 			@showDelete="showDeleteHandler"
 			:selectData_p="selectData"
 			:delTips_p="delTips"
 			:authorize_p="'power'"
-		></Button>
+		></ButtonGroup>
 		<!--表格渲染-->
 		<Table
 			ref="tableDom"
@@ -44,7 +44,7 @@
 <script>
 import ListMixin from '@m/List.mixin';
 
-import Button from '@c/ui/Button';
+import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Dialog from '@c/ui/Dialog';
 
@@ -58,7 +58,7 @@ export default {
 	mixins: [ListMixin],
 	components: {
 		Table,
-		Button,
+		ButtonGroup,
 		Dialog,
 		AuthorizeAEForm,
 		AuthorizeSearchForm
