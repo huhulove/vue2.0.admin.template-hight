@@ -25,15 +25,9 @@
 			</el-table-column>
 			<el-table-column label="操作" align="left" fixed="right" width="300">
 				<template slot-scope="scope">
-					<el-button id="btn-update-row" type="primary" v-authorize="{ name: 'update', type: 'user', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)">
-						编辑
-					</el-button>
-					<el-button id="btn-remove-row" type="danger" v-authorize="{ name: 'remove', type: 'user', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)">
-						删除
-					</el-button>
-					<el-button id="btn-secret-row" type="success" v-authorize="{ name: 'secret', type: 'user', id: 'btn-secret-row' }" @click="resetPasswordHandler(scope.row)">
-						重置密码
-					</el-button>
+					<EditRowButton v-authorize="{ name: 'update', type: 'user', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
+					<RemoveRowButton v-authorize="{ name: 'remove', type: 'user', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
+					<SetPasswordRowButton v-authorize="{ name: 'secret', type: 'user', id: 'btn-secret-row' }" @click="resetPasswordHandler(scope.row)"></SetPasswordRowButton>
 				</template>
 			</el-table-column>
 		</Table>
@@ -54,6 +48,9 @@ import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Dialog from '@c/ui/Dialog';
 import Pagination from '@c/ui/Pagination';
+import EditRowButton from '@c/ui/Button/editRow';
+import RemoveRowButton from '@c/ui/Button/removeRow';
+import SetPasswordRowButton from '@c/ui/Button/setPasswordRow';
 
 import UserSearchForm from '@f/systemManager/user/UserSearch.form';
 import UserAEForm from '@f/systemManager/user/UserAdd.form';
@@ -68,6 +65,9 @@ export default {
 		Table,
 		Pagination,
 		Dialog,
+		EditRowButton,
+		RemoveRowButton,
+		SetPasswordRowButton,
 		UserSearchForm,
 		UserAEForm
 	},

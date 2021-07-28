@@ -1,5 +1,6 @@
 <template>
 	<el-button
+		id="btn-secret-row"
 		:size="size_p"
 		:type="type_p"
 		:plain="plain_p"
@@ -12,12 +13,11 @@
 		v-bind="$attrs"
 		v-on="$listeners"
 	>
-		<slot>搜索</slot>
+		<slot>重置密码</slot>
 	</el-button>
 </template>
 
 <script>
-
 export default {
 	inheritAttrs: false,
 	props: {
@@ -57,7 +57,7 @@ export default {
 		/* 图标类名 */
 		icon_p: {
 			type: String,
-			default: 'el-icon-search'
+			default: ''
 		},
 		/* 是否默认聚焦 */
 		autofocus_p: {

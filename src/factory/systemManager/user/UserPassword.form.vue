@@ -1,13 +1,13 @@
 <template>
-	<DataForm :model="formData" :rules="formRules" @submit="formSubmit" v-bind="$attrs" v-on="$listeners">
+	<DataForm :model_p="formData" :rules_p="formRules" @submit="formSubmit" v-bind="$attrs" v-on="$listeners">
 		<el-form-item label="旧密码" prop="userPwdOld">
-			<Input type="password" v-model="formData.userPwdOld" />
+			<Input type_p="password" v-model="formData.userPwdOld" />
 		</el-form-item>
 		<el-form-item label="新密码" prop="userPwdNew">
-			<Input type="password" v-model="formData.userPwdNew" />
+			<Input type_p="password" v-model="formData.userPwdNew" />
 		</el-form-item>
 		<el-form-item label="确认密码" prop="checkPass">
-			<Input type="password" v-model="formData.checkPass" />
+			<Input type_p="password" v-model="formData.checkPass" />
 		</el-form-item>
 		<template slot="footer">
 			<slot name="footer"></slot>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import DataForm from '@c/custom/DataForm';
+import DataForm from '@c/ui/DataForm';
 import Input from '@c/ui/Input';
 
 import { userPasswordEditService } from '@s/systemManager/UserService';

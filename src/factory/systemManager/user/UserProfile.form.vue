@@ -32,7 +32,7 @@
 
 <script>
 import { hphoneValid, hemailValid } from '@u/htools.validator';
-import DataForm from '@c/custom/DataForm';
+import DataForm from '@c/ui/DataForm';
 import Input from '@c/ui/Input';
 import Select from '@c/ui/Select';
 

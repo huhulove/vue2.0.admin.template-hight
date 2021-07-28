@@ -40,7 +40,7 @@ import { hpositiveIntegerValid } from '@u/htools.validator';
 import SelectTree from '@c/ui/SelectTree';
 import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
-import DataForm from '@c/custom/DataForm';
+import DataForm from '@c/ui/DataForm';
 import IconSelect from '@c/ui/IconSelect';
 
 import { menuAddService, menuEditService, menuListService } from '@s/systemManager/MenuService';

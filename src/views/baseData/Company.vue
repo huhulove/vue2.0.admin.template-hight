@@ -13,14 +13,10 @@
 		></ButtonGroup>
 		<!--表格渲染-->
 		<Table ref="tableDom" :data.sync="tableData" :tableColumn_p="tableColumn" :selectData_p.sync="selectData">
-			<el-table-column label="操作" align="left" fixed="right">
+			<el-table-column label="操作" align="left" fixed="right" width="150">
 				<template slot-scope="scope">
-					<el-button id="btn-update-row" type="primary" v-authorize="{ name: 'update', type: 'company', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)">
-						编辑
-					</el-button>
-					<el-button id="btn-remove-row" type="danger" v-authorize="{ name: 'remove', type: 'company', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)">
-						删除
-					</el-button>
+					<EditRowButton v-authorize="{ name: 'update', type: 'company', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
+					<RemoveRowButton v-authorize="{ name: 'remove', type: 'company', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
 				</template>
 			</el-table-column>
 		</Table>
@@ -40,6 +36,8 @@ import Dialog from '@c/ui/Dialog';
 import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Pagination from '@c/ui/Pagination';
+import EditRowButton from '@c/ui/Button/editRow';
+import RemoveRowButton from '@c/ui/Button/removeRow';
 
 import CompanyAEForm from '@f/baseData/company/CompanyAdd.form';
 import CompanySearchForm from '@f/baseData/company/CompanySearch.form';
@@ -54,6 +52,8 @@ export default {
 		Dialog,
 		Pagination,
 		ButtonGroup,
+		EditRowButton,
+		RemoveRowButton,
 		CompanyAEForm,
 		CompanySearchForm
 	},

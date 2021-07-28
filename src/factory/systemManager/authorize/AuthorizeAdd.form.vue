@@ -27,7 +27,7 @@ import { deleteTreeNodeById } from '@u/htools.tree';
 import SelectTree from '@c/ui/SelectTree';
 import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
-import DataForm from '@c/custom/DataForm';
+import DataForm from '@c/ui/DataForm';
 
 import { authorizeAddService, authorizeEditService, authorizeListService } from '@s/systemManager/AuthorizeService';
 

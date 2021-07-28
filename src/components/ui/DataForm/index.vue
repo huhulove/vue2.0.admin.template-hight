@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import FooterForm from './FooterForm';
+import FooterForm from '@c/ui/FooterForm';
 
 export default {
 	inheritAttrs: false,
@@ -35,8 +35,7 @@ export default {
 		},
 		/* 表单验证规则 */
 		rules_p: {
-			type: Object,
-			required: true
+			type: Object
 		},
 		/* 用于控制该表单内组件的尺寸 */
 		size_p: {

@@ -4,7 +4,7 @@
 			<Input v-model="formData.userName" placeholder="请输入用户名" />
 		</el-form-item>
 		<el-form-item label="密码" prop="userPwd" v-if="editId === -1">
-			<Input type="password" v-model="formData.userPwd" placeholder="请输入密码" />
+			<Input type_p="password" v-model="formData.userPwd" placeholder="请输入密码" />
 		</el-form-item>
 		<el-form-item label="昵称">
 			<Input v-model="formData.nickName" placeholder="请输入昵称" />
@@ -30,7 +30,7 @@ import { hgetStorage } from '@u/htools.web';
 import Select from '@c/ui/Select';
 import RadioGroup from '@c/ui/RadioGroup';
 import Input from '@c/ui/Input';
-import DataForm from '@c/custom/DataForm';
+import DataForm from '@c/ui/DataForm';
 import SelectTree from '@c/ui/SelectTree';
 
 // eslint-disable-next-line import/named

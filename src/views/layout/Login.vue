@@ -1,6 +1,6 @@
 <template>
 	<div class="login-container">
-		<DataForm class="login-form" ref="formEle" :model_p="formData" :rules_p="formRules" :labelWidth_p="'0px'">
+		<DataForm class="login-form" ref="formEle" :model_p="formData" :rules_p="formRules" :labelWidth_p="'0px'" @keyup.enter.native="handleLogin">
 			<div class="title-container">
 				<h3>管理后台</h3>
 			</div>
@@ -11,21 +11,23 @@
 				<Input v-model="formData.userPwd" type_p="password" placeholder="请输入密码" />
 			</el-form-item>
 			<template slot="footer">
-				<el-button class="login-button" :loading="loading" type="primary" @click.native.prevent="handleLogin">登录</el-button>
+				<LoginButton class="login-button" :loading_p="loading">登录</LoginButton>
 			</template>
 		</DataForm>
 	</div>
 </template>
 
 <script>
-import DataForm from '@c/custom/DataForm';
+import DataForm from '@c/ui/DataForm';
 import Input from '@c/ui/Input';
+import LoginButton from '@c/ui/Button/login';
 
 export default {
 	name: 'Login',
 	components: {
 		DataForm,
-		Input
+		Input,
+		LoginButton
 	},
 	data() {
 		return {
@@ -48,14 +50,6 @@ export default {
 			},
 			immediate: true
 		}
-	},
-	mounted() {
-		document.onkeydown = () => {
-			const key = window.event.keyCode;
-			if (key === 13) {
-				this.handleLogin();
-			}
-		};
 	},
 	methods: {
 		handleLogin() {

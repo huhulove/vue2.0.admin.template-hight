@@ -30,30 +30,12 @@
 						</el-table-column>
 						<el-table-column label="操作" align="left" fixed="right" width="300">
 							<template slot-scope="scope">
-								<el-button
-									id="btn-update-row"
-									type="primary"
-									v-authorize="{ name: 'update', type: 'menu', id: 'btn-update-row' }"
-									@click="editSingleHandler(scope.row)"
-								>
-									编辑
-								</el-button>
-								<el-button
-									id="btn-remove-row"
-									type="danger"
-									v-authorize="{ name: 'remove', type: 'menu', id: 'btn-remove-row' }"
-									@click="deleteSingleHandler(scope.row)"
-								>
-									删除
-								</el-button>
-								<el-button
-									id="btn-remove-row"
-									type="success"
-									v-authorize="{ name: 'menuJurisdictionsConfigure', type: 'menu', id: 'btn-remove-row' }"
+								<EditRowButton v-authorize="{ name: 'update', type: 'menu', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
+								<RemoveRowButton v-authorize="{ name: 'remove', type: 'menu', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
+								<SetAuthorizeRowButton
+									v-authorize="{ name: 'menuJurisdictionsConfigure', type: 'menu', id: 'btn-authorize-row' }"
 									@click="setAuthorizeHandler(scope.row)"
-								>
-									设置权限
-								</el-button>
+								></SetAuthorizeRowButton>
 							</template>
 						</el-table-column>
 					</Table>
@@ -66,9 +48,9 @@
 						<el-tooltip class="item" effect="dark" content="选择指定菜单分配权限" placement="top">
 							<span class="role-span">权限分配</span>
 						</el-tooltip>
-						<el-button :disabled="editId === -1" icon="el-icon-check" size="mini" style="float: right; padding: 6px 9px" type="primary" @click="saveMenu">
+						<Button :disabled="editId === -1" icon_p="el-icon-check" size_p="mini" style="float: right; padding: 6px 9px" type_p="primary" @click="saveMenu">
 							保存
-						</el-button>
+						</Button>
 					</div>
 					<AuthorizeTree ref="authorizeTreeEle" :hasPowerCodes_p="hasPowerCodes"></AuthorizeTree>
 				</Card>
@@ -90,6 +72,10 @@ import Table from '@c/ui/Table';
 import ButtonGroup from '@c/custom/ButtonGroup';
 import Dialog from '@c/ui/Dialog';
 import Card from '@c/ui/Card';
+import Button from '@c/ui/Button';
+import EditRowButton from '@c/ui/Button/editRow';
+import RemoveRowButton from '@c/ui/Button/removeRow';
+import SetAuthorizeRowButton from '@c/ui/Button/setAuthorizeRow';
 
 import MenuAEForm from '@f/systemManager/menu/MenuAdd.form';
 import AuthorizeTree from '@f/layout/AuthorizeTree';
@@ -106,6 +92,10 @@ export default {
 		ButtonGroup,
 		Dialog,
 		Card,
+		Button,
+		EditRowButton,
+		RemoveRowButton,
+		SetAuthorizeRowButton,
 		MenuAEForm,
 		AuthorizeTree
 	},
@@ -217,8 +207,8 @@ export default {
 			return res;
 		},
 		async saveMenu() {
-			const checkedNodes = this.$refs.tree.getCheckedNodes();
-			const halfCheckedNodes = this.$refs.tree.getHalfCheckedNodes();
+			const checkedNodes = this.$refs.authorizeTreeEle.$refs.tree.getCheckedNodes();
+			const halfCheckedNodes = this.$refs.authorizeTreeEle.$refs.tree.getHalfCheckedNodes();
 			const ids = checkedNodes.map(item => {
 				return item.powerCode;
 			});

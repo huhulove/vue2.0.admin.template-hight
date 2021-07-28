@@ -14,7 +14,7 @@
 <script>
 import { hgetStorage } from '@u/htools.web';
 
-import SearchForm from '@c/custom/SearchForm';
+import SearchForm from '@c/ui/SearchForm';
 import Input from '@c/ui/Input';
 import Select from '@c/ui/Select';
 

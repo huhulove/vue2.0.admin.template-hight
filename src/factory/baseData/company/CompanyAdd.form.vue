@@ -4,7 +4,7 @@
 			<Input v-model="formData.name" placeholder="请输入机构名称" />
 		</el-form-item>
 		<el-form-item label="联系电话" prop="phone">
-			<Input v-model="formData.phone" type="number" placeholder="请输入联系电话" />
+			<Input v-model="formData.phone" type_p="number" placeholder="请输入联系电话" />
 		</el-form-item>
 		<el-form-item label="邮箱" prop="email">
 			<Input v-model="formData.email" placeholder="请输入邮箱" />
@@ -13,7 +13,7 @@
 			<Input v-model="formData.userName" placeholder="请输入用户名" />
 		</el-form-item>
 		<el-form-item label="密码" prop="password" v-if="editId === -1">
-			<Input v-model="formData.password" type="password" placeholder="请输入密码" />
+			<Input v-model="formData.password" type_p="password" placeholder="请输入密码" />
 		</el-form-item>
 		<el-form-item label="官方网址" prop="website">
 			<Input v-model="formData.website" placeholder="请输入官方网址" />
@@ -21,12 +21,12 @@
 		<el-form-item label="地址详情" prop="address">
 			<Input v-model="formData.address" placeholder="请输入地址详情" />
 		</el-form-item>
-		<el-form-item label="公司LOGO" prop="website">
+		<el-form-item label="公司LOGO">
 			<Upload :action="uploadImgAction" :limit="1" list-type="picture-card" :file-list="logoFile" :on-success="logoSuccessHandler" :isShowTip_p="true">
 				<p>公司logo只能上传一张图片</p>
 			</Upload>
 		</el-form-item>
-		<el-form-item label="营业执照" prop="website">
+		<el-form-item label="营业执照">
 			<Upload :action="uploadImgAction" :limit="1" list-type="picture-card" :file-list="licenseFile" :on-success="licenseSuccessHandler" :isShowTip_p="true">
 				<p>营业执照只能上传一张图片</p>
 			</Upload>
@@ -37,7 +37,7 @@
 <script>
 import Upload from '@c/ui/Upload';
 import Input from '@c/ui/Input';
-import DataForm from '@c/custom/DataForm';
+import DataForm from '@c/ui/DataForm';
 import { hphoneValid, hwebsiteValid } from '@u/htools.validator';
 
 // eslint-disable-next-line import/named
@@ -106,6 +106,7 @@ export default {
 						url: newValue[0].businessLicense
 					});
 					this.formData = { ...newValue[0] };
+					console.log(this.formData);
 				}
 			},
 			deep: true,

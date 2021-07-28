@@ -55,7 +55,7 @@ export default {
 		/* 文件列表的类型 */
 		listType_p: {
 			type: String,
-			default: 'text' // text/picture/picture-card
+			default: 'picture-card' // text/picture/picture-card
 		},
 		/* 最大允许上传个数 */
 		limit_p: {

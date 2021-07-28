@@ -23,14 +23,10 @@
 			<el-table-column label="状态" width="100">
 				<template slot-scope="scope">{{ scope.row.status === 0 ? '正常' : '禁用' }}</template>
 			</el-table-column>
-			<el-table-column label="操作" align="left" fixed="right">
+			<el-table-column label="操作" align="left" fixed="right" width="180">
 				<template slot-scope="scope">
-					<el-button id="btn-update-row" type="primary" v-authorize="{ name: 'update', type: 'power', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)">
-						编辑
-					</el-button>
-					<el-button id="btn-remove-row" type="danger" v-authorize="{ name: 'remove', type: 'power', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)">
-						删除
-					</el-button>
+					<EditRowButton v-authorize="{ name: 'update', type: 'power', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
+					<RemoveRowButton v-authorize="{ name: 'remove', type: 'power', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
 				</template>
 			</el-table-column>
 		</Table>
@@ -47,6 +43,8 @@ import ListMixin from '@m/List.mixin';
 import ButtonGroup from '@c/custom/ButtonGroup';
 import Table from '@c/ui/Table';
 import Dialog from '@c/ui/Dialog';
+import EditRowButton from '@c/ui/Button/editRow';
+import RemoveRowButton from '@c/ui/Button/removeRow';
 
 import AuthorizeAEForm from '@f/systemManager/authorize/AuthorizeAdd.form';
 import AuthorizeSearchForm from '@f/systemManager/authorize/AuthorizeSearch.form';
@@ -60,6 +58,8 @@ export default {
 		Table,
 		ButtonGroup,
 		Dialog,
+		EditRowButton,
+		RemoveRowButton,
 		AuthorizeAEForm,
 		AuthorizeSearchForm
 	},

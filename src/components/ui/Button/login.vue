@@ -12,7 +12,7 @@
 		v-bind="$attrs"
 		v-on="$listeners"
 	>
-		<slot>搜索</slot>
+		<slot></slot>
 	</el-button>
 </template>
 
@@ -32,7 +32,7 @@ export default {
 		/* 类型 */
 		type_p: {
 			type: String,
-			default: 'success' // primary / success / warning / danger / info / text
+			default: 'primary' // primary / success / warning / danger / info / text
 		},
 		/* 是否朴素按钮 */
 		plain_p: {
@@ -57,7 +57,7 @@ export default {
 		/* 图标类名 */
 		icon_p: {
 			type: String,
-			default: 'el-icon-search'
+			default: ''
 		},
 		/* 是否默认聚焦 */
 		autofocus_p: {
