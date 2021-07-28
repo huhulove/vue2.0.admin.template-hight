@@ -122,7 +122,7 @@ const childNodesDeep = (nodes, arr, key) => {
 		nodes.forEach(ele => {
 			arr.push(ele[key]);
 			if (ele.children) {
-				this.childNodesDeep(ele.children, arr, key);
+				childNodesDeep(ele.children, arr, key);
 			}
 		});
 	}

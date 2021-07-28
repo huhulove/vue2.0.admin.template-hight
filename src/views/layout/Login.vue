@@ -11,7 +11,7 @@
 				<Input v-model="formData.userPwd" type_p="password" placeholder="请输入密码" />
 			</el-form-item>
 			<template slot="footer">
-				<LoginButton class="login-button" :loading_p="loading">登录</LoginButton>
+				<LoginButton class="login-button" :loading_p="loading" @click="handleLogin">登录</LoginButton>
 			</template>
 		</DataForm>
 	</div>

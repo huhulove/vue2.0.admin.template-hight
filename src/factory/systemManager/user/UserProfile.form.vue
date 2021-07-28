@@ -25,7 +25,7 @@
 			<Input v-model="formData.role" disabled placeholder="请输入角色" />
 		</el-form-item>
 		<el-form-item slot="footer" style="text-align: right">
-			<el-button type="primary" @click="formSubmit">确 定</el-button>
+			<Button type_p="primary" @click="formSubmit">确 定</Button>
 		</el-form-item>
 	</DataForm>
 </template>
@@ -35,6 +35,7 @@ import { hphoneValid, hemailValid } from '@u/htools.validator';
 import DataForm from '@c/ui/DataForm';
 import Input from '@c/ui/Input';
 import Select from '@c/ui/Select';
+import Button from '@c/ui/Button';
 
 import { userLoginDetailService, userEditLoginInfoService } from '@s/systemManager/UserService.js';
 
@@ -42,7 +43,8 @@ export default {
 	components: {
 		DataForm,
 		Input,
-		Select
+		Select,
+		Button
 	},
 	data() {
 		return {
