@@ -16,6 +16,13 @@ export default {
 			isRefreshListAll: false
 		};
 	},
+	watch: {
+		isShowAEDialog(newValue) {
+			if (!newValue) {
+				this.selectData = [];
+			}
+		}
+	},
 	methods: {
 		listMixin(res) {
 			if (res.total || res.total === 0) {
