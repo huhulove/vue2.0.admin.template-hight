@@ -201,7 +201,11 @@ export const userDetailService = options => {
 export const userAddService = options => {
 	const body = JSON.parse(options.body);
 	body.createDate = Mock.Random.now();
-	body.id = userData[userData.length - 1].id + 1;
+	if (userData.length === 0) {
+		body.id = 1;
+	} else {
+		body.id = userData[userData.length - 1].id + 1;
+	}
 	body.companyId = body.companyId ? body.companyId : hgetStorage('companyId');
 	userData.push(body);
 	return Mock.mock({

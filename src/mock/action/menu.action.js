@@ -54,7 +54,11 @@ export const userMenuAuthorizeService = () => {
 export const menuAddService = options => {
 	const body = JSON.parse(options.body);
 	body.createDate = Mock.Random.now();
-	body.id = menuData[menuData.length - 1].id + 1;
+	if (menuData.length === 0) {
+		body.id = 1;
+	} else {
+		body.id = menuData[menuData.length - 1].id + 1;
+	}
 	body.children = null;
 	body.isDel = 0;
 	body.powers = [];

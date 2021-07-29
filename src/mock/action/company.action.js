@@ -31,7 +31,11 @@ export const companyListService = options => {
 /* 公司添加 */
 export const companyAddService = options => {
 	const body = JSON.parse(options.body);
-	body.id = companyData[companyData.length - 1].id + 1;
+	if (companyData.length === 0) {
+		body.id = 1;
+	} else {
+		body.id = companyData[companyData.length - 1].id + 1;
+	}
 	body.createDate = Mock.Random.now();
 	const user = {
 		userName: body.userName,

@@ -71,7 +71,11 @@ export const departmentListService = options => {
 export const departmentAddService = options => {
 	const body = JSON.parse(options.body);
 	body.createDate = Mock.Random.now();
-	body.id = departmentData[departmentData.length - 1].id + 1;
+	if (departmentData.length === 0) {
+		body.id = 1;
+	} else {
+		body.id = departmentData[departmentData.length - 1].id + 1;
+	}
 	body.companyId = hgetStorage('companyId');
 	departmentData.push(body);
 	return Mock.mock({

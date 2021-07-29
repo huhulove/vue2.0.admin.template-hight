@@ -23,6 +23,7 @@
 
 <script>
 import { deleteTreeNodeById } from '@u/htools.tree';
+import { hpositiveIntegerValid } from '@u/htools.validator';
 
 import SelectTree from '@c/ui/SelectTree';
 import RadioGroup from '@c/ui/RadioGroup';
@@ -71,8 +72,7 @@ export default {
 				],
 				powerSort: [
 					{
-						required: true,
-						message: '请输入权限标识',
+						validator: hpositiveIntegerValid,
 						trigger: 'blur'
 					}
 				],

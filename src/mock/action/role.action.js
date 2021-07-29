@@ -58,7 +58,11 @@ export const roleListService = options => {
 /* 角色添加 */
 export const roleAddService = options => {
 	const body = JSON.parse(options.body);
-	body.id = roleData[roleData.length - 1].id + 1;
+	if (roleData.length === 0) {
+		body.id = 1;
+	} else {
+		body.id = roleData[roleData.length - 1].id + 1;
+	}
 	body.createDate = Mock.Random.now();
 	body.companyId = hgetStorage('companyId');
 	body.powerCodes = [];
