@@ -166,7 +166,6 @@ export default {
 			};
 			const res = await companyDetailService(dataJson);
 			this.selectData = [res];
-			this.showDialogEditHandlerMixin();
 		},
 		async showDeleteHandler() {
 			const ids = this.filterSelectIdsMixin();

@@ -27,7 +27,7 @@
 								<EditRowButton v-authorize="{ name: 'update', type: 'role', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
 								<RemoveRowButton v-authorize="{ name: 'remove', type: 'role', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
 								<SetAuthorizeRowButton
-									v-authorize="{ name: 'rolePowerConf', type: 'role', id: 'btn-remove-row' }"
+									v-authorize="{ name: 'authorize', type: 'role', id: 'btn-authorize-row' }"
 									@click="setAuthorizeHandler(scope.row)"
 								></SetAuthorizeRowButton>
 							</template>
@@ -48,7 +48,7 @@
 							保存
 						</Button>
 					</div>
-					<AuthorizeTree ref="authorizeTreeEle" :hasPowerCodes_p="hasPowerCodes"></AuthorizeTree>
+					<AuthorizeTree ref="authorizeTreeEle" :hasAuthorizeCodes_p="hasAuthorizeCodes"></AuthorizeTree>
 				</Card>
 			</el-col>
 		</el-row>
@@ -134,7 +134,7 @@ export default {
 			// 表格
 			tableColumn: tableColumn,
 			delTips: '',
-			hasPowerCodes: null
+			hasAuthorizeCodes: null
 		};
 	},
 	computed: {
@@ -206,7 +206,7 @@ export default {
 		},
 		async setAuthorizeHandler(row) {
 			const res = await this.roleDetail(row);
-			this.hasPowerCodes = res.powerCodes;
+			this.hasAuthorizeCodes = res.authorizeCodes;
 		},
 		async roleDetail(row) {
 			const dataJson = {
@@ -221,16 +221,16 @@ export default {
 			const checkedNodes = this.$refs.authorizeTreeEle.$refs.tree.getCheckedNodes();
 			const halfCheckedNodes = this.$refs.authorizeTreeEle.$refs.tree.getHalfCheckedNodes();
 			const ids = checkedNodes.map(item => {
-				return item.powerCode;
+				return item.code;
 			});
 
 			const ids1 = halfCheckedNodes.map(item => {
-				return item.powerCode;
+				return item.code;
 			});
 
 			const dataJson = {
 				id: this.editId,
-				powerCodes: Array.from(new Set([...ids, ...ids1]))
+				authorizeCodes: Array.from(new Set([...ids, ...ids1]))
 			};
 			await roleAuthorizeService(dataJson);
 			this.$store.commit('setRefreshAside', true);

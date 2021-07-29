@@ -95,7 +95,7 @@ export default {
 		/* 是否要高亮当前行 */
 		highlightCurrentRow_p: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		/* 空数据时显示的文本内容 */
 		emptyText_p: {

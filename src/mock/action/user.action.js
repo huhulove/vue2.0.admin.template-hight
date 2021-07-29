@@ -22,12 +22,12 @@ export const userLoginDetailService = () => {
 	})[0];
 	result.company = company.name;
 	result.role = [];
-	result.powers = [];
+	result.authorizeCodes = [];
 	result.roleIds.forEach(roleId => {
 		filterRoleData().forEach(role => {
 			if (roleId === role.id) {
 				result.role.push(role.name);
-				result.powers.push(...role.powerCodes);
+				result.authorizeCodes.push(...role.authorizeCodes);
 			}
 		});
 	});

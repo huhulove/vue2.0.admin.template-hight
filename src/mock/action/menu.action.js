@@ -23,24 +23,24 @@ export const userMenuAuthorizeService = () => {
 	const userRole = filterRoleData().filter(item => {
 		return user.roleIds.indexOf(item.id) > -1;
 	});
-	const powerCodes = [];
+	const authorizeCodes = [];
 	userRole.forEach(item => {
-		powerCodes.push(...item.powerCodes);
+		authorizeCodes.push(...item.authorizeCodes);
 	});
-	const powerCodesSet = new Set();
-	powerCodes.forEach(item => {
-		powerCodesSet.add(item);
+	const authorizeCodesSet = new Set();
+	authorizeCodes.forEach(item => {
+		authorizeCodesSet.add(item);
 	});
-	const powerCodesNew = [];
-	powerCodesSet.forEach(item => {
-		powerCodesNew.push(item);
+	const authorizeCodesNew = [];
+	authorizeCodesSet.forEach(item => {
+		authorizeCodesNew.push(item);
 	});
 	const asideMenuData = [];
 	menuData.forEach(item => {
-		const powers = harrIntersect(item.powers, powerCodesNew);
+		const authorizeCodes = harrIntersect(item.authorizeCodes, authorizeCodesNew);
 		const asideMenuItem = { ...item };
-		if (powers.length !== 0) {
-			asideMenuItem.powers = [...powers];
+		if (authorizeCodes.length !== 0) {
+			asideMenuItem.authorizeCodes = [...authorizeCodes];
 			asideMenuData.push(asideMenuItem);
 		}
 	});
@@ -61,7 +61,7 @@ export const menuAddService = options => {
 	}
 	body.children = null;
 	body.isDel = 0;
-	body.powers = [];
+	body.authorizeCodes = [];
 	menuData.push(body);
 	return Mock.mock({
 		code: 200,
@@ -114,10 +114,10 @@ export const menuDeleteService = options => {
 };
 /* 菜单赋权限 */
 export const menuAuthorizeService = options => {
-	const { id, menuJurisdictions } = JSON.parse(options.body);
+	const { id, authorizeCodes } = JSON.parse(options.body);
 	menuData.forEach(item => {
 		if (item.id === id) {
-			item.powers = [...menuJurisdictions];
+			item.authorizeCodes = [...authorizeCodes];
 		}
 	});
 	return Mock.mock({

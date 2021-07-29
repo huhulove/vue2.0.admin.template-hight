@@ -79,7 +79,7 @@ export default {
 			}
 			if (routeName) {
 				getTreePNodeByNodeId(this.menuData, routeName, null, (node, pNode) => {
-					hsetStorage('btnPowers', node.powers);
+					hsetStorage('btnAuthorizeCodes', node.authorizeCodes);
 					this.defaultActive = `${node.id}`;
 					this.defaultOpeneds = [];
 					if (pNode) {
@@ -91,9 +91,6 @@ export default {
 				this.defaultActive = '';
 				this.defaultOpeneds = [];
 			}
-		},
-		clickMenu(menu) {
-			hsetStorage('btnPowers', menu.powers);
 		},
 		async menuAuthorizeList() {
 			const res = await userMenuAuthorizeService({});

@@ -100,10 +100,10 @@ export const menuAuthorizeService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				menuJurisdictions: [],
+				authorizeCodes: [],
 				...data
 			};
-			const res = await hpostRequest('menu/menuJurisdictionsConfigure', dataJson);
+			const res = await hpostRequest('menu/menuAuthorizeConfigure', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

@@ -30,7 +30,7 @@ const baseUrl = 'http://www.huhulove.com/api/';
 /* 用户 */
 Mock.mock(`${baseUrl}user/login`, 'post', login);
 Mock.mock(`${baseUrl}user/listUserAll`, 'post', userLoginDetailService);
-Mock.mock(`${baseUrl}user/systemUserByIdJurisdictionQuery`, 'get', userMenuAuthorizeService);
+Mock.mock(`${baseUrl}user/systemUserByIdAuthorizeQuery`, 'get', userMenuAuthorizeService);
 Mock.mock(`${baseUrl}user/systemUserAllQuery`, 'post', userListService);
 Mock.mock(RegExp(`${baseUrl}user/systemUserByIdQuery.*`), 'get', userDetailService);
 Mock.mock(`${baseUrl}user/systemUserAdd`, 'post', userAddService);
@@ -40,11 +40,11 @@ Mock.mock(`${baseUrl}user/systemUserPassUpdate`, 'post', userPasswordEditService
 Mock.mock(`${baseUrl}user/loginInfo`, 'post', userEditLoginInfoService);
 Mock.mock(`${baseUrl}user/avatar`, 'post', userEditAvatarService);
 /* 权限 */
-Mock.mock(RegExp(`${baseUrl}jurisdiction/jurisdictionAllQuery.*`), 'get', authorizeListService);
-Mock.mock(`${baseUrl}jurisdiction/jurisdictionAdd`, 'post', authorizeAddService);
-Mock.mock(RegExp(`${baseUrl}jurisdiction/jurisdictionUpdate.*`), 'post', authorizeEditService);
-Mock.mock(`${baseUrl}jurisdiction/jurisdictionDel`, 'post', authorizeDeleteService);
-Mock.mock(RegExp(`${baseUrl}jurisdiction/jurisdictionByIdQuery.*`), 'get', authorizeDetailService);
+Mock.mock(RegExp(`${baseUrl}authorize/authorizeAllQuery.*`), 'get', authorizeListService);
+Mock.mock(`${baseUrl}authorize/authorizedd`, 'post', authorizeAddService);
+Mock.mock(RegExp(`${baseUrl}authorize/authorizeUpdate.*`), 'post', authorizeEditService);
+Mock.mock(`${baseUrl}authorize/authorizeDel`, 'post', authorizeDeleteService);
+Mock.mock(RegExp(`${baseUrl}authorize/authorizeByIdQuery.*`), 'get', authorizeDetailService);
 /* 角色 */
 Mock.mock(`${baseUrl}role/roleAllQuery`, 'post', roleListService);
 Mock.mock(`${baseUrl}role/roleAdd`, 'post', roleAddService);
@@ -57,7 +57,7 @@ Mock.mock(`${baseUrl}menu/menuAllQuery`, 'get', menuListService);
 Mock.mock(`${baseUrl}menu/menuAdd`, 'post', menuAddService);
 Mock.mock(`${baseUrl}menu/menuInfoUpdate`, 'post', menuEditService);
 Mock.mock(`${baseUrl}menu/menuDel`, 'post', menuDeleteService);
-Mock.mock(`${baseUrl}menu/menuJurisdictionsConfigure`, 'post', menuAuthorizeService);
+Mock.mock(`${baseUrl}menu/menuAuthorizeConfigure`, 'post', menuAuthorizeService);
 Mock.mock(RegExp(`${baseUrl}menu/menuByIdQuery.*`), 'get', menuDetailService);
 /* 部门 */
 Mock.mock(`${baseUrl}department/departmentAllQuery`, 'post', departmentListService);

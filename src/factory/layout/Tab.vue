@@ -56,7 +56,7 @@ export default {
 							this.tabList.push({
 								title: this.$route.meta.title,
 								path: this.$route.fullPath,
-								btnAuthorize: hgetStorage('btnPowers'),
+								btnAuthorize: hgetStorage('btnAuthorizes'),
 								routeName: this.$route.name,
 								isKeepAlive: this.$route.meta.isKeepAlive
 							});
@@ -105,7 +105,7 @@ export default {
 		},
 		clickTabHandler(tabIndex) {
 			this.$router.push(this.tabList[tabIndex].path);
-			hsetStorage('btnPowers', this.tabList[tabIndex].btnAuthorize);
+			hsetStorage('btnAuthorizes', this.tabList[tabIndex].btnAuthorize);
 		},
 		contextMenuHandler(event, tabIndex) {
 			this.contextMenuTabIndex = tabIndex;
@@ -153,7 +153,7 @@ export default {
 			this.currentTab = 0;
 			this.isShowContextMenu = false;
 			this.$router.push(contextMenuTab.path);
-			hsetStorage('btnPowers', contextMenuTab.btnAuthorize);
+			hsetStorage('btnAuthorizes', contextMenuTab.btnAuthorize);
 		}
 	}
 };

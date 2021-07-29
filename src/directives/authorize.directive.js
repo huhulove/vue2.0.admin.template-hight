@@ -7,8 +7,8 @@ Vue.directive('authorize', {
 		const { name, type, id } = binding.value;
 		el.style.display = 'none';
 		setTimeout(() => {
-			const btnPowers = hgetStorage('btnPowers');
-			if (btnPowers && btnPowers.indexOf(`${type}:${name}`) > -1) {
+			const btnAuthorizes = hgetStorage('btnAuthorizeCodes');
+			if (btnAuthorizes && btnAuthorizes.indexOf(`${type}:${name}`) > -1) {
 				el.style.display = 'inline-block';
 			} else {
 				document.getElementById(id).remove();

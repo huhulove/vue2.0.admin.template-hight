@@ -3,148 +3,148 @@ import Mock from 'mockjs';
 const authorizeStatusArr = [0, 1];
 const authorizeData = [
 	{
-		powerName: '公司删除',
-		powerCode: 'company:remove',
+		name: '公司删除',
+		code: 'company:remove',
 		parentId: 'company:list'
 	},
 	{
-		powerName: '公司编辑',
-		powerCode: 'company:update',
+		name: '公司编辑',
+		code: 'company:update',
 		parentId: 'company:list'
 	},
 	{
-		powerName: '公司新增',
-		powerCode: 'company:add',
+		name: '公司新增',
+		code: 'company:add',
 		parentId: 'company:list'
 	},
 	{
-		powerName: '公司查看',
-		powerCode: 'company:list',
+		name: '公司查看',
+		code: 'company:list',
 		parentId: ''
 	},
 	{
-		powerName: '菜单添加',
-		powerCode: 'menu:add',
+		name: '菜单添加',
+		code: 'menu:add',
 		parentId: 'menu:list'
 	},
 	{
-		powerName: '菜单查看',
-		powerCode: 'menu:list',
+		name: '菜单查看',
+		code: 'menu:list',
 		parentId: '0'
 	},
 	{
-		powerName: '菜单权限配置',
-		powerCode: 'menu:menuJurisdictionsConfigure',
+		name: '菜单权限配置',
+		code: 'menu:authorize',
 		parentId: 'menu:list'
 	},
 	{
-		powerName: '菜单删除',
-		powerCode: 'menu:remove',
+		name: '菜单删除',
+		code: 'menu:remove',
 		parentId: 'menu:list'
 	},
 	{
-		powerName: '菜单编辑',
-		powerCode: 'menu:update',
+		name: '菜单编辑',
+		code: 'menu:update',
 		parentId: 'menu:list'
 	},
 	{
-		powerName: '权限添加',
-		powerCode: 'power:add',
-		parentId: 'power:list'
+		name: '权限添加',
+		code: 'authorize:add',
+		parentId: 'authorize:list'
 	},
 	{
-		powerName: '权限编辑',
-		powerCode: 'power:edit',
-		parentId: 'power:list'
+		name: '权限编辑',
+		code: 'authorize:edit',
+		parentId: 'authorize:list'
 	},
 	{
-		powerName: '权限查看',
-		powerCode: 'power:list',
+		name: '权限查看',
+		code: 'authorize:list',
 		parentId: '0'
 	},
 	{
-		powerName: '权限删除',
-		powerCode: 'power:remove',
-		parentId: 'power:list'
+		name: '权限删除',
+		code: 'authorize:remove',
+		parentId: 'authorize:list'
 	},
 	{
-		powerName: '权限修改',
-		powerCode: 'power:update',
-		parentId: 'power:list'
+		name: '权限修改',
+		code: 'authorize:update',
+		parentId: 'authorize:list'
 	},
 	{
-		powerName: '角色添加',
-		powerCode: 'role:add',
+		name: '角色添加',
+		code: 'role:add',
 		parentId: 'role:list'
 	},
 	{
-		powerName: '角色查看',
-		powerCode: 'role:list',
+		name: '角色查看',
+		code: 'role:list',
 		parentId: '0'
 	},
 	{
-		powerName: '角色删除',
-		powerCode: 'role:remove',
+		name: '角色删除',
+		code: 'role:remove',
 		parentId: 'role:list'
 	},
 	{
-		powerName: '权限分配',
-		powerCode: 'role:rolePowerConf',
+		name: '角色权限配置',
+		code: 'role:authorize',
 		parentId: 'role:list'
 	},
 	{
-		powerName: '角色编辑',
-		powerCode: 'role:update',
+		name: '角色编辑',
+		code: 'role:update',
 		parentId: 'role:list'
 	},
 	{
-		powerName: '用户添加',
-		powerCode: 'user:add',
+		name: '用户添加',
+		code: 'user:add',
 		parentId: 'user:list'
 	},
 	{
-		powerName: '用户查看',
-		powerCode: 'user:list',
+		name: '用户查看',
+		code: 'user:list',
 		parentId: '0'
 	},
 	{
-		powerName: '用户删除',
-		powerCode: 'user:remove',
+		name: '用户删除',
+		code: 'user:remove',
 		parentId: 'user:list'
 	},
 	{
-		powerName: '用户编辑',
-		powerCode: 'user:update',
+		name: '用户编辑',
+		code: 'user:update',
 		parentId: 'user:list'
 	},
 	{
-		powerName: '用户角色绑定',
-		powerCode: 'user:UserRoleBind',
+		name: '用户角色绑定',
+		code: 'user:UserRoleBind',
 		parentId: 'user:list'
 	},
 	{
-		powerName: '用户设置密码',
-		powerCode: 'user:secret',
+		name: '用户设置密码',
+		code: 'user:secret',
 		parentId: 'user:list'
 	},
 	{
-		powerName: '部门查看',
-		powerCode: 'department:list',
+		name: '部门查看',
+		code: 'department:list',
 		parentId: ''
 	},
 	{
-		powerName: '部门添加',
-		powerCode: 'department:add',
+		name: '部门添加',
+		code: 'department:add',
 		parentId: 'department:list'
 	},
 	{
-		powerName: '部门编辑',
-		powerCode: 'department:update',
+		name: '部门编辑',
+		code: 'department:update',
 		parentId: 'department:list'
 	},
 	{
-		powerName: '部门删除',
-		powerCode: 'department:remove',
+		name: '部门删除',
+		code: 'department:remove',
 		parentId: 'department:list'
 	}
 ];
@@ -154,7 +154,7 @@ authorizeData.forEach(item => {
 	item.status = Mock.mock({
 		'status|1': authorizeStatusArr
 	}).status;
-	item.powerSort = Mock.Random.natural(1, 100);
+	item.sort = Mock.Random.natural(1, 100);
 });
 
 export default authorizeData;

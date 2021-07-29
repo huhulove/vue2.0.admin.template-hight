@@ -18,7 +18,7 @@ export const changeTreeDataToChildren = data => {
 	// 将数据存储为 以 id 为 KEY 的 map 索引数据列
 	const map = {};
 	data.forEach(item => {
-		map[item.id || item.powerCode] = item;
+		map[item.id || item.code] = item;
 	});
 	const val = [];
 	data.forEach(item => {

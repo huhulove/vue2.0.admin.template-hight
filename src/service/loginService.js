@@ -22,9 +22,9 @@ export const loginService = data => {
 export const loginOutService = () => {
 	hremoveStorage('token');
 	hremoveStorage('companyId');
-	hremoveStorage('powers');
+	hremoveStorage('authorizeCodes');
 	hremoveStorage('departmentId');
-	hremoveStorage('btnPowers');
+	hremoveStorage('btnAuthorizeCodes');
 	hremoveStorage('roleIds');
 };
 

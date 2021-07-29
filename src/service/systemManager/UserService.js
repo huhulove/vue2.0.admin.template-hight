@@ -93,7 +93,7 @@ export const userLoginDetailService = data => {
 				...data
 			};
 			const res = await hpostRequest('user/listUserAll', dataJson);
-			hsetStorage('powers', res.powers);
+			hsetStorage('authorizeCodes', res.authorizeCodes);
 			hsetStorage('roleIds', res.roleIds);
 			hsetStorage('companyId', res.companyId);
 			hsetStorage('departmentId', res.departmentId);
@@ -155,7 +155,7 @@ export const userMenuAuthorizeService = data => {
 			const dataJson = {
 				...data
 			};
-			const res = await hgetRequest('user/systemUserByIdJurisdictionQuery', dataJson);
+			const res = await hgetRequest('user/systemUserByIdAuthorizeQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);

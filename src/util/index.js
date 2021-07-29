@@ -41,10 +41,10 @@ export const mergeRoutes = data => {
 	return data;
 };
 /* 指定权限可编辑 */
-export const changePowerToEdit = targetPowers => {
-	const currentUserPowers = hgetStorage('powers');
-	currentUserPowers.forEach(item => {
-		getTreeNodeById(targetPowers, 'powerCode', item, node => {
+export const changeAuthorizeToEdit = targetAuthorizeCodes => {
+	const currentUserAuthorizes = hgetStorage('authorizeCodes');
+	currentUserAuthorizes.forEach(item => {
+		getTreeNodeById(targetAuthorizeCodes, 'code', item, node => {
 			node.disabled = false;
 		});
 	});

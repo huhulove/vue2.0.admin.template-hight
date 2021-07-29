@@ -33,7 +33,7 @@
 								<EditRowButton v-authorize="{ name: 'update', type: 'menu', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
 								<RemoveRowButton v-authorize="{ name: 'remove', type: 'menu', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
 								<SetAuthorizeRowButton
-									v-authorize="{ name: 'menuJurisdictionsConfigure', type: 'menu', id: 'btn-authorize-row' }"
+									v-authorize="{ name: 'authorize', type: 'menu', id: 'btn-authorize-row' }"
 									@click="setAuthorizeHandler(scope.row)"
 								></SetAuthorizeRowButton>
 							</template>
@@ -52,7 +52,7 @@
 							保存
 						</Button>
 					</div>
-					<AuthorizeTree ref="authorizeTreeEle" :hasPowerCodes_p="hasPowerCodes"></AuthorizeTree>
+					<AuthorizeTree ref="authorizeTreeEle" :hasAuthorizeCodes_p="hasAuthorizeCodes"></AuthorizeTree>
 				</Card>
 			</el-col>
 		</el-row>
@@ -66,7 +66,7 @@
 <script>
 import ListMixin from '@m/List.mixin';
 // eslint-disable-next-line import/no-cycle
-import { changePowerToEdit } from '@u/index';
+import { changeAuthorizeToEdit } from '@u/index';
 
 import Table from '@c/ui/Table';
 import ButtonGroup from '@c/custom/ButtonGroup';
@@ -134,7 +134,7 @@ export default {
 				}
 			],
 			delTips: '',
-			hasPowerCodes: null
+			hasAuthorizeCodes: null
 		};
 	},
 	computed: {
@@ -158,7 +158,7 @@ export default {
 			const dataJson = {};
 			const res = await authorizeListService(dataJson);
 			this.authorizeData = res;
-			changePowerToEdit(this.authorizeData, this.$envConfig);
+			changeAuthorizeToEdit(this.authorizeData, this.$envConfig);
 		},
 		async menuList() {
 			const dataJson = {};
@@ -196,7 +196,7 @@ export default {
 		},
 		async setAuthorizeHandler(row) {
 			const res = await this.menuDetail(row);
-			this.hasPowerCodes = res.powers;
+			this.hasAuthorizeCodes = res.authorizeCodes;
 		},
 		async menuDetail(row) {
 			const dataJson = {
@@ -210,16 +210,16 @@ export default {
 			const checkedNodes = this.$refs.authorizeTreeEle.$refs.tree.getCheckedNodes();
 			const halfCheckedNodes = this.$refs.authorizeTreeEle.$refs.tree.getHalfCheckedNodes();
 			const ids = checkedNodes.map(item => {
-				return item.powerCode;
+				return item.code;
 			});
 
 			const ids1 = halfCheckedNodes.map(item => {
-				return item.powerCode;
+				return item.code;
 			});
 
 			const dataJson = {
 				id: this.editId,
-				menuJurisdictions: Array.from(new Set([...ids, ...ids1]))
+				authorizeCodes: Array.from(new Set([...ids, ...ids1]))
 			};
 			await menuAuthorizeService(dataJson);
 			this.$store.commit('setRefreshAside', true);

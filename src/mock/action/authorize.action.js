@@ -7,7 +7,7 @@ import authorizeData from '../data/authorize.data';
 export const authorizeListService = options => {
 	const { name } = hgetAllParams(options.url);
 	const searchResult = authorizeData.filter(item => {
-		return item.powerName.indexOf(name) > -1;
+		return item.name.indexOf(name) > -1;
 	});
 	return Mock.mock({
 		code: 200,
@@ -19,7 +19,7 @@ export const authorizeListService = options => {
 export const authorizeAddService = options => {
 	const body = JSON.parse(options.body);
 	const result = authorizeData.filter(item => {
-		return item.powerCode === body.powerCode;
+		return item.code === body.code;
 	});
 	if (result.length !== 0) {
 		return Mock.mock({
@@ -33,7 +33,7 @@ export const authorizeAddService = options => {
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
-		result: body.powerCode
+		result: body.code
 	});
 };
 /* 权限修改 */
@@ -41,21 +41,21 @@ export const authorizeEditService = options => {
 	const body = JSON.parse(options.body);
 	body.updateDate = Mock.Random.now();
 	authorizeData.forEach((item, index) => {
-		if (item.powerCode === body.powerCode) {
+		if (item.code === body.code) {
 			authorizeData[index] = body;
 		}
 	});
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
-		result: body.powerCode
+		result: body.code
 	});
 };
 /* 权限删除 */
 export const deleteList = ids => {
 	for (let i = 0; i < authorizeData.length; i++) {
 		const item = authorizeData[i];
-		if (ids.indexOf(item.powerCode) > -1) {
+		if (ids.indexOf(item.code) > -1) {
 			authorizeData.splice(i, 1);
 			i--;
 		}
@@ -63,7 +63,7 @@ export const deleteList = ids => {
 	const newIds = [];
 	authorizeData.forEach(item => {
 		if (ids.indexOf(item.parentId) > -1) {
-			newIds.push(item.powerCode);
+			newIds.push(item.code);
 		}
 	});
 	if (newIds.length !== 0) {
@@ -71,19 +71,19 @@ export const deleteList = ids => {
 	}
 };
 export const authorizeDeleteService = options => {
-	const { powerCode } = JSON.parse(options.body);
-	deleteList(powerCode);
+	const { code } = JSON.parse(options.body);
+	deleteList(code);
 	return Mock.mock({
 		code: 200,
 		msg: '操作成功',
-		result: powerCode
+		result: code
 	});
 };
 /* 权限详情 */
 export const authorizeDetailService = options => {
-	const { powerCode } = hgetAllParams(options.url);
+	const { code } = hgetAllParams(options.url);
 	const result = authorizeData.filter(item => {
-		return item.powerCode === powerCode;
+		return item.code === code;
 	})[0];
 	return Mock.mock({
 		code: 200,
@@ -94,6 +94,6 @@ export const authorizeDetailService = options => {
 /* 过滤权限数据 */
 export const filterAuthorizeData = () => {
 	return authorizeData.map(item => {
-		return item.powerCode;
+		return item.code;
 	});
 };

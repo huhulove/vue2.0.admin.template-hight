@@ -15,7 +15,7 @@ const roleData = Mock.mock({
 			'name|1': roleNameArr,
 			'status|1': roleStatus,
 			remark: Mock.Random.title(),
-			powerCodes: filterAuthorizeData(),
+			authorizeCodes: filterAuthorizeData(),
 			companyId: filterCompanyData()[0].id
 		}
 	]

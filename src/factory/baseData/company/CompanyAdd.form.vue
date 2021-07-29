@@ -106,7 +106,6 @@ export default {
 						url: newValue[0].businessLicense
 					});
 					this.formData = { ...newValue[0] };
-					console.log(this.formData);
 				}
 			},
 			deep: true,

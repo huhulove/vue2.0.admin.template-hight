@@ -8,7 +8,7 @@ const menuData = [
 		pid: 0,
 		url: '',
 		routeName: '',
-		powers: ['role:add', 'role:list', 'user:add', 'user:download', 'user:remove', 'user:select', 'user:update', 'user:UserRoleBind']
+		authorizeCodes: ['role:add', 'role:list', 'user:add', 'user:remove', 'user:select', 'user:update']
 	},
 	{
 		menuName: '菜单管理123',
@@ -16,7 +16,7 @@ const menuData = [
 		pid: 1,
 		url: '/system/menuManager',
 		routeName: 'MenuManager',
-		powers: ['menu:add', 'menu:list', 'menu:menuJurisdictionsConfigure', 'menu:remove', 'menu:update']
+		authorizeCodes: ['menu:add', 'menu:list', 'menu:authorize', 'menu:remove', 'menu:update']
 	},
 	{
 		menuName: '权限管理',
@@ -24,7 +24,7 @@ const menuData = [
 		pid: 1,
 		url: '/system/authorizeManager',
 		routeName: 'AuthorizeManager',
-		powers: ['power:add', 'power:edit', 'power:list', 'power:remove', 'power:update']
+		authorizeCodes: ['authorize:add', 'authorize:edit', 'authorize:list', 'authorize:remove', 'authorize:update']
 	},
 	{
 		menuName: '用户管理',
@@ -32,7 +32,7 @@ const menuData = [
 		pid: 1,
 		url: '/system/userManager',
 		routeName: 'UserManager',
-		powers: ['user:add', 'user:download', 'user:list', 'user:remove', 'user:update', 'user:secret']
+		authorizeCodes: ['user:add', 'user:download', 'user:list', 'user:remove', 'user:update', 'user:secret']
 	},
 	{
 		menuName: '角色管理',
@@ -40,7 +40,7 @@ const menuData = [
 		pid: 1,
 		url: '/system/roleManager',
 		routeName: 'RoleManager',
-		powers: ['role:add', 'role:list', 'role:remove', 'role:rolePowerConf', 'role:update']
+		authorizeCodes: ['role:add', 'role:list', 'role:remove', 'role:authorize', 'role:update']
 	},
 	{
 		menuName: '部门管理',
@@ -48,7 +48,7 @@ const menuData = [
 		pid: 1,
 		url: '/system/department',
 		routeName: 'Department',
-		powers: ['department:add', 'department:list', 'department:remove', 'department:rolePowerConf', 'department:update']
+		authorizeCodes: ['department:add', 'department:list', 'department:remove', 'department:update']
 	},
 	{
 		menuName: '基础数据',
@@ -56,7 +56,7 @@ const menuData = [
 		pid: 0,
 		url: '',
 		routeName: '',
-		powers: ['company:add', 'company:list', 'company:remove', 'company:update']
+		authorizeCodes: ['company:add', 'company:list', 'company:remove', 'company:update']
 	},
 	{
 		menuName: '公司管理',
@@ -64,7 +64,7 @@ const menuData = [
 		pid: 7,
 		url: '/company/companyManager',
 		routeName: 'CompanyManager',
-		powers: ['company:add', 'company:list', 'company:remove', 'company:update']
+		authorizeCodes: ['company:add', 'company:list', 'company:remove', 'company:update']
 	}
 ];
 const menuStatusArr = [0, 1];

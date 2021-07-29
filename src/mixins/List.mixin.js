@@ -36,16 +36,16 @@ export default {
 		},
 		dialogEditHandlerMixin() {
 			this.isShowAEDialog = true;
-			this.editId = this.selectData[0].id || this.selectData[0].powerCode || this.selectData[0].apparatusId || this.selectData[0].camerId;
+			this.editId = this.selectData[0].id || this.selectData[0].code;
 			return this.editId;
 		},
 		filterSelectIdsMixin() {
 			return this.selectData.map(item => {
-				return item.id || item.powerCode || item.apparatusId || item.camerId;
+				return item.id || item.code;
 			});
 		},
 		editSingleHandlerMixin(row) {
-			this.editId = row.id || row.powerCode || row.apparatusId || row.camerId;
+			this.editId = row.id || row.code;
 			this.selectData = [row];
 			this.isShowAEDialog = true;
 			setTimeout(() => {

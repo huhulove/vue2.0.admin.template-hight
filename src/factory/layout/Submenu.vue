@@ -27,7 +27,7 @@ export default {
 	},
 	methods: {
 		clickMenu(menu) {
-			hsetStorage('btnPowers', menu.powers);
+			hsetStorage('btnAuthorizeCodes', menu.authorizeCodes);
 		}
 	}
 };

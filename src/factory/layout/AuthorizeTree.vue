@@ -5,7 +5,7 @@
 			ref="tree"
 			:props="defaultProps"
 			:data="authorizeData"
-			node-key="powerCode"
+			node-key="code"
 			show-checkbox
 			:check-strictly="true"
 			:expand-on-click-node="false"
@@ -19,22 +19,22 @@
 import { getTreeNodeById, getChildrenNodes } from '@u/htools.tree.js';
 import { authorizeListService } from '@s/systemManager/AuthorizeService';
 // eslint-disable-next-line import/no-cycle
-import { changePowerToEdit } from '@u/index';
+import { changeAuthorizeToEdit } from '@u/index';
 
 export default {
-	props: ['hasPowerCodes_p'],
+	props: ['hasAuthorizeCodes_p'],
 	data() {
 		return {
 			authorizeData: [],
-			defaultProps: { children: 'children', label: 'powerName' }
+			defaultProps: { children: 'children', label: 'name' }
 		};
 	},
 	watch: {
-		hasPowerCodes_p: {
+		hasAuthorizeCodes_p: {
 			handler(newValue) {
 				this.setAuthorizeHandler(newValue);
 			},
-            deep: true
+			deep: true
 		}
 	},
 	mounted() {
@@ -45,10 +45,10 @@ export default {
 			const dataJson = {};
 			const res = await authorizeListService(dataJson);
 			this.authorizeData = res;
-			changePowerToEdit(this.authorizeData, this.$envConfig);
+			changeAuthorizeToEdit(this.authorizeData, this.$envConfig);
 		},
 		checkChange(node) {
-			const treeNode = this.$refs.tree.getNode(node.powerCode);
+			const treeNode = this.$refs.tree.getNode(node.code);
 
 			if (treeNode.checked) {
 				treeNode.hasBeenChecked = true;
@@ -57,10 +57,10 @@ export default {
 			}
 
 			let pTreeNode = null;
-			let ppowerCode = null;
-			getTreeNodeById(this.authorizeData, 'powerCode', node.parentId, pnode => {
-				pTreeNode = this.$refs.tree.getNode(pnode.powerCode);
-				ppowerCode = pnode.powerCode;
+			let pCode = null;
+			getTreeNodeById(this.authorizeData, 'code', node.parentId, pnode => {
+				pTreeNode = this.$refs.tree.getNode(pnode.code);
+				pCode = pnode.code;
 				// console.log(pTreeNode);
 			});
 
@@ -77,20 +77,20 @@ export default {
 						if (pHasChecked) {
 							// 设置父级为半选状态
 							pTreeNode.indeterminate = true;
-							// this.$refs.tree.setChecked(ppowerCode, false, false);
+							// this.$refs.tree.setChecked(pCode, false, false);
 						} else {
 							// 设置父级为不选状态
 							pTreeNode.indeterminate = false;
-							this.$refs.tree.setChecked(ppowerCode, false, false);
+							this.$refs.tree.setChecked(pCode, false, false);
 						}
 					} else if (allChecked === 1) {
 						// 设置父级为半选状态
 						pTreeNode.indeterminate = true;
-						// this.$refs.tree.setChecked(ppowerCode, false, false);
+						// this.$refs.tree.setChecked(pCode, false, false);
 					} else if (allChecked === 2) {
 						// 设置父级为选中状态
 						pTreeNode.indeterminate = false;
-						this.$refs.tree.setChecked(ppowerCode, true, false);
+						this.$refs.tree.setChecked(pCode, true, false);
 					}
 				}
 			} else {
@@ -107,7 +107,7 @@ export default {
 					if (allChecked === 1) {
 						treeNode.indeterminate = true;
 					} else if (allChecked === 2) {
-						this.$refs.tree.setChecked(node.powerCode, true, false);
+						this.$refs.tree.setChecked(node.authorizeCode, true, false);
 					}
 					console.log('');
 				}
@@ -119,8 +119,8 @@ export default {
 			}
 			const checkedNodes = this.$refs.tree.getCheckedNodes();
 			const halfCheckedNodes = this.$refs.tree.getHalfCheckedNodes();
-			const activedPowerCodes = [];
-			getChildrenNodes(this.authorizeData, data.powerCode, activedPowerCodes, 'powerCode');
+			const activedAuthorizeCodes = [];
+			getChildrenNodes(this.authorizeData, data.code, activedAuthorizeCodes, 'code');
 			halfCheckedNodes.forEach(halfNode => {
 				const index = checkedNodes.indexOf(halfNode);
 				if (index > -1) {
@@ -129,13 +129,13 @@ export default {
 			});
 			if (node.indeterminate || (!node.checked && !node.indeterminate)) {
 				checkedNodes.forEach(node => {
-					activedPowerCodes.push(node.powerCode);
+					activedAuthorizeCodes.push(node.code);
 				});
-				this.$refs.tree.setCheckedKeys(activedPowerCodes);
+				this.$refs.tree.setCheckedKeys(activedAuthorizeCodes);
 			} else {
 				for (let i = 0; i < checkedNodes.length; i++) {
 					const node = checkedNodes[i];
-					const index = activedPowerCodes.indexOf(node.powerCode);
+					const index = activedAuthorizeCodes.indexOf(node.code);
 					if (index > -1) {
 						checkedNodes.splice(i, 1);
 						i--;
@@ -145,8 +145,8 @@ export default {
 			}
 
 			halfCheckedNodes.forEach(halfNode => {
-				if (data.powerCode !== halfNode.powerCode) {
-					const treeNode = this.$refs.tree.getNode(halfNode.powerCode);
+				if (data.code !== halfNode.code) {
+					const treeNode = this.$refs.tree.getNode(halfNode.code);
 					treeNode.indeterminate = true;
 				}
 			});
@@ -161,12 +161,12 @@ export default {
 			if (checkedcnt === node.childNodes.length) return 2;
 			return 1;
 		},
-		async setAuthorizeHandler(powerCodes) {
-			this.$refs.tree.setCheckedKeys(powerCodes);
+		async setAuthorizeHandler(codes) {
+			this.$refs.tree.setCheckedKeys(codes);
 			// 1. 是否只是叶子节点，默认值为 false 2. 是否包含半选节点，默认值为 false
 			const allCheckedNodes = this.$refs.tree.getCheckedNodes(false, true);
 			allCheckedNodes.forEach(node => {
-				const treeNode = this.$refs.tree.getNode(node.powerCode);
+				const treeNode = this.$refs.tree.getNode(node.code);
 				if (treeNode.childNodes !== undefined && treeNode.childNodes.length > 0) {
 					// 有子节点，说明是父级
 					const allcs = this.getNodeChildrenCheckState(treeNode);

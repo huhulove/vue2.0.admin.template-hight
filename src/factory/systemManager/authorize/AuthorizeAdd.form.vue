@@ -1,19 +1,19 @@
 <template>
 	<DataForm :model_p="formData" :rules_p="formRules" @cancel="formCancel" @submit="formSubmit">
-		<el-form-item label="名称" prop="powerName">
-			<Input v-model="formData.powerName" placeholder="请输入权限名称" />
+		<el-form-item label="名称" prop="name">
+			<Input v-model="formData.name" placeholder="请输入权限名称" />
 		</el-form-item>
-		<el-form-item label="标识" prop="powerCode">
-			<Input v-model="formData.powerCode" :disabled="editId !== -1" placeholder="请输入权限标识" />
+		<el-form-item label="标识" prop="code">
+			<Input v-model="formData.code" :disabled="editId !== -1" placeholder="请输入权限标识" />
 		</el-form-item>
-		<el-form-item label="排序" prop="powerSort">
-			<Input v-model="formData.powerSort" type="number" placeholder="请输入排序" />
+		<el-form-item label="排序" prop="sort">
+			<Input v-model="formData.sort" type="number" placeholder="请输入排序" />
 		</el-form-item>
 		<el-form-item label="状态" prop="status">
 			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="父级">
-			<SelectTree v-model="formData.parentId" node-key="powerCode" :data="authorizeData" placeholder="请选择父级"></SelectTree>
+			<SelectTree v-model="formData.parentId" node-key="code" :data="authorizeData" placeholder="请选择父级"></SelectTree>
 		</el-form-item>
 		<el-form-item label="备注">
 			<Input type_p="textarea" :rows_p="4" v-model="formData.remark" placeholder="请输入备注" />
@@ -48,29 +48,29 @@ export default {
 				{ label: '禁用', value: 1 }
 			],
 			formData: {
-				powerName: '',
-				powerCode: '',
-				powerSort: '',
+				name: '',
+				code: '',
+				sort: '',
 				status: 0,
 				parentId: 0,
 				remark: ''
 			},
 			formRules: {
-				powerName: [
+				name: [
 					{
 						required: true,
 						message: '请输入权限名称',
 						trigger: 'blur'
 					}
 				],
-				powerCode: [
+				code: [
 					{
 						required: true,
 						message: '请输入权限标识',
 						trigger: 'blur'
 					}
 				],
-				powerSort: [
+				sort: [
 					{
 						validator: hpositiveIntegerValid,
 						trigger: 'blur'
@@ -93,7 +93,7 @@ export default {
 			},
 			defaultProps: {
 				children: 'children',
-				label: 'powerName'
+				label: 'name'
 			},
 			parentName: '',
 			authorizeData: null
@@ -104,8 +104,8 @@ export default {
 			async handler(newValue) {
 				this.authorizeData === null && (await this.authorizeList());
 				if (newValue.length > 0) {
-					this.editId = newValue[0].powerCode;
-					const optionsTemp = deleteTreeNodeById(this.authorizeData, this.editId, 'powerCode');
+					this.editId = newValue[0].code;
+					const optionsTemp = deleteTreeNodeById(this.authorizeData, this.editId, 'code');
 					this.authorizeData = [...optionsTemp];
 					this.formData = { ...newValue[0] };
 				}
@@ -140,8 +140,8 @@ export default {
 			this.$emit('update:isShowAEDialog_p', false);
 		},
 		nodeClickHandler(data) {
-			this.formData.parentId = data.powerCode;
-			this.parentName = data.powerName;
+			this.formData.parentId = data.code;
+			this.parentName = data.name;
 		}
 	}
 };

@@ -9,7 +9,7 @@
 			@showDelete="showDeleteHandler"
 			:selectData_p="selectData"
 			:delTips_p="delTips"
-			:authorize_p="'power'"
+			:authorize_p="'authorize'"
 		></ButtonGroup>
 		<!--表格渲染-->
 		<Table
@@ -17,7 +17,7 @@
 			:data.sync="tableData"
 			:tableColumn_p="tableColumn"
 			:selectData_p.sync="selectData"
-			row-key="powerCode"
+			row-key="code"
 			:tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
 		>
 			<el-table-column label="状态" width="100">
@@ -25,8 +25,8 @@
 			</el-table-column>
 			<el-table-column label="操作" align="left" fixed="right" width="180">
 				<template slot-scope="scope">
-					<EditRowButton v-authorize="{ name: 'update', type: 'power', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
-					<RemoveRowButton v-authorize="{ name: 'remove', type: 'power', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
+					<EditRowButton v-authorize="{ name: 'update', type: 'authorize', id: 'btn-update-row' }" @click="editSingleHandler(scope.row)"></EditRowButton>
+					<RemoveRowButton v-authorize="{ name: 'remove', type: 'authorize', id: 'btn-remove-row' }" @click="deleteSingleHandler(scope.row)"></RemoveRowButton>
 				</template>
 			</el-table-column>
 		</Table>
@@ -69,17 +69,17 @@ export default {
 			tableColumn: [
 				{
 					label: '权限名称',
-					field: 'powerName',
+					field: 'name',
 					columnWidth: '140'
 				},
 				{
 					label: '排序',
-					field: 'powerSort',
+					field: 'sort',
 					columnWidth: '100'
 				},
 				{
 					label: '权限标识',
-					field: 'powerCode',
+					field: 'code',
 					columnWidth: '220'
 				},
 				{
@@ -133,7 +133,7 @@ export default {
 		async showDialogEditHandler() {
 			const editId = this.dialogEditHandlerMixin();
 			const dataJson = {
-				powerCode: editId
+				code: editId
 			};
 			const res = await authorizeDetailService(dataJson);
 			this.selectData = [res];
@@ -141,14 +141,14 @@ export default {
 		async showDeleteHandler() {
 			const ids = this.filterSelectIdsMixin();
 			const dataJson = {
-				powerCode: ids
+				code: ids
 			};
 			await authorizeDeleteService(dataJson);
 			this.isRefreshList = true;
 		},
 		async editSingleHandler(row) {
 			const dataJson = {
-				powerCode: row.powerCode
+				code: row.code
 			};
 			const res = await authorizeDetailService(dataJson);
 			this.editSingleHandlerMixin(res);

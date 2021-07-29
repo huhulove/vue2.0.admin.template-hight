@@ -99,7 +99,7 @@ export const roleAuthorizeService = data => {
 		try {
 			const dataJson = {
 				id: '',
-				powerCodes: [],
+				authorizeCodes: [],
 				...data
 			};
 			const res = await hpostRequest('role/roleConfigure', dataJson);

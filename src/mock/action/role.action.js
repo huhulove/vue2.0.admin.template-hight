@@ -65,7 +65,7 @@ export const roleAddService = options => {
 	}
 	body.createDate = Mock.Random.now();
 	body.companyId = hgetStorage('companyId');
-	body.powerCodes = [];
+	body.authorizeCodes = [];
 	roleData.push(body);
 	return Mock.mock({
 		code: 200,
@@ -153,7 +153,7 @@ export const filterRoleData = () => {
 		return {
 			id: item.id,
 			name: item.name,
-			powerCodes: item.powerCodes
+			authorizeCodes: item.authorizeCodes
 		};
 	});
 };

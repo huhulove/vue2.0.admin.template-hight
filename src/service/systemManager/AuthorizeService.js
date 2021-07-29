@@ -9,9 +9,9 @@ export const authorizeListService = data => {
 				name: '',
 				...data
 			};
-			const res = await hgetRequest('jurisdiction/jurisdictionAllQuery', dataJson);
+			const res = await hgetRequest('authorize/authorizeAllQuery', dataJson);
 			const resTreeTemp = changeTreeDataToChildren(res);
-			const resTree = addTreeKey(resTreeTemp, 0, { value: 'powerCode', label: 'powerName' });
+			const resTree = addTreeKey(resTreeTemp, 0, { value: 'code', label: 'name' });
 			resolve(resTree);
 		} catch (error) {
 			console.log(error);
@@ -23,15 +23,15 @@ export const authorizeAddService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				powerCode: '', // 权限标识
-				powerName: '', // 权限名称
+				code: '', // 权限标识
+				name: '', // 权限名称
 				remark: '',
 				state: '',
 				parentId: '', // 权限父级
-				powerSort: '', // 权限排序
+				sort: '', // 权限排序
 				...data
 			};
-			const res = await hpostRequest('jurisdiction/jurisdictionAdd', dataJson);
+			const res = await hpostRequest('authorize/authorizeAdd', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -43,15 +43,15 @@ export const authorizeEditService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				powerCode: '', // 权限标识
-				powerName: '', // 权限名称
+				code: '', // 权限标识
+				name: '', // 权限名称
 				remark: '',
 				state: '',
 				parentId: '', // 权限父级
-				powerSort: '', // 权限排序
+				sort: '', // 权限排序
 				...data
 			};
-			const res = await hpostRequest('jurisdiction/jurisdictionUpdate', dataJson);
+			const res = await hpostRequest('authorize/authorizeUpdate', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -63,10 +63,10 @@ export const authorizeDeleteService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				powerCode: [],
+				code: [],
 				...data
 			};
-			const res = await hpostRequest('jurisdiction/jurisdictionDel', dataJson);
+			const res = await hpostRequest('authorize/authorizeDel', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
@@ -78,10 +78,10 @@ export const authorizeDetailService = data => {
 	return new Promise(async resolve => {
 		try {
 			const dataJson = {
-				powerCode: '',
+				code: '',
 				...data
 			};
-			const res = await hgetRequest('jurisdiction/jurisdictionByIdQuery', dataJson);
+			const res = await hgetRequest('authorize/authorizeByIdQuery', dataJson);
 			resolve(res);
 		} catch (error) {
 			console.log(error);
