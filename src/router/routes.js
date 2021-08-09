@@ -2,6 +2,7 @@ import Login from '../views/layout/Login.vue';
 import v404 from '../views/layout/404.vue';
 import Layout from '../views/layout/Layout.vue';
 import Home from '../views/layout/Home.vue';
+import Iframe from '../views/layout/Iframe.vue';
 /* 系统管理 */
 import UserManager from '../views/systemManager/User';
 import RoleManager from '../views/systemManager/Role';
@@ -113,6 +114,14 @@ const routes = [
 					isKeepAlive: true	// 是否缓存
 				},
 				component: ProfileInformation
+			},
+			{
+				path: 'iframe',
+				name: 'Iframe',
+				meta: {
+					title: '外链加载器'
+				},
+				component: Iframe
 			},
 			{
 				path: '404',

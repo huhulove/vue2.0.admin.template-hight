@@ -65,8 +65,6 @@
 
 <script>
 import ListMixin from '@m/List.mixin';
-// eslint-disable-next-line import/no-cycle
-import { changeAuthorizeToEdit } from '@u/index';
 
 import Table from '@c/ui/Table';
 import ButtonGroup from '@c/custom/ButtonGroup';
@@ -82,8 +80,6 @@ import AuthorizeTree from '@f/layout/AuthorizeTree';
 
 // eslint-disable-next-line import/no-cycle
 import { menuListService, menuDeleteService, menuAuthorizeService, menuDetailService } from '@s/systemManager/MenuService';
-// eslint-disable-next-line import/no-cycle
-import { authorizeListService } from '@s/systemManager/AuthorizeService';
 
 export default {
 	mixins: [ListMixin],
@@ -150,16 +146,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.authorizeList();
 		this.menuList();
 	},
 	methods: {
-		async authorizeList() {
-			const dataJson = {};
-			const res = await authorizeListService(dataJson);
-			this.authorizeData = res;
-			changeAuthorizeToEdit(this.authorizeData, this.$envConfig);
-		},
 		async menuList() {
 			const dataJson = {};
 			const res = await menuListService(dataJson);

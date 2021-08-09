@@ -6,7 +6,7 @@ const menuData = [
 		menuName: '系统管理',
 		id: 1,
 		pid: 0,
-		url: '',
+		routeUrl: '',
 		routeName: '',
 		authorizeCodes: ['role:add', 'role:list', 'user:add', 'user:remove', 'user:select', 'user:update']
 	},
@@ -14,7 +14,7 @@ const menuData = [
 		menuName: '菜单管理123',
 		id: 2,
 		pid: 1,
-		url: '/system/menuManager',
+		routeUrl: '/system/menuManager',
 		routeName: 'MenuManager',
 		authorizeCodes: ['menu:add', 'menu:list', 'menu:authorize', 'menu:remove', 'menu:update']
 	},
@@ -22,7 +22,7 @@ const menuData = [
 		menuName: '权限管理',
 		id: 3,
 		pid: 1,
-		url: '/system/authorizeManager',
+		routeUrl: '/system/authorizeManager',
 		routeName: 'AuthorizeManager',
 		authorizeCodes: ['authorize:add', 'authorize:edit', 'authorize:list', 'authorize:remove', 'authorize:update']
 	},
@@ -30,7 +30,7 @@ const menuData = [
 		menuName: '用户管理',
 		id: 4,
 		pid: 1,
-		url: '/system/userManager',
+		routeUrl: '/system/userManager',
 		routeName: 'UserManager',
 		authorizeCodes: ['user:add', 'user:download', 'user:list', 'user:remove', 'user:update', 'user:secret']
 	},
@@ -38,7 +38,7 @@ const menuData = [
 		menuName: '角色管理',
 		id: 5,
 		pid: 1,
-		url: '/system/roleManager',
+		routeUrl: '/system/roleManager',
 		routeName: 'RoleManager',
 		authorizeCodes: ['role:add', 'role:list', 'role:remove', 'role:authorize', 'role:update']
 	},
@@ -46,7 +46,7 @@ const menuData = [
 		menuName: '部门管理',
 		id: 6,
 		pid: 1,
-		url: '/system/department',
+		routeUrl: '/system/department',
 		routeName: 'Department',
 		authorizeCodes: ['department:add', 'department:list', 'department:remove', 'department:update']
 	},
@@ -54,7 +54,7 @@ const menuData = [
 		menuName: '基础数据',
 		id: 7,
 		pid: 0,
-		url: '',
+		routeUrl: '',
 		routeName: '',
 		authorizeCodes: ['company:add', 'company:list', 'company:remove', 'company:update']
 	},
@@ -62,7 +62,7 @@ const menuData = [
 		menuName: '公司管理',
 		id: 8,
 		pid: 7,
-		url: '/company/companyManager',
+		routeUrl: '/company/companyManager',
 		routeName: 'CompanyManager',
 		authorizeCodes: ['company:add', 'company:list', 'company:remove', 'company:update']
 	}
@@ -76,7 +76,8 @@ menuData.forEach(item => {
 		'status|1': menuStatusArr
 	}).status;
 	item.isShow = 0;
-	item.targetProperty = '_self';
+	item.isOutsideLink = 0;
+	item.isNewWindow = 1;
 	item.btnType = 0;
 	item.isDel = 0;
 	item.children = null;

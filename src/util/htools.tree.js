@@ -104,10 +104,9 @@ export const addTreeKey = (data, level, json = {}) => {
 		data.forEach(item => {
 			let TLevel = 0 || level;
 			item.open = false;
-			item.disabled = true;
 			item.level = TLevel;
 			for (const key in json) {
-				item[key] = item[json[key]];
+				item[key] = item[json[key]] ? item[json[key]] : json[key];
 			}
 			if (item.children) {
 				addTreeKey(item.children, ++TLevel, json);

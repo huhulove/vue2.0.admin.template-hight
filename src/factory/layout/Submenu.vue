@@ -1,15 +1,31 @@
 <template>
 	<el-submenu :index="'' + menu_p.id">
 		<template slot="title">
-			<svg-icon :icon-class="menu_p.menuIcon" class="el-input__icon big" />
+			<svg-icon :icon-class="menu_p.menuIcon" />
 			<span class="menu-name">{{ menu_p.menuName }}</span>
 		</template>
 		<template v-for="($menu, $index) in menu_p.children">
 			<span :key="$index">
-				<el-menu-item :index="`${$menu.id}`" :route="{ path: `/${$menu.frontendRoute ? $menu.frontendRoute.path : '404'}` }" @click.native="clickMenu($menu)">
-					<svg-icon :icon-class="$menu.menuIcon" class="el-input__icon" />
-					<span class="menu-name">{{ $menu.menuName }}</span>
-				</el-menu-item>
+				<template>
+					<el-menu-item v-if="$menu.isOutsideLink === 0" :index="`${$menu.id}`" :route="{ path: `/${$menu.frontendRoute ? $menu.frontendRoute.path : '404'}` }">
+						<svg-icon :icon-class="$menu.menuIcon" />
+						<span class="menu-name">{{ $menu.menuName }}</span>
+					</el-menu-item>
+					<el-menu-item
+						v-if="$menu.isOutsideLink === 1 && $menu.isNewWindow === 0"
+						:index="`${$menu.id}`"
+						:route="{ path: `/${$menu.frontendRoute.path}?url=${$menu.url}` }"
+					>
+						<svg-icon :icon-class="$menu.menuIcon" />
+						<span class="menu-name">{{ $menu.menuName }}</span>
+					</el-menu-item>
+					<div v-if="$menu.isOutsideLink === 1 && $menu.isNewWindow === 1" class="el-menu el-menu--inline">
+						<a class="el-menu-item menu-item" :href="$menu.url" target="_blank">
+							<svg-icon :icon-class="$menu.menuIcon" />
+							<span class="menu-name">{{ $menu.menuName }}</span>
+						</a>
+					</div>
+				</template>
 				<Submenu v-if="$menu.children && $menu.children.length !== 0" :menu_p="$menu"></Submenu>
 			</span>
 		</template>

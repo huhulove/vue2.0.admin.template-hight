@@ -41,7 +41,7 @@ Mock.mock(`${baseUrl}user/loginInfo`, 'post', userEditLoginInfoService);
 Mock.mock(`${baseUrl}user/avatar`, 'post', userEditAvatarService);
 /* 权限 */
 Mock.mock(RegExp(`${baseUrl}authorize/authorizeAllQuery.*`), 'get', authorizeListService);
-Mock.mock(`${baseUrl}authorize/authorizedd`, 'post', authorizeAddService);
+Mock.mock(`${baseUrl}authorize/authorizeAdd`, 'post', authorizeAddService);
 Mock.mock(RegExp(`${baseUrl}authorize/authorizeUpdate.*`), 'post', authorizeEditService);
 Mock.mock(`${baseUrl}authorize/authorizeDel`, 'post', authorizeDeleteService);
 Mock.mock(RegExp(`${baseUrl}authorize/authorizeByIdQuery.*`), 'get', authorizeDetailService);

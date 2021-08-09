@@ -18,8 +18,6 @@
 <script>
 import { getTreeNodeById, getChildrenNodes } from '@u/htools.tree.js';
 import { authorizeListService } from '@s/systemManager/AuthorizeService';
-// eslint-disable-next-line import/no-cycle
-import { changeAuthorizeToEdit } from '@u/index';
 
 export default {
 	props: ['hasAuthorizeCodes_p'],
@@ -45,7 +43,6 @@ export default {
 			const dataJson = {};
 			const res = await authorizeListService(dataJson);
 			this.authorizeData = res;
-			changeAuthorizeToEdit(this.authorizeData, this.$envConfig);
 		},
 		checkChange(node) {
 			const treeNode = this.$refs.tree.getNode(node.code);

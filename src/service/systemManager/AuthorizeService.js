@@ -1,5 +1,7 @@
 import { hgetRequest, hpostRequest } from '@u/htools.axios';
 import { changeTreeDataToChildren, addTreeKey } from '@u/htools.tree';
+import { hgetStorage } from '@u/htools.web';
+import { changeAuthorizeToEdit } from '@u/index';
 
 /* 权限列表 */
 export const authorizeListService = data => {
@@ -11,7 +13,13 @@ export const authorizeListService = data => {
 			};
 			const res = await hgetRequest('authorize/authorizeAllQuery', dataJson);
 			const resTreeTemp = changeTreeDataToChildren(res);
-			const resTree = addTreeKey(resTreeTemp, 0, { value: 'code', label: 'name' });
+			let resTree = null;
+			if (hgetStorage('roleIds').indexOf(globalConfig.superAdminRoleId) > -1) {
+				resTree = addTreeKey(resTreeTemp, 0, { value: 'code', label: 'name' });
+			} else {
+				resTree = addTreeKey(resTreeTemp, 0, { value: 'code', label: 'name', disabled: true });
+				changeAuthorizeToEdit(resTree);
+			}
 			resolve(resTree);
 		} catch (error) {
 			console.log(error);

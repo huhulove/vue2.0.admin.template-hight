@@ -1,9 +1,15 @@
 <template>
-	<DataForm :model_p="formData" :rules_p="formRules" @cancel="formCancel" @submit="formSubmit">
+	<DataForm :model_p="formData" :rules_p="formRules" :labelWidth_p="'110px'" @cancel="formCancel" @submit="formSubmit">
 		<el-form-item label="名称" prop="menuName">
 			<Input v-model="formData.menuName" placeholder="请输入菜单名称" />
 		</el-form-item>
-		<el-form-item label="链接地址">
+		<el-form-item label="是否外链">
+			<RadioGroup v-model="formData.isOutsideLink" :data_p="outsideLinkData" @change="outsideLinkHandler"></RadioGroup>
+		</el-form-item>
+		<el-form-item label="是否新窗口打开" v-if="formData.isOutsideLink === 1">
+			<RadioGroup v-model="formData.isNewWindow" :data_p="targetData" @change="newWindowHandler"></RadioGroup>
+		</el-form-item>
+		<el-form-item label="链接地址" v-if="formData.isOutsideLink === 1">
 			<Input v-model="formData.url" placeholder="请输入链接地址" />
 		</el-form-item>
 		<el-form-item label="排序" prop="menuSort">
@@ -18,14 +24,14 @@
 				</el-input>
 			</el-popover>
 		</el-form-item>
-		<el-form-item label="路由名称">
+		<el-form-item label="路由链接" v-if="formData.isOutsideLink === 0">
+			<Input v-model="formData.routeUrl" placeholder="请输入组件地址" />
+		</el-form-item>
+		<el-form-item label="路由名称" v-if="formData.isOutsideLink === 0">
 			<Input v-model="formData.routeName" placeholder="请输入路由名称" />
 		</el-form-item>
 		<el-form-item label="状态">
 			<RadioGroup v-model="formData.status" :data_p="statusData"></RadioGroup>
-		</el-form-item>
-		<el-form-item label="是否外链">
-			<RadioGroup v-model="formData.targetProperty" :data_p="targetData"></RadioGroup>
 		</el-form-item>
 		<el-form-item label="父级">
 			<SelectTree v-model="formData.pid" node-key="id" :data="menuData" placeholder="请选择父级"></SelectTree>
@@ -60,13 +66,15 @@ export default {
 			formData: {
 				menuName: '',
 				url: '',
+				routeUrl: '',
 				menuSort: '',
 				menuIcon: '',
 				isShow: 0,
 				status: 0,
 				pid: 0,
 				routeName: '',
-				targetProperty: '_self',
+				isOutsideLink: 0,
+				isNewWindow: 1,
 				btnType: 0
 			},
 			formRules: {
@@ -77,10 +85,10 @@ export default {
 						trigger: 'blur'
 					}
 				],
-				url: [
+				routeUrl: [
 					{
 						required: true,
-						message: '请输入外链',
+						message: '请输入路由地址',
 						trigger: 'blur'
 					}
 				],
@@ -117,9 +125,13 @@ export default {
 				{ label: '正常', value: 0 },
 				{ label: '禁用', value: 1 }
 			],
+			outsideLinkData: [
+				{ label: '是', value: 1 },
+				{ label: '否', value: 0 }
+			],
 			targetData: [
-				{ label: '是', value: '_blank' },
-				{ label: '否', value: '_self' }
+				{ label: '是', value: 1 },
+				{ label: '否', value: 0 }
 			]
 		};
 	},
@@ -147,6 +159,20 @@ export default {
 			const dataJson = {};
 			const res = await menuListService(dataJson);
 			this.menuData = res;
+		},
+		outsideLinkHandler() {
+			this.formData.routeName = '';
+			this.formData.routeUrl = '';
+		},
+		newWindowHandler() {
+			if (this.formData.isNewWindow === 0) {
+				this.formData.routeName = 'Iframe';
+				this.formData.routeUrl = 'iframe';
+			}
+			if (this.formData.isNewWindow === 1) {
+				this.formData.routeName = '';
+				this.formData.routeUrl = '';
+			}
 		},
 		async formSubmit(valid) {
 			if (valid) {
